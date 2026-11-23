@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía del circuito del nodo dht</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --tx:#1c2430; --mut:#5b6675; --line:#d5dae1; --ok:#1a7f4b; --warn:#b45309; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#12161c; --card:#1b212a; --tx:#e8ecf1; --mut:#9aa6b5; --line:#2e3744; --ok:#4ade80; --warn:#fbbf24; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--tx); font:16px/1.5 system-ui, "Segoe UI", sans-serif; }
+  main { max-width:880px; margin:0 auto; padding:24px 16px 48px; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  h2 { font-size:1.15rem; margin:0 0 10px; }
+  p.sub { color:var(--mut); margin:0 0 20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin:0 0 16px; }
+  table { width:100%; border-collapse:collapse; font-size:.95rem; }
+  th, td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); }
+  th { color:var(--mut); font-weight:600; }
+  .pin { font-weight:700; font-family:ui-monospace, Consolas, monospace; }
+  .nota { border-left:4px solid var(--warn); padding:6px 12px; margin:10px 0 0; color:var(--tx); }
+  ol { padding-left:20px; margin:0; } li { margin:6px 0; }
+  svg { width:100%; height:auto; display:block; }
+  .t { fill:var(--tx); } .m { fill:var(--mut); }
+  .placa { fill:#1d4e89; } .borde { stroke:var(--line); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Circuito del nodo dht</h1>
+  <p class="sub">NodeMCU + sensor DHT11 + dos LED. Todo sale del kit del curso. Con la placa desconectada del USB mientras armas.</p>
+
+  <section class="card">
+    <h2>1. Qué necesitas</h2>
+    <ul>
+      <li>1 NodeMCU y su cable micro-USB</li>
+      <li>1 sensor DHT11 (el del kit)</li>
+      <li>1 LED verde y 1 LED rojo</li>
+      <li>2 resistencias de 330 Ω (si no las tienes, sirve cualquiera entre 220 Ω y 1 kΩ)</li>
+      <li>1 protoboard y cables macho-macho</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>2. Dibujo de las conexiones</h2>
+    <svg viewBox="0 0 760 430" role="img" aria-label="Diagrama de conexiones del NodeMCU con el DHT11 y dos LED">
+      <!-- placa -->
+      <rect x="40" y="20" width="170" height="390" rx="10" class="placa"/>
+      <text x="125" y="48" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">NodeMCU</text>
+      <text x="125" y="66" text-anchor="middle" fill="#cfe0f5" font-size="11">visto desde arriba, USB abajo</text>
+      <rect x="95" y="378" width="60" height="32" rx="4" fill="#9aa6b5"/>
+      <text x="125" y="398" text-anchor="middle" font-size="11" fill="#12161c">USB</text>
+      <!-- pines derecha: D2, D7, D8, 3V3, GND -->
+      <g font-size="13" font-weight="700" fill="#fff">
+        <text x="196" y="110" text-anchor="end">D2</text>
+        <text x="196" y="170" text-anchor="end">3V3</text>
+        <text x="196" y="200" text-anchor="end">GND</text>
+        <text x="196" y="260" text-anchor="end">D7</text>
+        <text x="196" y="290" text-anchor="end">D8</text>
+      </g>
+      <g fill="#e5b84b">
+        <circle cx="210" cy="106" r="5"/><circle cx="210" cy="166" r="5"/><circle cx="210" cy="196" r="5"/>
+        <circle cx="210" cy="256" r="5"/><circle cx="210" cy="286" r="5"/>
+      </g>
+
+      <!-- DHT11 -->
+      <rect x="520" y="70" width="110" height="140" rx="8" fill="#4aa3df"/>
+      <text x="575" y="100" text-anchor="middle" fill="#fff" font-weight="700">DHT11</text>
+      <g fill="#fff" font-size="12">
+        <text x="535" y="138">S (datos)</text><text x="535" y="168">+ (VCC)</text><text x="535" y="198">− (GND)</text>
+      </g>
+      <g fill="#e5b84b"><circle cx="520" cy="134" r="5"/><circle cx="520" cy="164" r="5"/><circle cx="520" cy="194" r="5"/></g>
+      <!-- cables DHT -->
+      <path d="M215 106 H340 V134 H515" fill="none" stroke="#2563eb" stroke-width="3"/>
+      <path d="M215 166 H380 V164 H515" fill="none" stroke="#dc2626" stroke-width="3"/>
+      <path d="M215 196 H420 V194 H515" fill="none" stroke="#111827" stroke-width="3"/>
+      <text x="360" y="100" class="m" font-size="12">datos</text>
+      <text x="400" y="158" class="m" font-size="12">3,3 V</text>
+      <text x="440" y="214" class="m" font-size="12">tierra</text>
+
+      <!-- LED verde -->
+      <path d="M215 256 H300" fill="none" stroke="#16a34a" stroke-width="3"/>
+      <rect x="300" y="246" width="70" height="20" rx="4" fill="#e7c9a5" stroke="#8b5e34"/>
+      <text x="335" y="260" text-anchor="middle" font-size="11" fill="#12161c">330 Ω</text>
+      <path d="M370 256 H430" fill="none" stroke="#16a34a" stroke-width="3"/>
+      <circle cx="455" cy="256" r="22" fill="#22c55e"/>
+      <text x="455" y="261" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">verde</text>
+      <path d="M477 256 H600 V330" fill="none" stroke="#111827" stroke-width="3"/>
+      <!-- LED rojo -->
+      <path d="M215 286 H300" fill="none" stroke="#ea580c" stroke-width="3"/>
+      <rect x="300" y="276" width="70" height="20" rx="4" fill="#e7c9a5" stroke="#8b5e34"/>
+      <text x="335" y="290" text-anchor="middle" font-size="11" fill="#12161c">330 Ω</text>
+      <path d="M370 286 H430" fill="none" stroke="#ea580c" stroke-width="3"/>
+      <circle cx="455" cy="286" r="22" fill="#ef4444"/>
+      <text x="455" y="291" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">rojo</text>
+      <path d="M477 286 H620 V330" fill="none" stroke="#111827" stroke-width="3"/>
+      <!-- GND común -->
+      <rect x="560" y="330" width="100" height="26" rx="6" fill="#111827"/>
+      <text x="610" y="348" text-anchor="middle" fill="#fff" font-size="12">GND (riel −)</text>
+      <path d="M420 196 V340 H560" fill="none" stroke="#111827" stroke-width="3" stroke-dasharray="6 4"/>
+      <text x="40" y="425" class="m" font-size="12">Las patas largas (+) de los LED miran a la resistencia; las cortas (−) van a GND.</text>
+    </svg>
+    <p class="nota">El dibujo es un esquema, no la posición exacta de la protoboard. Los pines <b>D2, D7, D8, 3V3 y GND</b> están impresos en tu placa: busca esas etiquetas.</p>
+  </section>
+
+  <section class="card">
+    <h2>3. Tabla de conexiones</h2>
+    <table>
+      <tr><th>De</th><th>A</th><th>Para qué</th></tr>
+      <tr><td>DHT11 <span class="pin">S</span></td><td><span class="pin">D2</span></td><td>El sensor manda temperatura y humedad</td></tr>
+      <tr><td>DHT11 <span class="pin">+</span></td><td><span class="pin">3V3</span></td><td>Alimentación (3,3 V, no 5 V)</td></tr>
+      <tr><td>DHT11 <span class="pin">−</span></td><td><span class="pin">GND</span></td><td>Tierra</td></tr>
+      <tr><td><span class="pin">D7</span></td><td>330 Ω → LED verde (pata larga) → GND</td><td>Indica que el nodo está bien</td></tr>
+      <tr><td><span class="pin">D8</span></td><td>330 Ω → LED rojo (pata larga) → GND</td><td>Se enciende cuando hay alerta</td></tr>
+    </table>
+    <p class="nota">Si tu DHT11 trae <b>4 patas sueltas</b> (sin tarjetita), pon una resistencia de 10 kΩ entre la pata de datos y 3V3. Si es una tarjetita de 3 pines, no hace falta. Lee las letras impresas: el orden cambia entre fabricantes.</p>
+  </section>
+
+  <section class="card">
+    <h2>4. Pasos para armarlo</h2>
+    <ol>
+      <li>Clava el NodeMCU en la protoboard (o déjalo aparte y usa cables hembra si los tienes).</li>
+      <li>Conecta el DHT11: datos a D2, + a 3V3, − a GND.</li>
+      <li>Conecta cada LED con su resistencia: D7 al verde, D8 al rojo, y las patas cortas a GND.</li>
+      <li>Revisa dos veces que el + del DHT11 va a <b>3V3</b>.</li>
+      <li>Conecta el USB a la computadora. Debe encenderse el LED azul pequeño de la placa.</li>
+      <li>Toma una foto del circuito armado: va en el documento.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>5. Cómo saber que funciona</h2>
+    <ul>
+      <li>En el monitor serial (115200) aparecen temperatura y humedad cada 30 s.</li>
+      <li>Aparecen líneas <span class="pin">[api] POST /api/mediciones -&gt; 201</span>.</li>
+      <li>El LED verde queda fijo cuando conecta a la WiFi.</li>
+      <li>Para ver el LED rojo, calienta el sensor con la mano o una secadora a distancia hasta pasar de 28 °C durante 3 lecturas.</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

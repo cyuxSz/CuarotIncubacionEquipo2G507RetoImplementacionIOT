@@ -1,0 +1,31 @@
+// Etapa 3 (individual, nodo dht): del circuito a la base de datos. Render: dot -Tpng -Gdpi=200
+digraph G {
+  rankdir=TB; fontname="Arial"; fontsize=11; nodesep=0.3; ranksep=0.45;
+  node [shape=box, style="rounded", fontname="Arial", fontsize=10, color="#404040"];
+  edge [fontname="Arial", fontsize=9, color="#404040"];
+
+  subgraph cluster_hw {
+    label="Hardware: nodo dht (protoboard de 400 puntos, 5 V por micro-USB)"; style="rounded"; color="#404040";
+    dht  [label="Sensor DHT22\n(temperatura y humedad)\nDATA en D4"];
+    btn  [label="Botón de silencio\nD6"];
+    mcu  [label="NodeMCU v1.0\nESP8266 (ESP-12E)\nWiFi 2.4 GHz integrado", style="rounded,bold"];
+    act  [label="Actuadores\nbuzzer (D5, 2N2222)\nLED rojo (D8) · LED verde (D7)"];
+    oled [label="OLED SSD1309 2.42\"\nI²C: D1 / D2"];
+    dht -> mcu; btn -> mcu; mcu -> act; mcu -> oled;
+  }
+
+  router [label="Red WiFi local\n(router o punto de acceso)\nIP por DHCP", shape=box, style="rounded,dashed"];
+
+  subgraph cluster_pc {
+    label="Software: laptop (localhost)"; style="rounded"; color="#404040";
+    api [label="API REST del nodo dht\nNode.js + Express\npuerto 3001", style="rounded,bold"];
+    db  [label="MySQL (puerto 3307)\nbase argos · 14 tablas", shape=cylinder, style=""];
+    dbv [label="DBeaver\nconsultas e indicadores"];
+    api -> db [label="SQL (mysql2)\nINSERT / SELECT"];
+    dbv -> db [label="SQL"];
+  }
+
+  mcu -> router [label="802.11 b/g/n"];
+  router -> api [label="HTTP POST / GET\nJSON + x-api-key"];
+  api -> mcu [label="respuesta: código HTTP\ny orden de alarma", style=dashed, constraint=false];
+}

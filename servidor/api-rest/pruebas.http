@@ -1,0 +1,93 @@
+# Pruebas de la API del nodo dht (extension "REST Client" de VS Code: clic en "Send Request").
+# Cambia @clave por la API_KEY de tu .env y @url por el puerto de tu nodo
+# (dht 3001, luz 3002, pir 3003, puerta 3004, acel 3005).
+@url = http://localhost:3001/api
+@clave = TU_API_KEY
+
+### 1. Ficha del nodo y su ultimo valor
+GET {{url}}/estado
+x-api-key: {{clave}}
+
+### 2. Guardar una medicion valida (201; "alarma":"off")
+POST {{url}}/mediciones
+x-api-key: {{clave}}
+Content-Type: application/json
+
+{"nodo":"dht","lecturas":[{"parametro":"temperatura","valor":25.4},{"parametro":"humedad","valor":51.2}]}
+
+### 3. Valor imposible: la API lo rechaza y no guarda nada (400)
+POST {{url}}/mediciones
+x-api-key: {{clave}}
+Content-Type: application/json
+
+{"nodo":"dht","lecturas":[{"parametro":"humedad","valor":150}]}
+
+### 4. Sin clave (401)
+GET {{url}}/estado
+
+### 5. Temperatura alta: mandarla 3 veces. A la tercera se abre la alerta y responde "alarma":"on"
+POST {{url}}/mediciones
+x-api-key: {{clave}}
+Content-Type: application/json
+
+{"nodo":"dht","lecturas":[{"parametro":"temperatura","valor":28.8}]}
+
+### 6. Instrucciones para el nodo: alarma y umbrales vigentes
+GET {{url}}/comandos
+x-api-key: {{clave}}
+
+### 7. Alertas activas
+GET {{url}}/alertas
+x-api-key: {{clave}}
+
+### 8. Zona de histeresis (27.5 a 28): aunque se mande 3 veces, la alerta NO se cierra
+POST {{url}}/mediciones
+x-api-key: {{clave}}
+Content-Type: application/json
+
+{"nodo":"dht","lecturas":[{"parametro":"temperatura","valor":27.8}]}
+
+### 9. Temperatura normal: mandarla 3 veces. A la tercera se cierra la alerta ("alarma":"off")
+POST {{url}}/mediciones
+x-api-key: {{clave}}
+Content-Type: application/json
+
+{"nodo":"dht","lecturas":[{"parametro":"temperatura","valor":25.0}]}
+
+### 10. Evento de actuacion: silencio del buzzer con el boton (30 min)
+POST {{url}}/acciones
+x-api-key: {{clave}}
+Content-Type: application/json
+
+{"nodo":"dht","actuador":"buzzer","comando":"off","origen":"manual","duracion_s":1800}
+
+### 11. Ultimos eventos de actuacion (incluye los on/off del buzzer que ordeno la alerta)
+GET {{url}}/acciones?limite=10
+x-api-key: {{clave}}
+
+### 12. Historial de temperatura (ultimas 5)
+GET {{url}}/mediciones?parametro=temperatura&limite=5
+x-api-key: {{clave}}
+
+### 13. Todas las alertas del nodo
+GET {{url}}/alertas?estado=todas
+x-api-key: {{clave}}
+
+### 14. Latido
+POST {{url}}/latido
+x-api-key: {{clave}}
+Content-Type: application/json
+
+{"nodo":"dht","uptime_s":120,"rssi":-60}
+
+### --- Para los nodos de eventos (pir, puerta, acel): cambia "nodo" y "tipo" ---
+### pir: movimiento | puerta: puerta_abierta, puerta_cerrada | acel: golpe (con "magnitud")
+POST {{url}}/eventos
+x-api-key: {{clave}}
+Content-Type: application/json
+
+{"nodo":"pir","tipo":"movimiento"}
+
+###
+GET {{url}}/eventos?limite=10
+x-api-key: {{clave}}
