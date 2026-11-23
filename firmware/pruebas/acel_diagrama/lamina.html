@@ -1,0 +1,57 @@
+<html><head><meta charset="utf-8"><style>
+body{margin:0;background:#fff;font-family:Segoe UI,Arial;width:1900px}
+h1{font-size:30px;margin:18px 24px 6px}
+p{font-size:20px;margin:4px 24px 10px}
+.fila{display:flex;gap:24px;padding:0 24px 24px;align-items:flex-start}
+.zoom{position:relative;width:1000px;height:1180px;overflow:hidden;border:2px solid #888;flex:none}
+.zoom img{position:absolute;width:3980px;left:-1140px;top:-760px}
+.et{position:absolute;transform:rotate(-90deg);transform-origin:left bottom;font-size:25px;font-weight:700;
+    background:#fff;border:2px solid #0b3d91;border-radius:5px;padding:0 6px;line-height:30px;white-space:nowrap;color:#0b3d91}
+table{border-collapse:collapse}td,th{border:1px solid #aaa;padding:6px 10px;font-size:20px;text-align:left}
+th{background:#eef}
+.todo img{width:840px;border:1px solid #ccc}
+.k{font-weight:700;white-space:nowrap}
+</style></head><body>
+<h1>Estación del anaquel · nodo acel · ADS1115 con sus letras (acelerómetro volteado)</h1>
+<p>Letras impresas en la protoboard (A abajo, J arriba). El ADS1115 va en la fila H, columnas 20 a 29; el acelerómetro en la fila C, columnas 25 a 29.</p>
+<div class="fila">
+<div class="zoom">
+<img src="file:///C:/dev/js/iot/chema_privado_22nov/Argos_PRIVADO_22nov/hardware/fritzing/salida/estacion_anaquel_breadboard.svg">
+<!-- pines del ADS1115: x = (252 + (col-15)*15)*4 - 1140 ; y de los pines = 308*4 - 760 = 472 -->
+<div class="et" style="left:185px;top:410px">VDD</div>
+<div class="et" style="left:245px;top:410px">GND</div>
+<div class="et" style="left:305px;top:410px">SCL</div>
+<div class="et" style="left:365px;top:410px">SDA</div>
+<div class="et" style="left:425px;top:410px">ADDR</div>
+<div class="et" style="left:485px;top:410px">ALRT</div>
+<div class="et" style="left:545px;top:410px">A0</div>
+<div class="et" style="left:605px;top:410px">A1</div>
+<div class="et" style="left:665px;top:410px">A2</div>
+<div class="et" style="left:725px;top:410px">A3</div>
+</div>
+<div>
+<table>
+<tr><th>Pin del ADS1115</th><th>Col.</th><th>A dónde va</th></tr>
+<tr><td class="k">VDD</td><td>20</td><td>Puente F20–E20 y A20 → riel de abajo <b>+3V3</b></td></tr>
+<tr><td class="k">GND</td><td>21</td><td>J21 → riel de arriba <b>GND</b></td></tr>
+<tr><td class="k">SCL</td><td>22</td><td>Puente F22–E22 y C22 → A14 (<b>D1</b>)</td></tr>
+<tr><td class="k">SDA</td><td>23</td><td>Puente F23–E23 y C23 → A13 (<b>D2</b>)</td></tr>
+<tr><td class="k">ADDR</td><td>24</td><td>J24 → riel de arriba <b>GND</b> (dirección 0x48)</td></tr>
+<tr><td class="k">ALRT</td><td>25</td><td>Sin conectar</td></tr>
+<tr><td class="k">A0</td><td>26</td><td>Puente F26–E26 → <b>X</b> del acelerómetro</td></tr>
+<tr><td class="k">A1</td><td>27</td><td>Puente F27–E27 → <b>Y</b></td></tr>
+<tr><td class="k">A2</td><td>28</td><td>Puente F28–E28 → <b>Z</b></td></tr>
+<tr><td class="k">A3</td><td>29</td><td>Sin conectar</td></tr>
+</table>
+<p style="margin:14px 0 6px"><b>Acelerómetro (volteado), fila C:</b></p>
+<table>
+<tr><th>Pin</th><th>Col.</th><th>A dónde va</th></tr>
+<tr><td class="k">VCC</td><td>25</td><td>A25 → riel de abajo <b>+3V3</b></td></tr>
+<tr><td class="k">X, Y, Z</td><td>26, 27, 28</td><td>Suben por E–F a A0, A1, A2</td></tr>
+<tr><td class="k">GND</td><td>29</td><td>A29 → riel de abajo <b>GND</b></td></tr>
+</table>
+<p style="margin:14px 0 6px"><b>Estación completa:</b></p>
+<div class="todo"><img src="file:///C:/dev/js/iot/chema_privado_22nov/Argos_PRIVADO_22nov/hardware/fritzing/salida/estacion_anaquel_breadboard.svg"></div>
+</div>
+</div>
+</body></html>

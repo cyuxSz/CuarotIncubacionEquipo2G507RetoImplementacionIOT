@@ -1,0 +1,237 @@
+{
+  "name": "Argos - avisos graves (Telegram, con formato)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Cada minuto",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1",
+              "name": "api_url",
+              "value": "http://localhost:3000",
+              "type": "string"
+            },
+            {
+              "id": "c2",
+              "name": "api_key",
+              "value": "PON_AQUI_LA_API_KEY_DEL_SERVICIO_CENTRAL",
+              "type": "string"
+            },
+            {
+              "id": "c3",
+              "name": "telegram_token",
+              "value": "PON_AQUI_EL_TOKEN_DEL_BOT",
+              "type": "string"
+            },
+            {
+              "id": "c4",
+              "name": "telegram_chat_id",
+              "value": "PON_AQUI_EL_CHAT_ID",
+              "type": "string"
+            },
+            {
+              "id": "c9",
+              "name": "dashboard_url",
+              "value": "https://xxxx.trycloudflare.com",
+              "type": "string"
+            },
+            {
+              "id": "c7",
+              "name": "hora_inicio",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "c8",
+              "name": "hora_fin",
+              "value": 22,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Configuracion",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "notes": "Se llenan api_key y telegram_token (solo aqui, nunca en archivos). chat_id = grupo \"Alertas proyecto argos\". dashboard_url = tunel del central: si el tunel se reinicia, poner aqui la URL nueva."
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.api_url }}/api/notificaciones/pendientes",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $json.api_key }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Leer pendientes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Arma UN mensaje de Telegram (formato HTML) con todos los avisos graves pendientes de Telegram.\n// De noche (fuera de hora_inicio..hora_fin, hora de Monterrey) no manda nada: los avisos se quedan\n// pendientes y salen juntos, como resumen, en la primera vuelta despues de hora_inicio.\nconst CANAL = 'telegram';\nconst MAX_LINEAS = 15; // por seccion; Telegram corta en 4096 caracteres\nconst cfg = $('Configuracion').first().json;\nconst pendientes = ($input.first().json.pendientes ?? []).filter((p) => p.canal === CANAL);\nconst hora = Number(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Monterrey', hour: 'numeric', hourCycle: 'h23' }).format(new Date()));\nif (pendientes.length === 0 || hora < cfg.hora_inicio || hora >= cfg.hora_fin) return [];\n\nconst esc = (t) => String(t ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));\nconst NOMBRE = { temperatura: 'Temperatura fuera de rango', humedad: 'Humedad fuera de rango', puerta_abierta: 'Puerta abierta de más', nodo_sin_reporte: 'Nodo sin reportar', sensor_falla: 'Falla de sensor', golpe: 'Golpe en el anaquel', movimiento_fuera_de_horario: 'Movimiento fuera de horario', luz: 'Luz fuera de horario' };\nconst NODO = { dht: 'Temperatura y humedad', luz: 'Luz', pir: 'Presencia', puerta: 'Puerta', acel: 'Golpes' };\nconst UNIDAD = { temperatura: ' °C', humedad: ' % HR' };\nconst fmt = new Intl.DateTimeFormat('es-MX', { timeZone: 'America/Monterrey', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });\n\nconst linea = (p) => {\n  const valor = UNIDAD[p.tipo] && p.valor !== null && p.valor !== undefined ? ' (' + p.valor + UNIDAD[p.tipo] + ')' : '';\n  return (p.ts_fin ? '✅ ' : '🔴 ') + '<b>' + esc((NOMBRE[p.tipo] ?? p.tipo) + valor) + '</b>\\n'\n    + '      ' + esc(NODO[p.id_nodo] ?? p.id_nodo) + ' · desde ' + esc(fmt.format(new Date(p.ts_inicio)));\n};\nconst seccion = (titulo, lista) => {\n  if (lista.length === 0) return '';\n  const extra = lista.length > MAX_LINEAS ? '\\n<i>…y ' + (lista.length - MAX_LINEAS) + ' más</i>' : '';\n  return '\\n\\n<b>' + titulo + ' (' + lista.length + ')</b>\\n' + lista.slice(0, MAX_LINEAS).map(linea).join('\\n') + extra;\n};\nconst activas = pendientes.filter((p) => !p.ts_fin);\nconst resueltas = pendientes.filter((p) => p.ts_fin);\n\nlet texto = (activas.length ? '🚨' : 'ℹ️') + ' <b>ARGOS · ' + (pendientes.length === 1 ? '1 alerta grave' : pendientes.length + ' alertas graves') + '</b>\\n'\n  + 'Cuarto de incubación in vitro'\n  + seccion('Siguen activas', activas)\n  + seccion('Ya se resolvieron', resueltas);\n\nconst url = String(cfg.dashboard_url ?? '').trim();\nconst conLink = /^https:\\/\\/\\S+$/.test(url);\nif (conLink) texto += '\\n\\n👉 <a href=\"' + esc(url) + '\">Abrir el dashboard</a>';\n\nreturn [{ json: { canal: CANAL, ids: pendientes.map((p) => p.id_alerta), texto, url: conLink ? url : '' } }];\n"
+      },
+      "id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Aviso Telegram",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        -110
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $('Configuracion').first().json.telegram_token }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify(Object.assign({ chat_id: $('Configuracion').first().json.telegram_chat_id, text: $json.texto, parse_mode: 'HTML', link_preview_options: { is_disabled: true } }, $json.url ? { reply_markup: { inline_keyboard: [[{ text: '📊 Ver dashboard', url: $json.url }]] } } : {})) }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Mandar Telegram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput",
+      "position": [
+        880,
+        -110
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Configuracion').first().json.api_url }}/api/notificaciones/enviadas",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $('Configuracion').first().json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ ids: $('Aviso Telegram').first().json.ids, canal: 'telegram' }) }}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Marcar Telegram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        -110
+      ]
+    }
+  ],
+  "connections": {
+    "Cada minuto": {
+      "main": [
+        [
+          {
+            "node": "Configuracion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuracion": {
+      "main": [
+        [
+          {
+            "node": "Leer pendientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer pendientes": {
+      "main": [
+        [
+          {
+            "node": "Aviso Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aviso Telegram": {
+      "main": [
+        [
+          {
+            "node": "Mandar Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mandar Telegram": {
+      "main": [
+        [
+          {
+            "node": "Marcar Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Monterrey"
+  },
+  "pinData": {}
+}

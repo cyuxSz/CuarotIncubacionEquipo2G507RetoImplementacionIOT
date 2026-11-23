@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="argos-dashboard" content="1">
+<meta name="theme-color" content="#121212">
+<title>Argos · Cuarto de incubación</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<script>
+  // El tema guardado se aplica antes de pintar, para que no parpadee.
+  try { const t = localStorage.getItem("argos-tema"); if (t === "claro" || t === "oscuro") document.documentElement.dataset.tema = t; } catch {}
+</script>
+  <script type="module" crossorigin src="./assets/index-fpzUdyJ7.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-sKIAereT.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Ir al contenido</a>
+
+<header class="cab">
+  <div class="cab__dentro">
+    <svg class="logo" aria-hidden="true"><use href="#i-ojo"/></svg>
+    <div class="cab__marca">
+      <h1>ARGOS</h1>
+      <p>Cuarto de incubación in vitro</p>
+    </div>
+    <nav class="cab__nav" aria-label="Secciones">
+      <a href="#ahora" data-pestana="ahora" aria-current="page">Ahora</a>
+      <a href="#historial" data-pestana="historial">Historial</a>
+    </nav>
+    <div class="cab__lado">
+      <div class="enlace" id="enlace" role="status"><i aria-hidden="true"></i><span id="enlaceTexto">Conectando…</span></div>
+      <button class="tema" id="tema" type="button" aria-label="Cambiar entre tema claro y oscuro">
+        <svg class="icono" aria-hidden="true"><use href="#i-tema"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="principal" class="cuerpo" tabindex="-1">
+  <p class="sr" id="anuncio" role="status"></p>
+  <section id="avisos" class="avisos" aria-label="Alertas activas"></section>
+
+  <div class="vista" data-vista="ahora">
+  <h2 class="etiqueta">Argos / estado de los 5 nodos</h2>
+  <div class="nodos" id="nodos">
+    <section class="ventana nodo nodo--dht" data-nodo="dht" aria-label="Nodo dht: temperatura y humedad">
+      <div class="ventana__barra"><h3 class="ventana__nombre">temperatura y humedad</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="lecturas">
+          <div class="lectura" data-lectura="temperatura">
+            <div class="fila-titulo"><svg class="icono" aria-hidden="true"><use href="#i-termometro"/></svg><h4 class="nombre">Temperatura</h4><span class="estado" data-r="rango"></span></div>
+            <div class="dato"><span data-r="valor">—</span><small>°C</small></div>
+            <div class="regla" aria-hidden="true"><div class="regla__pista"><div class="regla__banda" data-r="banda"></div></div><div class="regla__pupila" data-r="pupila" hidden></div><span class="regla__marca" data-r="min"></span><span class="regla__marca" data-r="max"></span></div>
+            <p class="pie" data-r="pie"></p>
+          </div>
+          <div class="lectura" data-lectura="humedad">
+            <div class="fila-titulo"><svg class="icono" aria-hidden="true"><use href="#i-gota"/></svg><h4 class="nombre">Humedad</h4><span class="estado" data-r="rango"></span></div>
+            <div class="dato"><span data-r="valor">—</span><small>% HR</small></div>
+            <div class="regla" aria-hidden="true"><div class="regla__pista"><div class="regla__banda" data-r="banda"></div></div><div class="regla__pupila" data-r="pupila" hidden></div><span class="regla__marca" data-r="min"></span><span class="regla__marca" data-r="max"></span></div>
+            <p class="pie" data-r="pie"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ventana nodo" data-nodo="luz" aria-label="Nodo luz: lámparas">
+      <div class="ventana__barra"><h3 class="ventana__nombre">luz</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="fila-valor"><svg class="icono" aria-hidden="true"><use href="#i-sol"/></svg><div class="valor" data-r="valor">—</div></div><p class="pie" data-r="pie"></p>
+      </div>
+    </section>
+
+    <section class="ventana nodo" data-nodo="pir" aria-label="Nodo pir: presencia">
+      <div class="ventana__barra"><h3 class="ventana__nombre">presencia</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="fila-valor"><svg class="icono" aria-hidden="true"><use href="#i-ondas"/></svg><div class="valor" data-r="valor">—</div></div><p class="pie" data-r="pie"></p>
+      </div>
+    </section>
+
+    <section class="ventana nodo" data-nodo="puerta" aria-label="Nodo puerta">
+      <div class="ventana__barra"><h3 class="ventana__nombre">puerta</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="fila-valor"><svg class="icono" aria-hidden="true"><use href="#i-puerta"/></svg><div class="valor" data-r="valor">—</div></div><p class="pie" data-r="pie"></p>
+      </div>
+    </section>
+
+    <section class="ventana nodo" data-nodo="acel" aria-label="Nodo acel: golpes">
+      <div class="ventana__barra"><h3 class="ventana__nombre">golpes</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="fila-valor"><svg class="icono" aria-hidden="true"><use href="#i-golpe"/></svg><div class="valor" data-r="valor">—</div></div><p class="pie" data-r="pie"></p>
+      </div>
+    </section>
+  </div>
+
+  <h2 class="etiqueta">Argos / eventos recientes</h2>
+  <div class="eventos">
+    <section class="ventana" aria-label="Eventos recientes">
+      <div class="ventana__barra"><span>eventos / lista</span><span>lo más nuevo arriba</span></div>
+      <div class="ventana__cuerpo" data-r="lista"></div>
+    </section>
+  </div>
+  </div>
+
+  <div class="vista historial" data-vista="historial" hidden></div>
+</main>
+
+<footer class="pie-pagina">
+  <p>Horas en tiempo de Monterrey. Se actualiza cada 5 s.</p>
+  <p class="pie-pagina__equipo">Equipo 2 · G507 · TC1004B · Tecnológico de Monterrey</p>
+</footer>
+
+<!-- Argos: boton "Silenciar alarma" del tablero (22-nov, Ivan). Sustituye al boton fisico del nodo dht.
+     Publica por MQTT (WebSocket seguro al mismo broker publico) en argos-eq2/invernadero/cmd/silenciar.
+     El nodo dht (firmware v3) silencia el buzzer 30 min y registra la accion; el tablero la muestra solo. -->
+<style>
+  .argos-silenciar { margin-left: 12px; padding: 8px 14px; font: inherit; font-weight: 600; cursor: pointer;
+    color: #fff; background: #b3261e; border: 1px solid #fff; border-radius: 2px; }
+  .argos-silenciar:disabled { opacity: .7; cursor: default; }
+  .argos-silenciar:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+</style>
+<script>
+(function () {
+  const BROKER = "wss://broker.hivemq.com:8884/mqtt";
+  const TOPIC = "argos-eq2/invernadero/cmd/silenciar";
+  const LIB = "https://unpkg.com/mqtt@5/dist/mqtt.min.js";
+  let cliente = null, estado = "", hasta = 0;
+
+  function cargarMqtt() {
+    return new Promise((ok, mal) => {
+      if (window.mqtt) return ok();
+      const s = document.createElement("script");
+      s.src = LIB; s.onload = ok; s.onerror = () => mal(new Error("no se pudo cargar MQTT.js"));
+      document.head.appendChild(s);
+    });
+  }
+  function conectar() {
+    return new Promise((ok, mal) => {
+      if (cliente && cliente.connected) return ok();
+      const t = setTimeout(() => mal(new Error("el broker no respondio")), 10000);
+      cliente = window.mqtt.connect(BROKER, { clientId: "argos-tablero-" + Math.random().toString(16).slice(2, 10), reconnectPeriod: 0 });
+      cliente.on("connect", () => { clearTimeout(t); ok(); });
+      cliente.on("error", (e) => { clearTimeout(t); mal(e); });
+    });
+  }
+  async function silenciar(boton) {
+    if (!confirm("¿Silenciar el buzzer del cuarto durante 30 minutos?\nLa alerta sigue abierta y el LED rojo sigue encendido.")) return;
+    estado = "Enviando…"; pintar();
+    try {
+      await cargarMqtt();
+      await conectar();
+      await new Promise((ok, mal) => cliente.publish(TOPIC, JSON.stringify({ minutos: 30, origen: "tablero" }), { qos: 1 }, (e) => e ? mal(e) : ok()));
+      estado = "Orden enviada, esperando al nodo…";
+      hasta = Date.now() + 30000;   // si el nodo no confirma en 30 s, el boton vuelve a estar disponible
+    } catch (e) {
+      estado = ""; pintar();
+      alert("No se pudo mandar la orden: " + e.message);
+      return;
+    }
+    pintar();
+  }
+  function pintar() {
+    const marca = document.querySelector(".aviso__alarma");
+    let boton = document.querySelector(".argos-silenciar");
+    const activa = marca && /activa/i.test(marca.textContent);
+    if (!activa) { if (boton) boton.remove(); estado = ""; return; }
+    if (estado && hasta && Date.now() > hasta) { estado = ""; hasta = 0; }
+    if (!boton || boton.previousElementSibling !== marca) {
+      if (boton) boton.remove();
+      boton = document.createElement("button");
+      boton.type = "button"; boton.className = "argos-silenciar";
+      boton.addEventListener("click", () => silenciar(boton));
+      marca.insertAdjacentElement("afterend", boton);
+    }
+    const texto = estado || "Silenciar alarma 30 min";
+    if (boton.textContent !== texto) boton.textContent = texto;
+    boton.disabled = !!estado;
+  }
+  new MutationObserver(pintar).observe(document.body, { childList: true, subtree: true, characterData: true });
+  setInterval(pintar, 2000);
+  pintar();
+})();
+</script>
+</body>
+</html>

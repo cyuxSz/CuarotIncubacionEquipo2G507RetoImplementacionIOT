@@ -1,0 +1,319 @@
+{
+  "nodo": "entrada",
+  "envolvente_mm": [
+    201.7,
+    80.0,
+    40.5
+  ],
+  "envolvente_con_orejas_mm": [
+    201.7,
+    80.0,
+    40.5
+  ],
+  "paso_pernos_mm": 183.7,
+  "orientacion": {
+    "base": "espalda en la cama",
+    "tapa": "frente en la cama",
+    "porta_sensor": "piso en la cama",
+    "porta_iman": "piso en la cama",
+    "calza_2mm": "plana",
+    "calza_4mm": "plana",
+    "soporte_pared": "espalda en la cama (2 tacos)"
+  },
+  "notas": {
+    "z_usb": 16.85,
+    "collar_led": 3.6,
+    "y_domo": 139.59,
+    "mc38_paredes_en_el_gap_mm": 2.4
+  },
+  "interferencias": [],
+  "holguras": [
+    {
+      "parte": "protoboard",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "nodemcu_pir",
+      "montado": false,
+      "min_mm": 9.12,
+      "ok": true
+    },
+    {
+      "parte": "nodemcu_puerta",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "pir_C1",
+      "montado": false,
+      "min_mm": 8.48,
+      "ok": true
+    },
+    {
+      "parte": "pir_R5",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "pir_R6",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "puerta_C1",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "puerta_R5",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "puerta_R6",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_pir_LED_V_A",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_pir_LED_V_K",
+      "montado": false,
+      "min_mm": 4.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_pir_LED_R_A",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_pir_LED_R_K",
+      "montado": false,
+      "min_mm": 5.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_pir_PIR_VCC",
+      "montado": false,
+      "min_mm": 8.09,
+      "ok": true
+    },
+    {
+      "parte": "dupont_pir_PIR_OUT",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_pir_PIR_GND",
+      "montado": false,
+      "min_mm": 5.57,
+      "ok": true
+    },
+    {
+      "parte": "dupont_puerta_LED_V_A",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_puerta_LED_V_K",
+      "montado": false,
+      "min_mm": 4.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_puerta_LED_R_A",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_puerta_LED_R_K",
+      "montado": false,
+      "min_mm": 5.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_puerta_Reed_1",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_puerta_Reed_2",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Entrada5V_+",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Entrada5V_-",
+      "montado": false,
+      "min_mm": 9.29,
+      "ok": true
+    },
+    {
+      "parte": "led_verde",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_verde_patas",
+      "montado": true,
+      "min_mm": 1.18,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo_patas",
+      "montado": true,
+      "min_mm": 1.18,
+      "ok": true
+    },
+    {
+      "parte": "led_verde_2",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_verde_2_patas",
+      "montado": true,
+      "min_mm": 1.18,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo_2",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo_2_patas",
+      "montado": true,
+      "min_mm": 1.18,
+      "ok": true
+    },
+    {
+      "parte": "entrada_5v",
+      "montado": true,
+      "min_mm": 0.3,
+      "ok": true
+    },
+    {
+      "parte": "pir_pcb",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "pir_domo",
+      "montado": true,
+      "min_mm": 0.5,
+      "ok": true
+    },
+    {
+      "parte": "pir_componentes",
+      "montado": true,
+      "min_mm": 1.6,
+      "ok": true
+    },
+    {
+      "parte": "pir_dupont",
+      "montado": true,
+      "min_mm": 1.6,
+      "ok": true
+    }
+  ],
+  "volumenes": {
+    "base": {
+      "volumen_cm3": 66.09,
+      "masa_g_petg": 83.9,
+      "caja_mm": [
+        201.7,
+        80.0,
+        38.0
+      ]
+    },
+    "tapa": {
+      "volumen_cm3": 37.84,
+      "masa_g_petg": 48.1,
+      "caja_mm": [
+        201.7,
+        80.0,
+        9.5
+      ]
+    },
+    "porta_sensor": {
+      "volumen_cm3": 3.37,
+      "masa_g_petg": 4.3,
+      "caja_mm": [
+        50.6,
+        17.8,
+        11.9
+      ]
+    },
+    "porta_iman": {
+      "volumen_cm3": 3.59,
+      "masa_g_petg": 4.6,
+      "caja_mm": [
+        50.6,
+        17.8,
+        12.9
+      ]
+    },
+    "calza_2mm": {
+      "volumen_cm3": 1.65,
+      "masa_g_petg": 2.1,
+      "caja_mm": [
+        50.6,
+        17.8,
+        2.0
+      ]
+    },
+    "calza_4mm": {
+      "volumen_cm3": 3.29,
+      "masa_g_petg": 4.2,
+      "caja_mm": [
+        50.6,
+        17.8,
+        4.0
+      ]
+    },
+    "soporte_pared": {
+      "volumen_cm3": 10.69,
+      "masa_g_petg": 13.6,
+      "caja_mm": [
+        70.0,
+        46.0,
+        10.4
+      ]
+    }
+  }
+}

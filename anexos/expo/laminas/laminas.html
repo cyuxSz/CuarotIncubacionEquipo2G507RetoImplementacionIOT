@@ -1,0 +1,261 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Argos · láminas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=block" rel="stylesheet">
+<style>
+@page{size:1920px 1080px;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--az:#2f4fd8;--az2:#a9b8ff;--ci:#22c7e6;--li:#c59bf5;--tinta:#111828;--papel:#f4f5f0}
+html,body{background:#121212;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:'Inter','Segoe UI',sans-serif;color:var(--tinta)}
+.s{display:none;position:relative;width:1920px;height:1080px;overflow:hidden;padding:76px 96px;page-break-after:always;break-after:page}
+.s.on{display:block}
+body.todo .s{display:none}
+body.todo .s.d{display:block}
+.claro{background:var(--papel);background-image:linear-gradient(#e6e8e0 1px,transparent 1px),linear-gradient(90deg,#e6e8e0 1px,transparent 1px);background-size:40px 40px}
+.osc{background:#121212;color:#f8f9fb;background-image:linear-gradient(#1d1d1d 1px,transparent 1px),linear-gradient(90deg,#1d1d1d 1px,transparent 1px);background-size:40px 40px}
+.mono{font-family:'JetBrains Mono',Consolas,monospace}
+h1,h2,h3{font-family:'Space Grotesk','Segoe UI',sans-serif}
+.cab{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:26px;letter-spacing:.14em;color:var(--az);font-weight:500}
+.sq{display:flex;gap:8px}.sq i{width:18px;height:18px;display:block}
+h2{font-size:84px;line-height:1.07;font-weight:600;letter-spacing:-.015em;margin-top:16px}
+.w{background:#fff;border:2px solid var(--az);box-shadow:12px 12px 0 var(--az2)}
+.w .cu{padding:30px 32px 34px}
+.w h3{font-size:44px;font-weight:600;line-height:1.12}
+.w p{font-size:29px;line-height:1.36;color:#2c3445;margin-top:10px}
+.sm{font-family:'JetBrains Mono';font-size:23px;color:var(--az);margin-top:4px}
+.ic{width:64px;height:64px;stroke:var(--az);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;margin-bottom:14px;display:block}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:44px}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:36px;margin-top:44px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:44px}
+.chip{font-family:'JetBrains Mono';font-size:25px;border:2px solid var(--tinta);padding:6px 14px;background:#fff;display:inline-block;margin:0 8px 10px 0}
+.pie{position:absolute;left:96px;right:96px;bottom:44px;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:22px;letter-spacing:.08em;color:#5b6475}
+.osc .pie{color:#8b93a3}
+.pre{color:var(--ci);font-size:32px;font-weight:500;letter-spacing:.12em}
+.osc h1{font-size:300px;line-height:.95;font-weight:700;letter-spacing:-.02em}
+.raya{width:190px;height:8px;background:#3d5bd9;margin-top:36px}
+.lema{font-size:54px;line-height:1.28;color:#d5d8de;margin-top:36px;width:900px}
+.wd{background:#181b22;border:2px solid #7c8cf0;box-shadow:14px 14px 0 #3d5bd9}
+.wd .tb{font-family:'JetBrains Mono';font-weight:700;font-size:28px;padding:14px 22px;border-bottom:2px solid #7c8cf0;display:flex;justify-content:space-between;background:#1f2330;color:#f8f9fb}
+.wd .cu{display:flex;align-items:center;justify-content:center}
+.et{font-family:'JetBrains Mono';font-size:24px;font-weight:700;letter-spacing:.12em}
+.et.r{color:#e5484d}
+.con{background:var(--tinta);color:#fff;padding:26px 32px 30px}
+.con .et{color:var(--ci)}
+.con p{color:#e3e7ef;margin-top:8px;font-size:28px;line-height:1.36}
+.prob .w{display:flex;flex-direction:column}.prob .cu{flex:1}
+.flujo{display:flex;align-items:stretch;margin-top:44px}
+.flujo .w{flex:1}
+.con2{width:60px;position:relative;flex:none}
+.con2:before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;background:var(--tinta)}
+.con2:after{content:"";position:absolute;right:-4px;top:50%;width:20px;height:20px;margin-top:-10px;background:var(--az);border:2px solid var(--tinta)}
+.rangos{background:var(--tinta);color:#fff;padding:30px 40px;box-shadow:12px 12px 0 var(--az2)}
+.rg{display:flex;gap:70px;margin-top:14px}
+.rg b{font-family:'JetBrains Mono';font-weight:700;font-size:74px;line-height:1.1;display:block;white-space:nowrap}
+.rg span{font-size:28px;color:#d5d9e3}
+.sello{font-family:'JetBrains Mono';font-size:25px;font-weight:500;letter-spacing:.08em;border:2px solid var(--tinta);padding:10px 22px;background:#fff;white-space:nowrap}
+.caja{text-align:center}
+.caja .im{height:460px;display:flex;align-items:center;justify-content:center;padding:24px}
+.caja img{max-width:100%;max-height:100%}
+.nom{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #c9cdd6;padding:15px 0;font-size:40px;font-weight:600;font-family:'Space Grotesk'}
+.nom span{font-family:'JetBrains Mono';font-size:27px;font-weight:400;color:#3a4254}
+ul.l{list-style:none;margin-top:14px}
+ul.l li{font-size:29px;line-height:1.36;color:#2c3445;padding-left:30px;position:relative;margin-top:10px}
+ul.l li:before{content:"";position:absolute;left:0;top:14px;width:13px;height:13px;background:var(--az)}
+.pend{display:inline-block;background:#fff3b0;border:2px dashed #b08900;padding:2px 10px;font-family:'JetBrains Mono';font-size:24px;color:#6b5300}
+.gracias{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
+</style></head><body>
+
+<!-- 01 portada -->
+<div class="s osc v d" id="l01">
+  <div class="pre mono">&gt; TC1004B · G507 · EXPOINGENIERÍAS 28</div>
+  <h1 style="margin-top:170px">ARGOS</h1><div class="raya"></div>
+  <div class="lema">Sistema IoT de monitoreo y aviso para el cuarto de incubación in vitro.</div>
+  <div class="wd" style="position:absolute;right:96px;top:210px;width:640px"><div class="tb"><span>argos.ico</span><span>×</span></div><div class="cu" style="height:590px">
+    <svg width="450" height="382" viewBox="0 0 236 200"><path d="M22 122 Q118 46 214 122 Q118 198 22 122Z" fill="none" stroke="#f8f9fb" stroke-width="13"/><rect x="95" y="99" width="46" height="46" fill="#f8f9fb"/><rect x="112" y="6" width="12" height="32" fill="#22c7e6"/><rect x="62" y="20" width="12" height="32" fill="#22c7e6" transform="rotate(-25 68 36)"/><rect x="162" y="20" width="12" height="32" fill="#22c7e6" transform="rotate(25 168 36)"/></svg></div></div>
+  <div class="pie"><span>EQUIPO 2 · TECNOLÓGICO DE MONTERREY</span><span>AD26-113</span></div>
+</div>
+
+<!-- 02 equipo -->
+<div class="s claro v d" id="l02">
+  <div class="cab"><span>ARGOS / EQUIPO 2 · G507</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Quiénes somos.</h2>
+  <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:70px;margin-top:40px">
+    <div>
+      <div class="nom">Luis Eduardo Mendoza Menéndez<span>nodo dht</span></div>
+      <div class="nom">Arianna Suzeth Téllez Sahagún<span>nodo acel</span></div>
+      <div class="nom">Mia Lizeth Nieto Palomo<span>nodo luz</span></div>
+      <div class="nom">Iván Oswaldo Acosta García<span>nodo puerta</span></div>
+      <div class="nom">Jose Maria Garcia Sanchez<span>nodo pir</span></div>
+    </div>
+    <div>
+      <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">PROFESORES TUTORES</div><h3>Luis Ricardo Salgado Garza</h3><h3 style="margin-top:8px">María de los Angeles Constantino González</h3></div></div>
+      <div class="w" style="margin-top:34px"><div class="cu"><div class="sm" style="margin:0 0 8px">MATERIA</div><h3>Implementación de internet de las cosas</h3><p>TC1004B · Nivel profesional · Tecnológico de Monterrey</p></div></div>
+    </div>
+  </div>
+  <div class="pie"><span>ARGOS · EXPOINGENIERÍAS 28</span><span>AD26-113</span></div>
+</div>
+
+<!-- 03 problemas -->
+<div class="s claro v d" id="l03">
+  <div class="cab"><span>ARGOS / EL PROBLEMA</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Lo que pasaba en el cuarto.</h2>
+  <div class="g3 prob">
+    <div class="w"><div class="cu"><div class="et r">&gt; HUMEDAD</div><h3 style="margin-top:8px">La humedad baja rompía el sellado.</h3><p>Cuando la humedad del cuarto baja, el papel encerado o Parafilm que sella los frascos se rompe.</p></div></div>
+    <div class="w"><div class="cu"><div class="et r">&gt; PUERTA</div><h3 style="margin-top:8px">Una puerta abierta lo arruinaba todo.</h3><p>Entran alumnos, grupos y estancias de investigación. Un par de veces la puerta se quedó abierta y se perdió todo lo que había dentro.</p></div></div>
+    <div class="w"><div class="cu"><div class="et r">&gt; HORARIO</div><h3 style="margin-top:8px">Fuera de horario, nadie vigilaba.</h3><p>Solo hay personal entre semana, de 8:00 a 17:00. De noche o en fin de semana, una falla podía pasar horas sin notarse.</p></div></div>
+  </div>
+  <div style="margin-top:46px" class="mono"><span style="font-size:24px;color:#5b6475">// Problemas descritos por el Ing. Enrique Puga, encargado del Invernadero Académico.</span></div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>RANGO: 22–28 °C · 40–60 % HR</span></div>
+</div>
+
+<!-- 04 variables -->
+<div class="s claro v d" id="l04">
+  <div class="cab"><span>ARGOS / QUÉ MONITOREA</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Seis variables, vigiladas todo el día.</h2>
+  <div class="g3" style="margin-top:36px;gap:30px">
+    <div class="w"><div class="cu" style="padding:24px 30px"><svg class="ic" viewBox="0 0 24 24"><path d="M10 14V5a2 2 0 0 1 4 0v9a4 4 0 1 1-4 0z"/><path d="M12 9v8"/></svg><h3>Temperatura</h3><div class="sm">DHT22</div><p>De 22 a 28 °C, cada 30 segundos.</p></div></div>
+    <div class="w"><div class="cu" style="padding:24px 30px"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg><h3>Humedad</h3><div class="sm">DHT22</div><p>De 40 a 60 % de humedad relativa.</p></div></div>
+    <div class="w"><div class="cu" style="padding:24px 30px"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg><h3>Luz</h3><div class="sm">LDR</div><p>Registra si las lámparas están encendidas.</p></div></div>
+    <div class="w"><div class="cu" style="padding:24px 30px"><svg class="ic" viewBox="0 0 24 24"><path d="M3 8c3-3 6 3 9 0s6 3 9 0M3 14c3-3 6 3 9 0s6 3 9 0"/></svg><h3>Presencia</h3><div class="sm">HC-SR501</div><p>Detecta cuando alguien entra y a qué hora.</p></div></div>
+    <div class="w"><div class="cu" style="padding:24px 30px"><svg class="ic" viewBox="0 0 24 24"><path d="M5 21V4l10-1.5V21M15 5h4v16M3 21h18"/><circle cx="12" cy="12.5" r=".8"/></svg><h3>Puerta</h3><div class="sm">Imán MC-38</div><p>Registra cuándo se abre y se cierra.</p></div></div>
+    <div class="w"><div class="cu" style="padding:24px 30px"><svg class="ic" viewBox="0 0 24 24"><path d="M2 12h3l2-6 3 12 3-9 2 5 2-2h5"/></svg><h3>Golpes</h3><div class="sm">GY-61</div><p>Detecta vibración en el anaquel.</p></div></div>
+  </div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>SOLO MONITOREA · NO CONTROLA</span></div>
+</div>
+
+<!-- 05 flujo -->
+<div class="s claro v d" id="l05">
+  <div class="cab"><span>ARGOS / CÓMO FUNCIONA</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:30px"><h2>Del sensor al aviso.</h2><span class="sello">SOLO MONITOREA · NO CONTROLA</span></div>
+  <div class="flujo">
+    <div class="w"><div class="cu"><h3 style="margin-bottom:14px">1 · Cuarto</h3><div><span class="chip">dht</span><span class="chip">luz</span><span class="chip">pir</span><span class="chip">puerta</span><span class="chip">acel</span></div><p>Cinco NodeMCU miden el ambiente, nunca dentro de los frascos.</p></div></div>
+    <div class="con2"></div>
+    <div class="w"><div class="cu"><h3 style="margin-bottom:14px">2 · Servidor</h3><div><span class="chip">API REST</span><span class="chip">MySQL</span><span class="chip">MQTT</span></div><p>Compara cada lectura con los rangos y guarda todo en la base de datos.</p></div></div>
+    <div class="con2"></div>
+    <div class="w"><div class="cu"><h3 style="margin-bottom:14px">3 · Tú</h3><div><span class="chip">WhatsApp</span><span class="chip">Telegram</span><span class="chip">Tablero</span></div><p>Aviso al celular, alarma en el cuarto e historial en el tablero.</p></div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:40px;margin-top:44px">
+    <div class="rangos"><div class="mono" style="font-size:25px;letter-spacing:.14em;color:var(--az2)">RANGOS DE VIGILANCIA</div>
+      <div class="rg"><div><b>22–28 °C</b><span>Temperatura</span></div><div><b>40–60 %</b><span>Humedad relativa</span></div></div><p style="font-size:26px;color:#d5d9e3;margin-top:20px;line-height:1.4">La alerta se abre entre 60 y 90 s después de salir de rango; si la falla sigue, llega el mensaje al celular.</p></div>
+    <div class="w"><div class="cu"><h3>Sin falsas alarmas</h3><p>Una alerta se abre tras tres lecturas seguidas fuera de rango y se cierra con histéresis.</p></div></div>
+  </div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>AD26-113</span></div>
+</div>
+
+<!-- 06 cajas -->
+<div class="s claro v d" id="l06">
+  <div class="cab"><span>ARGOS / EL PROTOTIPO</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Tres cajas, cinco nodos, un aviso a tiempo.</h2>
+  <div class="g3" style="grid-template-columns:1fr 1.3fr 1.3fr">
+    <div class="w caja"><div class="im"><img src="../img/t_dht.png"></div><div class="cu" style="padding-top:4px"><h3>Caja dht</h3><p>Temperatura y humedad, con pantalla, alarma y botón.</p></div></div>
+    <div class="w caja"><div class="im"><img src="../img/t_entrada.png"></div><div class="cu" style="padding-top:4px"><h3>Estación de entrada</h3><p>Presencia y apertura de la puerta.</p></div></div>
+    <div class="w caja"><div class="im"><img src="../img/t_anaquel.png"></div><div class="cu" style="padding-top:4px"><h3>Estación del anaquel</h3><p>Luz de las lámparas y golpes al anaquel.</p></div></div>
+  </div>
+  <div class="pie"><span>CAJAS IMPRESAS EN PETG · TAPA A PRESIÓN</span><span>AD26-113</span></div>
+</div>
+
+<!-- 07 tecnicas -->
+<div class="s claro v d" id="l07">
+  <div class="cab"><span>ARGOS / INGENIERÍA</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Hecho por código, de punta a punta.</h2>
+  <div class="g2">
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">ELECTRÓNICA</div><h3>Un solo archivo de armado</h3><p>De ahí salen los diagramas de protoboard, las listas de cables y el modelo 3D, con un chequeo automático de pines.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">DISEÑO MECÁNICO</div><h3>Cajas modeladas por código</h3><p>Con las medidas reales de cada pieza, tomadas con calibrador; impresas en PETG, con tapa a presión.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">FIRMWARE</div><h3>Cinco NodeMCU ESP8266</h3><p>Programa sin bloqueos, con reconexión, latido cada 60 segundos y alarma local sin red.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">SERVIDOR</div><h3>API REST, MySQL y MQTT</h3><p>Base de datos de 14 tablas en tercera forma normal; alertas con persistencia e histéresis.</p></div></div>
+  </div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>AD26-113</span></div>
+</div>
+
+<!-- 08 impacto -->
+<div class="s claro v d" id="l08">
+  <div class="cab"><span>ARGOS / IMPACTO</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>A quién le sirve y por qué importa.</h2>
+  <div class="g3">
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">IMPACTO SOCIAL</div><h3>Protege el cultivo</h3><p>Material vegetal de investigación y propagación. Lo reciben los encargados del Invernadero Académico, que participaron en el diseño.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">OBJETIVOS DE DESARROLLO SOSTENIBLE</div><h3>ODS 2 y ODS 9</h3><p>ODS 2: Hambre cero. ODS 9: Industria, innovación e infraestructura.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">EMPRENDIMIENTO</div><h3>Un kit replicable</h3><p>Laboratorios de cultivo in vitro, viveros y cuartos de germinación tienen el mismo problema. Lo comercial cubre una sola variable; Argos junta clima, puerta, luz y golpes.</p></div></div>
+  </div>
+  <div style="margin-top:50px;display:flex;gap:20px;align-items:center"><span class="sello">HARDWARE ADICIONAL AL KIT: TOPE DE $1,500 MXN</span></div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>AD26-113</span></div>
+</div>
+
+<!-- 09 cierre -->
+<div class="s claro v" id="l09">
+  <div class="gracias">
+    <svg width="470" height="398" viewBox="0 0 236 200"><path d="M22 122 Q118 46 214 122 Q118 198 22 122Z" fill="none" stroke="#111828" stroke-width="13"/><rect x="95" y="99" width="46" height="46" fill="#111828"/><rect x="112" y="6" width="12" height="32" fill="#2f4fd8"/><rect x="62" y="20" width="12" height="32" fill="#2f4fd8" transform="rotate(-25 68 36)"/><rect x="162" y="20" width="12" height="32" fill="#2f4fd8" transform="rotate(25 168 36)"/></svg>
+    <h1 style="font-size:170px;font-weight:700;letter-spacing:-.02em;margin-top:20px">ARGOS</h1>
+    <div style="font-size:46px;color:#3a4254;margin-top:10px">El cuarto de incubación, vigilado todo el día.</div>
+    <div class="sq" style="margin-top:36px;gap:12px"><i style="background:var(--az);width:28px;height:28px"></i><i style="background:var(--ci);width:28px;height:28px"></i><i style="background:var(--li);width:28px;height:28px"></i></div>
+  </div>
+</div>
+
+<!-- ======= solo para la presentación del examen oral ======= -->
+<div class="s claro d" id="p10">
+  <div class="cab"><span>ARGOS / REQUERIMIENTOS</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Requerimientos y restricciones.</h2>
+  <div class="g2">
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">FUNCIONALES</div><ul class="l"><li>Medir temperatura y humedad del ambiente, nunca dentro de los frascos.</li><li>Alertar cuando el cuarto salga de 22–28 °C o 40–60 % HR, y avisar al celular si la falla sigue.</li><li>Registrar aperturas de puerta, presencia, luz y golpes.</li><li>Guardar el historial y mostrarlo en un tablero.</li></ul></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">RESTRICCIONES</div><ul class="l"><li>Solo monitorea y avisa: no controla el minisplit.</li><li>Hardware adicional al kit con un tope de $1,500 MXN.</li><li>Servicios gratuitos y alimentación por red eléctrica.</li><li>Avisos graves de 7:00 a 22:00; resumen a las 7:00.</li></ul></div></div>
+  </div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>AD26-113</span></div>
+</div>
+
+<div class="s claro d" id="p11">
+  <div class="cab"><span>ARGOS / ADMINISTRACIÓN DEL PROYECTO</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Cómo nos organizamos.</h2>
+  <div class="g3">
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">PLANEACIÓN</div><h3>Cinco etapas</h3><p>Definición, sensores y actuadores, base de datos, análisis de datos, y pruebas y presentación.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">SEGUIMIENTO</div><h3>GitHub Projects</h3><p>Tablero Kanban y línea de tiempo, con issues, responsables y criterios de aceptación.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">REPARTO</div><h3>Cinco frentes</h3><p>Electrónica, carcasas 3D, firmware, servidor y entregables de la Expo. Un nodo por integrante.</p></div></div>
+  </div>
+  <div style="margin-top:46px"><span class="chip">alcance</span><span class="chip">tiempo</span><span class="chip">recursos</span><span class="chip">entregables</span><span class="chip">riesgos</span></div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>AD26-113</span></div>
+</div>
+
+<div class="s claro d" id="p12">
+  <div class="cab"><span>ARGOS / ESTÁNDARES Y NORMAS</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Los estándares que usa el sistema.</h2>
+  <div class="g4">
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">RED</div><h3>WiFi de 2.4 GHz</h3><p>IEEE 802.11 con WPA2.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">MENSAJES</div><h3>MQTT y HTTP</h3><p>Datos en JSON; API REST con códigos de estado.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">BUSES</div><h3>I²C y SPI</h3><p>Convertidor ADS1115 y pantalla OLED.</p></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">DATOS</div><h3>SQL y 3FN</h3><p>Fechas en UTC; modelo relacional normalizado.</p></div></div>
+  </div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>SICT0401</span></div>
+</div>
+
+<div class="s claro d" id="p13">
+  <div class="cab"><span>ARGOS / RESULTADOS</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Lo que medimos.</h2>
+  <div class="g2">
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">PRUEBAS DE CADA NODO</div><ul class="l"><li>Puerta: <span class="pend">N repeticiones</span></li><li>Presencia: <span class="pend">resultado</span></li><li>Temperatura y humedad: <span class="pend">diferencia contra referencia</span></li><li>Luz y golpes: <span class="pend">resultado</span></li></ul></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">SISTEMA COMPLETO</div><ul class="l"><li>Tiempo hasta la alerta: <span class="pend">segundos</span></li><li>Tiempo hasta el mensaje al celular: <span class="pend">minutos</span></li><li>Datos guardados en la base: <span class="pend">captura</span></li><li>Tablero con historial: <span class="pend">captura</span></li><li>Foto de las cajas instaladas: <span class="pend">foto</span></li></ul></div></div>
+  </div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>AD26-113</span></div>
+</div>
+
+<div class="s claro d" id="p14">
+  <div class="cab"><span>ARGOS / CIERRE</span><span class="sq"><i style="background:var(--az)"></i><i style="background:var(--ci)"></i><i style="background:var(--li)"></i></span></div>
+  <h2>Lo que aprendimos y lo que sigue.</h2>
+  <div class="g2">
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">LECCIONES</div><ul class="l"><li>La red del campus no fue confiable para los nodos: conviene una red propia.</li><li>Los envíos deben poder reintentarse sin perder eventos.</li><li>Medir las piezas reales antes de imprimir ahorra reimpresiones.</li><li>Una sola fuente de verdad del armado evita errores de cableado.</li></ul></div></div>
+    <div class="w"><div class="cu"><div class="sm" style="margin:0 0 8px">TRABAJO FUTURO</div><ul class="l"><li>Control del fotoperiodo de las lámparas con relés.</li><li>Despliegue del servidor en la nube.</li><li>Cifrado TLS en MQTT.</li></ul></div></div>
+  </div>
+  <div class="pie"><span>ARGOS · EQUIPO 2 · G507</span><span>AD26-113</span></div>
+</div>
+
+<div class="s claro d" id="p15">
+  <div class="gracias">
+    <svg width="470" height="398" viewBox="0 0 236 200"><path d="M22 122 Q118 46 214 122 Q118 198 22 122Z" fill="none" stroke="#111828" stroke-width="13"/><rect x="95" y="99" width="46" height="46" fill="#111828"/><rect x="112" y="6" width="12" height="32" fill="#2f4fd8"/><rect x="62" y="20" width="12" height="32" fill="#2f4fd8" transform="rotate(-25 68 36)"/><rect x="162" y="20" width="12" height="32" fill="#2f4fd8" transform="rotate(25 168 36)"/></svg>
+    <h1 style="font-size:170px;font-weight:700;letter-spacing:-.02em;margin-top:20px">ARGOS</h1>
+    <div style="font-size:46px;color:#3a4254;margin-top:10px">Gracias. ¿Preguntas?</div>
+  </div>
+</div>
+
+<script>
+const q=new URLSearchParams(location.search);
+if(q.get('todo')){document.body.classList.add('todo');document.documentElement.style.background='#fff';}
+else{document.getElementById(q.get('s')||'l01').classList.add('on');}
+</script>
+</body></html>

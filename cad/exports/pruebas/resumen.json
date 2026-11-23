@@ -1,0 +1,34 @@
+{
+  "prueba_tapa_oled_led_boton": {
+    "caja_mm": [
+      65.0,
+      72.0,
+      8.5
+    ],
+    "masa_g_petg": 11.1
+  },
+  "prueba_camara_dht22": {
+    "caja_mm": [
+      80.0,
+      52.0,
+      22.0
+    ],
+    "masa_g_petg": 32.0
+  },
+  "prueba_bahia_protoboard": {
+    "caja_mm": [
+      58.0,
+      91.3,
+      6.0
+    ],
+    "masa_g_petg": 14.2
+  },
+  "prueba_peine_holguras": {
+    "caja_mm": [
+      70.0,
+      52.0,
+      9.5
+    ],
+    "masa_g_petg": 12.8
+  }
+}

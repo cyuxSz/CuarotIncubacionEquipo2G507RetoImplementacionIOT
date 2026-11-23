@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" width="0.6in" height="0.2in" viewBox="0 0 600 200">
+<g id="copper1"><g id="copper0">
+<circle id="connector0pad" cx="100" cy="100" r="35" fill="none" stroke="#f7bd13" stroke-width="20"/>
+<circle id="connector1pad" cx="200" cy="100" r="35" fill="none" stroke="#f7bd13" stroke-width="20"/>
+<circle id="connector2pad" cx="300" cy="100" r="35" fill="none" stroke="#f7bd13" stroke-width="20"/>
+<circle id="connector3pad" cx="400" cy="100" r="35" fill="none" stroke="#f7bd13" stroke-width="20"/>
+<circle id="connector4pad" cx="500" cy="100" r="35" fill="none" stroke="#f7bd13" stroke-width="20"/>
+</g></g>
+</svg>

@@ -1,0 +1,112 @@
+{
+  "nodo": "potencia",
+  "envolvente_mm": [
+    99.0,
+    143.0,
+    40.5
+  ],
+  "envolvente_con_orejas_mm": [
+    125.0,
+    143.0,
+    40.5
+  ],
+  "paso_pernos_mm": 0.0,
+  "orientacion": {
+    "base": "espalda en la cama",
+    "tapa": "frente en la cama"
+  },
+  "notas": {
+    "zona_baja_tension": 18.0,
+    "zona_127v": 66.0,
+    "z_pcb": 8.0
+  },
+  "interferencias": [],
+  "holguras": [
+    {
+      "parte": "modulo_pcb",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "reles",
+      "montado": false,
+      "min_mm": 7.6,
+      "ok": true
+    },
+    {
+      "parte": "bornes_contactos",
+      "montado": true,
+      "min_mm": 1.6,
+      "ok": true
+    },
+    {
+      "parte": "tira_pines_dupont",
+      "montado": true,
+      "min_mm": 0.4,
+      "ok": true
+    },
+    {
+      "parte": "regleta_clemas",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "portafusible",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "cable_pared",
+      "montado": true,
+      "min_mm": 0.3,
+      "ok": true
+    },
+    {
+      "parte": "cable_p2",
+      "montado": true,
+      "min_mm": 0.3,
+      "ok": true
+    },
+    {
+      "parte": "cable_p3",
+      "montado": true,
+      "min_mm": 0.3,
+      "ok": true
+    },
+    {
+      "parte": "cable_p4",
+      "montado": true,
+      "min_mm": 0.3,
+      "ok": true
+    },
+    {
+      "parte": "cable_senal",
+      "montado": true,
+      "min_mm": 0.7,
+      "ok": true
+    }
+  ],
+  "volumenes": {
+    "base": {
+      "volumen_cm3": 74.82,
+      "masa_g_petg": 95.0,
+      "caja_mm": [
+        125.0,
+        143.0,
+        38.0
+      ]
+    },
+    "tapa": {
+      "volumen_cm3": 35.98,
+      "masa_g_petg": 45.7,
+      "caja_mm": [
+        99.0,
+        143.0,
+        5.5
+      ]
+    }
+  }
+}

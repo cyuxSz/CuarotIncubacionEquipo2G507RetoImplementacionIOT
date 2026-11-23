@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argos · maquetas de la pantalla principal</title>
+<link rel="icon" href="/favicon.svg">
+<style>
+  .selector { position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 8px 16px; background: #ffe98a; color: #121212; font: 500 13px/1.3 var(--f-mono); border-bottom: 1px solid #121212; }
+  .selector button { padding: 4px 12px; border: 1px solid #121212; background: #fff; cursor: pointer; }
+  .selector button[aria-pressed="true"] { background: #121212; color: #fff; }
+
+  .cab { background: var(--negro); color: #fff; }
+  .cab__dentro, .cuerpo { max-width: 1240px; margin: 0 auto; padding-inline: var(--e-5); }
+  .cab__dentro { display: flex; align-items: center; gap: var(--e-4); padding-block: var(--e-4); flex-wrap: wrap; }
+  .cab .logo { width: 44px; height: 38px; }
+  .cab h1 { font: 700 var(--t-2xl)/1 var(--f-titulo); letter-spacing: -0.02em; }
+  .cab__sub { font-size: var(--t-sm); color: #c9cbd3; }
+  .cab__enlace { margin-left: auto; font: 500 var(--t-xs)/1.3 var(--f-mono); color: #c9cbd3; display: flex; align-items: center; gap: 8px; }
+  .cab__enlace i { width: 8px; height: 8px; background: var(--cian); }
+  .cuerpo { padding-block: var(--e-5) var(--e-7); display: grid; gap: var(--e-5); }
+
+  .aviso { display: flex; align-items: center; gap: var(--e-4); flex-wrap: wrap; padding: var(--e-3) var(--e-4); border: 2px solid var(--alerta); background: var(--alerta-fondo); color: var(--tinta); }
+  .aviso__titulo { font: 600 var(--t-lg)/1.2 var(--f-titulo); }
+  .aviso__det { font-size: var(--t-sm); color: var(--tinta-2); }
+  .aviso__alarma { margin-left: auto; display: flex; align-items: center; gap: 8px; font: 500 var(--t-sm)/1.2 var(--f-mono); }
+
+  .nombre { font: 600 var(--t-lg)/1.2 var(--f-titulo); }
+  .pie { font-size: var(--t-sm); color: var(--tinta-2); }
+  .fila-titulo { display: flex; align-items: center; gap: var(--e-2); color: var(--acento-texto); }
+  .fila-titulo .nombre { color: var(--tinta); }
+
+  /* A */
+  .a { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--e-5); align-items: start; }
+  .a__lecturas { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-5); }
+  .lista { list-style: none; margin: 0; padding: 0; }
+  .lista li { display: grid; grid-template-columns: 28px 1fr auto; gap: 4px var(--e-3); align-items: center; padding: var(--e-3) 0; border-bottom: 1px solid var(--linea); color: var(--acento-texto); }
+  .lista li:last-child { border-bottom: 0; padding-bottom: 0; } .lista li:first-child { padding-top: 0; }
+  .lista b { font: 600 var(--t-md)/1.2 var(--f-titulo); color: var(--tinta); display: block; }
+  .lista span.pie { display: block; }
+
+  /* B */
+  .b { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: var(--e-5); }
+  .b__dht { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-5); }
+  .b .valor { font: 600 var(--t-xl)/1.1 var(--f-titulo); margin: var(--e-3) 0 var(--e-1); }
+  .b .ventana__cuerpo { display: flex; flex-direction: column; }
+  .b .ventana__cuerpo .estado { align-self: flex-start; margin-top: auto; }
+
+  /* C */
+  .c-banda { background: var(--marino); color: #eef1fa; }
+  .c-banda__dentro { max-width: 1240px; margin: 0 auto; padding: var(--e-6) var(--e-5); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); gap: var(--e-6); align-items: end; }
+  .c-veredicto { font: 700 3.5rem/1 var(--f-titulo); letter-spacing: -0.03em; text-wrap: balance; }
+  .c-banda .etiqueta { color: #9db0ff; }
+  .c-banda .dato { color: #fff; } .c-banda .dato small, .c-banda .pie { color: #b9c1d9; }
+  .c-banda .dato--alerta { color: #ff8f8f; }
+  .c-banda .regla__pista { border-color: #8f98b3; } .c-banda .regla__banda { background: #6f8bff3d; border-color: #9db0ff; }
+  .c-banda .regla__pupila { background: #fff; border-color: var(--marino); } .c-banda .regla__pupila--alerta { background: var(--alerta); }
+  .c-banda .regla__marca { color: #9db0ff; } .c-banda .regla__extremo { color: #8f98b3; }
+  .c-banda .estado--alerta { color: #ff8f8f; background: #46181c; }
+  .c-alarma { display: flex; align-items: center; gap: 8px; margin-top: var(--e-4); font: 500 var(--t-sm)/1.2 var(--f-mono); color: #b9c1d9; }
+  .c-nodos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--e-5); }
+  .c-nodos .valor { font: 600 var(--t-lg)/1.2 var(--f-titulo); margin: var(--e-2) 0 2px; }
+
+  @media (max-width: 1150px) {
+    .b { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .b > :first-child { grid-column: 1 / -1; }
+    .c-nodos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
+    .b { grid-template-columns: 1fr 1fr; }
+    .a, .b, .c-banda__dentro { grid-template-columns: 1fr; }
+    .b__dht { grid-template-columns: 1fr 1fr; }
+    .c-nodos { grid-template-columns: 1fr 1fr; }
+    .c-veredicto { font-size: 2.5rem; }
+    .cab__dentro, .cuerpo, .c-banda__dentro { padding-inline: var(--e-4); }
+    .aviso__alarma { margin-left: 0; }
+  }
+  @media (max-width: 480px) { .a__lecturas, .b__dht { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="selector" role="group" aria-label="Maqueta">
+  <span>MAQUETAS · datos inventados · estado de prueba: temperatura alta, luz sin conexión, acel sin datos</span>
+  <button data-op="a" aria-pressed="true">A · Lecturas al frente</button>
+  <button data-op="b" aria-pressed="false">B · Cinco ventanas</button>
+  <button data-op="c" aria-pressed="false">C · Veredicto primero</button>
+</div>
+
+<header class="cab">
+  <div class="cab__dentro">
+    <svg class="logo"><use href="#i-ojo"/></svg>
+    <div><h1>ARGOS</h1><div class="cab__sub">Cuarto de incubación in vitro</div></div>
+    <div class="cab__enlace"><i></i>Actualizado 14:38:05</div>
+  </div>
+</header>
+
+<!-- ───────── A ───────── -->
+<main data-vista="a">
+  <div class="cuerpo">
+    <div class="aviso" role="alert">
+      <span class="estado estado--alerta">ALERTA</span>
+      <div><div class="aviso__titulo">Temperatura alta: 29.4 °C</div><div class="aviso__det">Fuera de rango desde las 14:32 (hace 6 min)</div></div>
+      <div class="aviso__alarma"><svg class="icono"><use href="#i-campana"/></svg>Alarma del cuarto sonando</div>
+    </div>
+    <div class="a">
+      <div class="a__lecturas">
+        <section class="ventana">
+          <div class="ventana__barra"><span>nodo: dht</span><span class="estado estado--alerta">ALTA</span></div>
+          <div class="ventana__cuerpo">
+            <div class="fila-titulo"><svg class="icono"><use href="#i-termometro"/></svg><h2 class="nombre">Temperatura</h2></div>
+            <div class="dato dato--alerta">29.4<small>°C</small></div>
+            <div class="regla"><div class="regla__pista"><div class="regla__banda" style="left:33.3%;right:33.3%"></div></div><div class="regla__pupila regla__pupila--alerta" style="left:74.4%"></div><span class="regla__marca" style="left:33.3%">22</span><span class="regla__marca" style="left:66.7%">28</span><span class="regla__extremo" style="left:0">16</span><span class="regla__extremo" style="right:0">34</span></div>
+            <p class="pie">Rango permitido 22–28 °C · hace 12 s</p>
+          </div>
+        </section>
+        <section class="ventana">
+          <div class="ventana__barra"><span>nodo: dht</span><span class="estado estado--ok">EN RANGO</span></div>
+          <div class="ventana__cuerpo">
+            <div class="fila-titulo"><svg class="icono"><use href="#i-gota"/></svg><h2 class="nombre">Humedad</h2></div>
+            <div class="dato">52<small>% HR</small></div>
+            <div class="regla"><div class="regla__pista"><div class="regla__banda" style="left:33.3%;right:33.3%"></div></div><div class="regla__pupila" style="left:53.3%"></div><span class="regla__marca" style="left:33.3%">40</span><span class="regla__marca" style="left:66.7%">60</span><span class="regla__extremo" style="left:0">20</span><span class="regla__extremo" style="right:0">80</span></div>
+            <p class="pie">Rango permitido 40–60 % HR · hace 12 s</p>
+          </div>
+        </section>
+      </div>
+      <section class="ventana">
+        <div class="ventana__barra"><span>nodos: 5</span><span>3 en línea</span></div>
+        <div class="ventana__cuerpo">
+          <ul class="lista">
+            <li><svg class="icono"><use href="#i-termometro"/></svg><div><b>Temperatura y humedad</b><span class="pie">dht · reportó hace 12 s</span></div><span class="estado estado--ok">EN LÍNEA</span></li>
+            <li><svg class="icono"><use href="#i-sol"/></svg><div><b>Luz · lámparas encendidas</b><span class="pie">luz · último dato hace 12 min</span></div><span class="estado estado--offline">SIN CONEXIÓN</span></li>
+            <li><svg class="icono"><use href="#i-ondas"/></svg><div><b>Movimiento a las 14:05</b><span class="pie">pir · reportó hace 40 s</span></div><span class="estado estado--ok">EN LÍNEA</span></li>
+            <li><svg class="icono"><use href="#i-puerta"/></svg><div><b>Puerta cerrada desde 13:58</b><span class="pie">puerta · reportó hace 35 s</span></div><span class="estado estado--ok">EN LÍNEA</span></li>
+            <li><svg class="icono"><use href="#i-golpe"/></svg><div><b>Golpes</b><span class="pie">acel · nunca ha reportado</span></div><span class="estado estado--sin-datos">SIN DATOS</span></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ───────── B ───────── -->
+<main data-vista="b" hidden>
+  <div class="cuerpo">
+    <div class="aviso" role="alert">
+      <span class="estado estado--alerta">ALERTA</span>
+      <div><div class="aviso__titulo">Temperatura alta: 29.4 °C</div><div class="aviso__det">Fuera de rango desde las 14:32 (hace 6 min)</div></div>
+      <div class="aviso__alarma"><svg class="icono"><use href="#i-campana"/></svg>Alarma del cuarto sonando</div>
+    </div>
+    <h2 class="etiqueta">Argos / estado de los 5 nodos</h2>
+    <div class="b">
+      <section class="ventana">
+        <div class="ventana__barra"><span>nodo: dht</span><span class="estado estado--ok">EN LÍNEA</span></div>
+        <div class="ventana__cuerpo"><div class="b__dht">
+          <div>
+            <div class="fila-titulo"><svg class="icono"><use href="#i-termometro"/></svg><h3 class="nombre">Temperatura</h3></div>
+            <div class="dato dato--alerta">29.4<small>°C</small></div>
+            <div class="regla"><div class="regla__pista"><div class="regla__banda" style="left:33.3%;right:33.3%"></div></div><div class="regla__pupila regla__pupila--alerta" style="left:74.4%"></div><span class="regla__marca" style="left:33.3%">22</span><span class="regla__marca" style="left:66.7%">28</span></div>
+            <span class="estado estado--alerta">ALTA</span>
+          </div>
+          <div>
+            <div class="fila-titulo"><svg class="icono"><use href="#i-gota"/></svg><h3 class="nombre">Humedad</h3></div>
+            <div class="dato">52<small>%</small></div>
+            <div class="regla"><div class="regla__pista"><div class="regla__banda" style="left:33.3%;right:33.3%"></div></div><div class="regla__pupila" style="left:53.3%"></div><span class="regla__marca" style="left:33.3%">40</span><span class="regla__marca" style="left:66.7%">60</span></div>
+            <span class="estado estado--ok">EN RANGO</span>
+          </div>
+        </div></div>
+      </section>
+      <section class="ventana">
+        <div class="ventana__barra"><span>nodo: luz</span><span class="estado estado--offline">SIN CONEXIÓN</span></div>
+        <div class="ventana__cuerpo"><div class="fila-titulo"><svg class="icono"><use href="#i-sol"/></svg><h3 class="nombre">Luz</h3></div><div class="valor">Encendidas</div><p class="pie">Último dato hace 12 min</p></div>
+      </section>
+      <section class="ventana">
+        <div class="ventana__barra"><span>nodo: pir</span><span class="estado estado--ok">EN LÍNEA</span></div>
+        <div class="ventana__cuerpo"><div class="fila-titulo"><svg class="icono"><use href="#i-ondas"/></svg><h3 class="nombre">Presencia</h3></div><div class="valor">14:05</div><p class="pie">Último movimiento, hace 33 min</p></div>
+      </section>
+      <section class="ventana">
+        <div class="ventana__barra"><span>nodo: puerta</span><span class="estado estado--ok">EN LÍNEA</span></div>
+        <div class="ventana__cuerpo"><div class="fila-titulo"><svg class="icono"><use href="#i-puerta"/></svg><h3 class="nombre">Puerta</h3></div><div class="valor">Cerrada</div><p class="pie">Desde las 13:58</p></div>
+      </section>
+      <section class="ventana">
+        <div class="ventana__barra"><span>nodo: acel</span><span class="estado estado--sin-datos">SIN DATOS</span></div>
+        <div class="ventana__cuerpo"><div class="fila-titulo"><svg class="icono"><use href="#i-golpe"/></svg><h3 class="nombre">Golpes</h3></div><div class="valor" style="color:var(--tinta-3)">—</div><p class="pie">Nunca ha reportado</p></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ───────── C ───────── -->
+<main data-vista="c" hidden>
+  <div class="c-banda">
+    <div class="c-banda__dentro">
+      <div>
+        <span class="estado estado--alerta">ALERTA · HACE 6 MIN</span>
+        <p class="c-veredicto" style="margin-top:12px">Temperatura alta en el cuarto</p>
+        <div class="c-alarma"><svg class="icono"><use href="#i-campana"/></svg>Alarma del cuarto sonando</div>
+      </div>
+      <div>
+        <h2 class="etiqueta">Temperatura</h2>
+        <div class="dato dato--alerta" style="margin-top:8px">29.4<small>°C</small></div>
+        <div class="regla"><div class="regla__pista"><div class="regla__banda" style="left:33.3%;right:33.3%"></div></div><div class="regla__pupila regla__pupila--alerta" style="left:74.4%"></div><span class="regla__marca" style="left:33.3%">22</span><span class="regla__marca" style="left:66.7%">28</span></div>
+      </div>
+      <div>
+        <h2 class="etiqueta">Humedad relativa</h2>
+        <div class="dato" style="margin-top:8px">52<small>%</small></div>
+        <div class="regla"><div class="regla__pista"><div class="regla__banda" style="left:33.3%;right:33.3%"></div></div><div class="regla__pupila" style="left:53.3%"></div><span class="regla__marca" style="left:33.3%">40</span><span class="regla__marca" style="left:66.7%">60</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="cuerpo">
+    <h2 class="etiqueta">Argos / estado de los 5 nodos</h2>
+    <div class="c-nodos">
+      <section class="ventana"><div class="ventana__barra"><span>nodo: dht</span></div><div class="ventana__cuerpo"><span class="estado estado--ok">EN LÍNEA</span><div class="valor">29.4 °C · 52 %</div><p class="pie">Hace 12 s</p></div></section>
+      <section class="ventana"><div class="ventana__barra"><span>nodo: luz</span></div><div class="ventana__cuerpo"><span class="estado estado--offline">SIN CONEXIÓN</span><div class="valor">Lámparas encendidas</div><p class="pie">Último dato hace 12 min</p></div></section>
+      <section class="ventana"><div class="ventana__barra"><span>nodo: pir</span></div><div class="ventana__cuerpo"><span class="estado estado--ok">EN LÍNEA</span><div class="valor">Movimiento 14:05</div><p class="pie">Hace 33 min</p></div></section>
+      <section class="ventana"><div class="ventana__barra"><span>nodo: puerta</span></div><div class="ventana__cuerpo"><span class="estado estado--ok">EN LÍNEA</span><div class="valor">Cerrada</div><p class="pie">Desde las 13:58</p></div></section>
+      <section class="ventana"><div class="ventana__barra"><span>nodo: acel</span></div><div class="ventana__cuerpo"><span class="estado estado--sin-datos">SIN DATOS</span><div class="valor" style="color:var(--tinta-3)">Golpes</div><p class="pie">Nunca ha reportado</p></div></section>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  import "@fontsource-variable/space-grotesk";
+  import "@fontsource-variable/inter";
+  import "@fontsource-variable/jetbrains-mono";
+  import "./src/estilos/tokens.css";
+  import "./src/estilos/base.css";
+  import sprite from "./src/iconos.svg?raw";
+  document.body.insertAdjacentHTML("afterbegin", sprite);
+  const ver = (op) => {
+    document.querySelectorAll("[data-vista]").forEach((m) => (m.hidden = m.dataset.vista !== op));
+    document.querySelectorAll(".selector button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.op === op));
+  };
+  document.querySelectorAll(".selector button").forEach((b) => b.addEventListener("click", () => ver(b.dataset.op)));
+  ver(new URLSearchParams(location.search).get("op") ?? "a");
+</script>
+</body>
+</html>

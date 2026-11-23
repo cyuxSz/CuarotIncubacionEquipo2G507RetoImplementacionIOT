@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" width="1.0in" height="0.8in" viewBox="0 0 1000 800">
+<g id="schematic">
+<rect x="300" y="50" width="600" height="700" fill="#fff" stroke="#000" stroke-width="10"/>
+<text x="600" y="730" font-family="Droid Sans, sans-serif" font-size="70" text-anchor="middle">OLED</text>
+<line id="connector0pin" x1="0" y1="200" x2="300" y2="200" stroke="#000" stroke-width="10"/>
+<rect id="connector0terminal" x="0" y="195" width="10" height="10" fill="none"/>
+<text x="330" y="225" font-family="Droid Sans, sans-serif" font-size="70">GND</text>
+<line id="connector1pin" x1="0" y1="300" x2="300" y2="300" stroke="#000" stroke-width="10"/>
+<rect id="connector1terminal" x="0" y="295" width="10" height="10" fill="none"/>
+<text x="330" y="325" font-family="Droid Sans, sans-serif" font-size="70">VCC</text>
+<line id="connector2pin" x1="0" y1="400" x2="300" y2="400" stroke="#000" stroke-width="10"/>
+<rect id="connector2terminal" x="0" y="395" width="10" height="10" fill="none"/>
+<text x="330" y="425" font-family="Droid Sans, sans-serif" font-size="70">SCL</text>
+<line id="connector3pin" x1="0" y1="500" x2="300" y2="500" stroke="#000" stroke-width="10"/>
+<rect id="connector3terminal" x="0" y="495" width="10" height="10" fill="none"/>
+<text x="330" y="525" font-family="Droid Sans, sans-serif" font-size="70">SDA</text>
+</g>
+</svg>

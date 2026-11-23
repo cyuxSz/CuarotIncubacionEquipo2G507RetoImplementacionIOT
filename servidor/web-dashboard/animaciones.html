@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argos · opciones de animación</title>
+<style>
+  body { padding: 24px; }
+  .nota { font: 500 13px/1.4 var(--f-mono); background: #ffe98a; color: #121212; border: 1px solid #121212; padding: 8px 12px; margin-bottom: 24px; }
+  .opciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; }
+  .opcion h2 { font: 600 var(--t-lg)/1.2 var(--f-titulo); margin-bottom: 4px; }
+  .opcion p { font-size: var(--t-sm); color: var(--tinta-2); margin-bottom: 14px; min-height: 3.2em; }
+  .dato { --t-dato: 4.5rem; margin-top: 8px; display: flex; align-items: baseline; }
+  .caja-valor { display: inline-block; overflow: hidden; height: 1em; line-height: 1; }
+  .caja-valor span { display: inline-block; }
+
+  /* A · Destape */
+  .a .nuevo { animation: destape 500ms var(--salida); }
+  @keyframes destape { from { clip-path: inset(0 100% 0 0); opacity: 0.4; } to { clip-path: inset(0 -10% 0 0); opacity: 1; } }
+  /* B · Rodillo */
+  .b .nuevo { animation: rodillo 450ms var(--salida); }
+  @keyframes rodillo { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  /* C · Destello de la barra */
+  .c.toca .ventana__barra { animation: destello 800ms var(--salida); }
+  @keyframes destello { from { background: var(--cian); } to { background: var(--barra); } }
+  /* D · Sereno */
+  .d .nuevo { animation: sereno 250ms linear; }
+  @keyframes sereno { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+<p class="nota">OPCIONES DE ANIMACIÓN · el valor cambia solo cada 2.5 s (en el dashboard real cambia cuando llega un dato distinto). El marcador de la regla se desliza igual en las cuatro.</p>
+<div class="opciones">
+  <div class="opcion" data-op="a"><h2>A · Destape</h2><p>El número nuevo se descubre de izquierda a derecha. Es la que está puesta hoy.</p></div>
+  <div class="opcion" data-op="b"><h2>B · Rodillo</h2><p>El número nuevo sube desde abajo, como un contador mecánico.</p></div>
+  <div class="opcion" data-op="c"><h2>C · Destello de barra</h2><p>El número cambia al instante y la barra de la ventana destella en cian.</p></div>
+  <div class="opcion" data-op="d"><h2>D · Sereno</h2><p>El número aparece con un fundido corto; lo único que se mueve es el marcador.</p></div>
+</div>
+<script type="module">
+  import "@fontsource-variable/space-grotesk";
+  import "@fontsource-variable/inter";
+  import "@fontsource-variable/jetbrains-mono";
+  import "./src/estilos/tokens.css";
+  import "./src/estilos/base.css";
+  import sprite from "./src/iconos.svg?raw";
+  document.body.insertAdjacentHTML("afterbegin", sprite);
+  const valores = [25.2, 25.6, 26.1, 27.4, 28.6, 29.4, 28.1, 26.3];
+  const pct = (v) => ((v - 16) / 18) * 100;
+  for (const op of document.querySelectorAll(".opcion")) {
+    op.insertAdjacentHTML("beforeend", `<section class="ventana ${op.dataset.op}">
+      <div class="ventana__barra"><span>nodo: dht</span><span class="estado estado--ok">EN RANGO</span></div>
+      <div class="ventana__cuerpo">
+        <div class="dato"><span class="caja-valor"><span class="v">25.2</span></span><small>°C</small></div>
+        <div class="regla"><div class="regla__pista"><div class="regla__banda" style="left:33.3%;right:33.3%"></div></div><div class="regla__pupila" style="left:${pct(25.2)}%"></div><span class="regla__marca" style="left:33.3%">22</span><span class="regla__marca" style="left:66.7%">28</span></div>
+      </div></section>`);
+  }
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % valores.length;
+    const v = valores[i], fuera = v > 28;
+    for (const w of document.querySelectorAll(".ventana")) {
+      const el = w.querySelector(".v"), chip = w.querySelector(".estado"), pup = w.querySelector(".regla__pupila");
+      el.textContent = v.toFixed(1);
+      el.classList.remove("nuevo"); w.classList.remove("toca"); void el.offsetWidth; el.classList.add("nuevo"); w.classList.add("toca");
+      w.querySelector(".dato").classList.toggle("dato--alerta", fuera);
+      chip.className = `estado estado--${fuera ? "alerta" : "ok"}`; chip.textContent = fuera ? "ALTA" : "EN RANGO";
+      pup.style.left = `${pct(v)}%`; pup.classList.toggle("regla__pupila--alerta", fuera);
+    }
+  }, 2500);
+</script>
+</body>
+</html>

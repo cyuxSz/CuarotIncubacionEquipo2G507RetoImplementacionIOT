@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" width="2.4in" height="1.45in" viewBox="0 0 2400 1450">
+<g id="breadboard">
+<rect x="0" y="0" width="2400" height="1450" rx="60" fill="#1f4f8f" stroke="#222" stroke-width="10"/>
+<rect x="120" y="150" width="2160" height="1030" fill="#0b0b12" stroke="#555" stroke-width="10"/>
+<text x="1200" y="665" fill="#7fb3ff" font-family="Droid Sans, sans-serif" font-size="120" text-anchor="middle">SSD1309 128×64</text>
+<text x="900" y="1320" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">CS</text>
+<rect id="connector0pin" x="870" y="1360" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="1000" y="1320" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">DC</text>
+<rect id="connector1pin" x="970" y="1360" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="1100" y="1320" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">RES</text>
+<rect id="connector2pin" x="1070" y="1360" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="1200" y="1320" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">SDA</text>
+<rect id="connector3pin" x="1170" y="1360" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="1300" y="1320" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">SCL</text>
+<rect id="connector4pin" x="1270" y="1360" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="1400" y="1320" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">VCC</text>
+<rect id="connector5pin" x="1370" y="1360" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="1500" y="1320" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">GND</text>
+<rect id="connector6pin" x="1470" y="1360" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+</g>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "name": "argos-central",
+  "version": "1.0.0",
+  "description": "Argos (Equipo 2): panel web, motor central de alertas y avisos para n8n. Corre junto a las 5 API de los nodos",
+  "main": "central.js",
+  "type": "commonjs",
+  "private": true,
+  "scripts": {
+    "start": "node --env-file=.env central.js"
+  },
+  "dependencies": {
+    "express": "5.3.0",
+    "mqtt": "5.16.1",
+    "mysql2": "3.24.6"
+  }
+}

@@ -1,0 +1,350 @@
+{
+  "nodo": "dht",
+  "envolvente_mm": [
+    80.0,
+    138.5,
+    40.5
+  ],
+  "envolvente_con_orejas_mm": [
+    80.0,
+    166.5,
+    40.5
+  ],
+  "paso_pernos_mm": 152.5,
+  "orientacion": {
+    "base": "espalda en la cama",
+    "tapa": "frente en la cama",
+    "grapa_oled": "de canto (perfil en U sobre la cama); IMPRIMIR 2",
+    "embolo_boton": "ceja en la cama",
+    "soporte_pared": "espalda en la cama",
+    "soporte_anaquel": "de canto (perfil del gancho en la cama)"
+  },
+  "notas": {
+    "z_usb": 16.88,
+    "collar_led": 3.6,
+    "y_ventana_oled": 95.6
+  },
+  "interferencias": [],
+  "holguras": [
+    {
+      "parte": "protoboard",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "nodemcu",
+      "montado": false,
+      "min_mm": 4.95,
+      "ok": true
+    },
+    {
+      "parte": "C1",
+      "montado": false,
+      "min_mm": 8.16,
+      "ok": true
+    },
+    {
+      "parte": "R5",
+      "montado": false,
+      "min_mm": 9.32,
+      "ok": true
+    },
+    {
+      "parte": "R6",
+      "montado": false,
+      "min_mm": 9.32,
+      "ok": true
+    },
+    {
+      "parte": "R1",
+      "montado": false,
+      "min_mm": 8.34,
+      "ok": true
+    },
+    {
+      "parte": "R3",
+      "montado": false,
+      "min_mm": 9.32,
+      "ok": true
+    },
+    {
+      "parte": "R4",
+      "montado": false,
+      "min_mm": 6.98,
+      "ok": true
+    },
+    {
+      "parte": "Q1",
+      "montado": false,
+      "min_mm": 9.32,
+      "ok": true
+    },
+    {
+      "parte": "dupont_LED_V_A",
+      "montado": false,
+      "min_mm": 8.86,
+      "ok": true
+    },
+    {
+      "parte": "dupont_LED_V_K",
+      "montado": false,
+      "min_mm": 3.74,
+      "ok": true
+    },
+    {
+      "parte": "dupont_LED_R_A",
+      "montado": false,
+      "min_mm": 6.19,
+      "ok": true
+    },
+    {
+      "parte": "dupont_LED_R_K",
+      "montado": false,
+      "min_mm": 4.59,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Boton_1",
+      "montado": false,
+      "min_mm": 7.21,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Boton_2",
+      "montado": false,
+      "min_mm": 6.21,
+      "ok": true
+    },
+    {
+      "parte": "dupont_DHT22_VCC",
+      "montado": false,
+      "min_mm": 7.74,
+      "ok": true
+    },
+    {
+      "parte": "dupont_DHT22_DATA",
+      "montado": false,
+      "min_mm": 7.75,
+      "ok": true
+    },
+    {
+      "parte": "dupont_DHT22_GND",
+      "montado": false,
+      "min_mm": 9.32,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Buzzer_+",
+      "montado": false,
+      "min_mm": 5.2,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Buzzer_-",
+      "montado": false,
+      "min_mm": 5.89,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Entrada5V_+",
+      "montado": false,
+      "min_mm": 9.32,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Entrada5V_-",
+      "montado": false,
+      "min_mm": 9.0,
+      "ok": true
+    },
+    {
+      "parte": "dupont_OLED_VCC",
+      "montado": false,
+      "min_mm": 4.59,
+      "ok": true
+    },
+    {
+      "parte": "dupont_OLED_GND",
+      "montado": false,
+      "min_mm": 7.13,
+      "ok": true
+    },
+    {
+      "parte": "dupont_OLED_SCL",
+      "montado": false,
+      "min_mm": 6.98,
+      "ok": true
+    },
+    {
+      "parte": "dupont_OLED_SDA",
+      "montado": false,
+      "min_mm": 9.18,
+      "ok": true
+    },
+    {
+      "parte": "dupont_OLED_DC",
+      "montado": false,
+      "min_mm": 9.32,
+      "ok": true
+    },
+    {
+      "parte": "dupont_OLED_RES",
+      "montado": false,
+      "min_mm": 9.32,
+      "ok": true
+    },
+    {
+      "parte": "dupont_OLED_CS",
+      "montado": false,
+      "min_mm": 8.08,
+      "ok": true
+    },
+    {
+      "parte": "led_verde",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_verde_patas",
+      "montado": true,
+      "min_mm": 1.18,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo_patas",
+      "montado": true,
+      "min_mm": 1.18,
+      "ok": true
+    },
+    {
+      "parte": "entrada_5v",
+      "montado": true,
+      "min_mm": 0.3,
+      "ok": true
+    },
+    {
+      "parte": "dht22_pcb",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "dht22",
+      "montado": true,
+      "min_mm": 0.3,
+      "ok": true
+    },
+    {
+      "parte": "dht22_dupont",
+      "montado": true,
+      "min_mm": 1.22,
+      "ok": true
+    },
+    {
+      "parte": "oled",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "oled_pines",
+      "montado": true,
+      "min_mm": 2.0,
+      "ok": true
+    },
+    {
+      "parte": "boton",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "boton_dupont",
+      "montado": true,
+      "min_mm": 0.07,
+      "ok": true
+    },
+    {
+      "parte": "buzzer",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "buzzer_dupont_-",
+      "montado": true,
+      "min_mm": 1.25,
+      "ok": true
+    },
+    {
+      "parte": "buzzer_dupont_+",
+      "montado": true,
+      "min_mm": 1.25,
+      "ok": true
+    }
+  ],
+  "volumenes": {
+    "base": {
+      "volumen_cm3": 66.47,
+      "masa_g_petg": 84.4,
+      "caja_mm": [
+        80.0,
+        166.5,
+        38.0
+      ]
+    },
+    "tapa": {
+      "volumen_cm3": 24.37,
+      "masa_g_petg": 30.9,
+      "caja_mm": [
+        80.0,
+        138.5,
+        20.9
+      ]
+    },
+    "embolo_boton": {
+      "volumen_cm3": 0.07,
+      "masa_g_petg": 0.1,
+      "caja_mm": [
+        6.2,
+        6.2,
+        4.5
+      ]
+    },
+    "grapa_oled": {
+      "volumen_cm3": 0.76,
+      "masa_g_petg": 1.0,
+      "caja_mm": [
+        8.0,
+        48.8,
+        7.4
+      ]
+    },
+    "soporte_pared": {
+      "volumen_cm3": 20.89,
+      "masa_g_petg": 26.5,
+      "caja_mm": [
+        30.0,
+        174.5,
+        10.4
+      ]
+    },
+    "soporte_anaquel": {
+      "volumen_cm3": 27.19,
+      "masa_g_petg": 34.5,
+      "caja_mm": [
+        30.0,
+        174.5,
+        35.4
+      ]
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"name":"argos-pruebas","version":"1.0.0","private":true,"description":"Prueba de punta a punta del servidor de Argos sin hardware","scripts":{"test":"node prueba_integracion.js"},"dependencies":{"aedes":"0.51.3","mqtt":"5.16.1","mysql2":"3.24.6"}}

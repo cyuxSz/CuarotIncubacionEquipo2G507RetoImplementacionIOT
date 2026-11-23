@@ -1,0 +1,275 @@
+<title>Guía de armado de Argos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Manual de banco: una columna de lectura, índice arriba, diagramas a todo el ancho y tablas de cables bajo cada uno. */
+:root {
+  --bg: #eceff2; --panel: #ffffff; --ink: #1b232c; --muted: #5a6673; --line: #d3d9df;
+  --accent: #1f4f82; --solder: #a65f00; --solder-bg: #fff3dc; --warn: #a8281f; --warn-bg: #fdeceb;
+  --ok: #1f6f3d; --ok-bg: #e6f4ea; --chip: #e4e8ec; --fig: #ffffff;
+  --f-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-body: Inter, "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151a; --panel: #1a2028; --ink: #e7ebef; --muted: #9aa5b1; --line: #2c353f;
+  --accent: #86b6ea; --solder: #f2ab3c; --solder-bg: #33270f; --warn: #ff9a90; --warn-bg: #3a1917;
+  --ok: #7fd49b; --ok-bg: #14301f; --chip: #242c35; --fig: #f4f5f6; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151a; --panel: #1a2028; --ink: #e7ebef; --muted: #9aa5b1; --line: #2c353f;
+  --accent: #86b6ea; --solder: #f2ab3c; --solder-bg: #33270f; --warn: #ff9a90; --warn-bg: #3a1917;
+  --ok: #7fd49b; --ok-bg: #14301f; --chip: #242c35; --fig: #f4f5f6; color-scheme: dark }
+
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55 }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 20px }
+h1 { font-family: var(--f-display); font-weight: 600; font-size: 32px; letter-spacing: -0.015em; margin: 0; text-wrap: balance }
+h2 { font-family: var(--f-display); font-weight: 600; font-size: 24px; margin: 0 0 6px; text-wrap: balance }
+h3 { font-family: var(--f-display); font-weight: 600; font-size: 18px; margin: 22px 0 6px }
+h4 { font-size: 15px; font-weight: 600; margin: 16px 0 4px }
+p { margin: 0 0 10px; max-width: 72ch }
+ul, ol { margin: 0 0 10px; padding-left: 22px; max-width: 72ch }
+li { margin-bottom: 4px }
+.lead { color: var(--muted) }
+.indice { display: flex; flex-wrap: wrap; gap: 8px }
+.indice a { font-weight: 500; font-size: 14px; color: var(--ink); background: var(--chip); border-radius: 6px;
+  padding: 7px 12px; text-decoration: none }
+.indice a:hover, .indice a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px }
+section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 22px; min-width: 0 }
+.paso { font: 500 12px var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px; margin-right: 8px; vertical-align: 2px }
+.fig { background: var(--fig); border: 1px solid var(--line); border-radius: 8px; padding: 10px; margin: 10px 0 14px; overflow-x: auto }
+.fig img { display: block; max-width: 100%; height: auto; margin: 0 auto }
+.scroll { overflow-x: auto; margin: 8px 0 14px }
+table { border-collapse: collapse; width: 100%; font-size: 14px }
+th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12.5px; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap }
+td { padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top }
+td.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted) }
+td.h { font-family: var(--f-mono); font-size: 13px }
+.cable { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap }
+.cable i { width: 26px; height: 8px; border-radius: 4px; border: 1px solid var(--line); flex: none }
+.nota, .aviso, .bien { border-radius: 6px; padding: 10px 12px; margin: 10px 0; max-width: none; font-size: 15px }
+.nota { background: var(--solder-bg); color: var(--solder) }
+.aviso { background: var(--warn-bg); color: var(--warn) }
+.bien { background: var(--ok-bg); color: var(--ok) }
+.dos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 28px }
+.fuente { color: var(--muted); font-size: 13px }
+a { color: var(--accent) }
+@media (max-width: 760px) { .dos { grid-template-columns: minmax(0, 1fr) } h1 { font-size: 26px } section { padding: 16px } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Guía de armado de Argos</h1>
+    <p class="lead">Para armar las tres cajas sin haber soldado nunca: qué cable usar, cómo cortarlo, pelarlo y soldarlo, y cada caja paso por paso sobre su diagrama de Fritzing.</p>
+  </header>
+  <nav class="indice" aria-label="Contenido">
+    <a href="#cables">Qué cable usar</a><a href="#tecnicas">Cortar, pelar y soldar</a><a href="#soldar">Qué se suelda</a>
+    <a href="#caja-dht">Caja dht</a><a href="#caja-entrada">Estación de entrada</a><a href="#caja-anaquel">Estación del anaquel</a>
+    <a href="#energia">Antes de dar energía</a><a href="#impresion">Impresión 3D</a><a href="#expo">Para la Expo</a>
+  </nav>
+
+  <section id="cables">
+    <h2>Qué cable usar</h2>
+    <p>Dos tipos de cable, cada uno para una cosa. Así, al ver un cable ya sabes qué lleva.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Cable</th><th>Para qué</th><th>Cómo debe ser</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hilo naranja de UTP</b></td><td>Todo lo positivo: +5V y +3V3</td><td>Sustituye al cable rojo. El cable rojo y negro de muchos hilitos no entra a la protoboard sin estañarlo</td></tr>
+        <tr><td><b>Hilo café de UTP</b></td><td>Todas las tierras (GND)</td><td>Sustituye al cable negro</td></tr>
+        <tr><td><b>Un hilo de UTP</b></td><td>Todas las señales</td><td>Cable de red Cat5e o Cat6 de <b>cobre sólido</b>. Se abre la funda, se <b>destrenza</b> el par y se usa cada hilo por separado</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Cómo sacar los hilos del UTP</h3>
+    <ol>
+      <li>Corta unos 30 cm de cable de red y quítale la funda exterior con cuidado de no cortar los hilos de adentro.</li>
+      <li>Salen 4 pares trenzados: naranja, verde, azul y café, cada uno con su compañero blanco con raya del mismo color.</li>
+      <li><b>Destrenza cada par</b> y endereza los hilos pasándolos entre los dedos. Se usan sueltos, de uno en uno: el trenzado solo sirve para redes, aquí estorba.</li>
+    </ol>
+    <p>Los 8 hilos dan 8 colores distintos. En los diagramas, los blancos con raya se dibujan <b>rayados</b>:</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Hilo</th><th>Lleva</th></tr></thead>
+      <tbody>
+        <tr><td>Naranja</td><td>+3V3</td></tr>
+        <tr><td>Verde</td><td>LED verde (pata larga); SDA de la pantalla</td></tr>
+        <tr><td>Azul</td><td>SCL de la pantalla y del ADS1115</td></tr>
+        <tr><td>Café</td><td>Salida D7 hacia el LED verde</td></tr>
+        <tr><td>Blanco/naranja</td><td>Salida D8 hacia el LED rojo</td></tr>
+        <tr><td>Blanco/verde</td><td>Dato del DHT22; entrada A0 de la luz</td></tr>
+        <tr><td>Blanco/azul</td><td>Botón</td></tr>
+        <tr><td>Blanco/café</td><td>Salida D5: sensor PIR, sensor de puerta o buzzer</td></tr>
+      </tbody>
+    </table></div>
+    <div class="aviso"><b>Revisa que tu UTP sea de cobre.</b> Raspa la punta de un hilo con una navaja: si por dentro se ve plateado, es aluminio cobrizado (CCA). Ese cable se quiebra al doblarlo y casi no agarra soldadura: no lo uses. También descarta el cable de red «flexible» o de parcheo, que trae muchos hilitos en vez de un alambre.</div>
+    <h3>Los cables que van a la tapa</h3>
+    <p>Los puentes de la protoboard no se mueven, así que el alambre sólido es lo ideal. Los cables que van a los LED, el botón o la pantalla sí se mueven cada vez que se abre la tapa, y el alambre sólido se fatiga si se dobla muchas veces en el mismo punto.</p>
+    <ul>
+      <li><b>Con lo que ya tienen:</b> funciona. Dejen cada cable de la tapa con una vuelta de holgura y abran la tapa con cuidado.</li>
+      <li><b>Mejor calidad:</b> para esos cables, usar cable flexible calibre 24–26 y soldarle en la punta un pin macho de tira (de los de «header»), cubierto con termocontráctil. Entra firme en la protoboard y aguanta abrir y cerrar muchas veces.</li>
+    </ul>
+  </section>
+
+  <section id="tecnicas">
+    <h2>Cortar, pelar y soldar</h2>
+    <h3>Herramientas</h3>
+    <div class="dos">
+      <ul>
+        <li>Pinzas de corte al ras</li><li>Pelacables (calibres 20–30) o un cortaúñas</li><li>Pinzas de punta fina</li><li>Multímetro</li>
+      </ul>
+      <ul>
+        <li>Cautín de 30–40 W con punta fina y base</li><li>Soldadura con núcleo de resina, de 0.8 mm</li><li>Esponja húmeda o lana de latón para limpiar la punta</li><li>Termocontráctil de 2 mm y un encendedor o pistola de calor</li>
+      </ul>
+    </div>
+    <h3>Hacer un puente para la protoboard</h3>
+    <ol>
+      <li><b>Mide.</b> La distancia entre los dos orificios más 1.5 cm. Las tablas de cada caja ya traen el largo.</li>
+      <li><b>Corta</b> con las pinzas de corte.</li>
+      <li><b>Pela 7 mm en cada punta.</b> Con el pelacables, usa la muesca de calibre 24, la del hilo de UTP, cierra, y jala el forro. Si se marca o se muerde el cobre, corta esa punta y repite: un alambre mordido se rompe dentro del orificio.</li>
+      <li><b>Dobla las puntas a 90°</b> con las pinzas de punta, para que el cable quede acostado sobre la protoboard.</li>
+      <li><b>Clava</b> hasta que el forro casi toque la protoboard. No debe verse cobre fuera del orificio.</li>
+    </ol>
+    <p class="nota"><b>Todo se arma con hilo de UTP</b> (decisión del 19 de noviembre). Es delgado: si queda flojo en el orificio, pela 12 mm y dobla la punta sobre sí misma antes de clavarla. Un contacto flojo se nota en el multímetro: del pin a la pieza debe marcar menos de 2.</p>
+    <h3>Soldar un cable a una pata</h3>
+    <p>La idea es calentar las dos piezas y dejar que la soldadura fluya sola entre ellas. No se «embarra» soldadura con el cautín.</p>
+    <ol>
+      <li><b>Prepara.</b> Cautín caliente (unos 330 °C si es regulable). Limpia la punta en la esponja y ponle un poco de soldadura: debe verse brillante.</li>
+      <li><b>Mete primero el termocontráctil</b> en el cable, un tramo de 1.5 cm, lejos del calor. Si lo olvidas, ya no entra después.</li>
+      <li><b>Estaña el cable:</b> toca la punta pelada con el cautín un segundo y acerca la soldadura al cobre, no al cautín. Debe quedar cubierta y brillante.</li>
+      <li><b>Estaña la pata</b> de la pieza de la misma forma.</li>
+      <li><b>Une:</b> pon el cable junto a la pata, a lo largo, y toca los dos con el cautín 1–2 segundos hasta que las dos soldaduras se fundan en una.</li>
+      <li><b>Retira el cautín y no muevas nada</b> durante 3 segundos.</li>
+      <li><b>Revisa:</b> debe verse lisa y brillante, y aguantar un jalón suave. Si se ve opaca, granulada o en forma de bolita, es una soldadura fría: vuelve a calentarla.</li>
+      <li><b>Corre el termocontráctil</b> sobre la unión y caliéntalo hasta que se encoja.</li>
+    </ol>
+    <div class="aviso"><b>Cuidado con el calor.</b> No dejes el cautín más de 3 segundos sobre un LED, el transistor o el botón: se dañan. Si no salió, deja enfriar y vuelve a intentar.</div>
+    <div class="aviso"><b>Seguridad.</b> Lentes siempre. El cautín va en su base, nunca sobre la mesa. Ventilen el lugar y no respiren el humo. Si la soldadura tiene plomo, lávense las manos al terminar y no coman mientras sueldan.</div>
+    <p>Antes de soldar las piezas reales, practiquen con cinco uniones de cable con cable. Las primeras siempre salen feas.</p>
+    <h3>Comprobar con el multímetro</h3>
+    <ul>
+      <li><b>Continuidad</b> (el símbolo de ondas): toca los dos extremos de un cable ya soldado. Si pita, la unión conduce.</li>
+      <li><b>Cortos:</b> entre dos cables vecinos no debe pitar.</li>
+      <li><b>Voltaje</b> (V con línea recta, escala de 20): punta negra en GND y roja en el punto a medir.</li>
+    </ul>
+  </section>
+
+  <section id="soldar">
+    <h2>Qué se suelda</h2>
+    <p>Son pocas uniones. Todo lo demás entra a presión en la protoboard.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Pieza</th><th>Qué se suelda</th><th>Cuántas</th><th>Cuidado</th></tr></thead>
+      <tbody>
+        <tr><td>Módulo USB-C</td><td>Cable rojo en VCC y negro en GND</td><td>3 módulos, 6 uniones</td><td>D− y D+ quedan libres. Revisa que VCC y GND no se toquen</td></tr>
+        <tr><td>LED</td><td>Un cable a cada pata, 15 cm</td><td>10 LED, 20 uniones</td><td>Pata larga = ánodo: cable de color. Pata corta: negro</td></tr>
+        <tr><td>Botón de la caja dht</td><td>Un cable a cada una de sus 2 patas</td><td>2 uniones</td><td>No tiene polaridad</td></tr>
+        <tr><td>Buzzer</td><td>Un cable a cada pata</td><td>2 uniones</td><td>La pata marcada «+» lleva el rojo</td></tr>
+        <tr><td>LDR</td><td>Par de UTP de 1 m a sus dos patas</td><td>2 uniones</td><td>No tiene polaridad</td></tr>
+        <tr><td>Sensor PIR</td><td>Tres cables a sus tres pines, 25 cm</td><td>3 uniones</td><td>Confirma en la serigrafía el orden VCC, OUT, GND</td></tr>
+        <tr><td>DHT22 y pantalla OLED</td><td>Un cable a cada pin, 20 cm</td><td>3 + 7 uniones</td><td>DHT22: <code>+</code>, <code>out</code>, <code>−</code>. Pantalla de 7 pines: CS, DC, RES, SDA, SCL, VCC, GND; va a +3V3 aunque diga VCC=5V</td></tr>
+      </tbody>
+    </table></div>
+    <p>El sensor de puerta MC-38 ya trae su cable: solo se pelan y se estañan sus dos puntas. Los módulos GY-61 y ADS1115 se sueldan únicamente si llegaron con la tira de pines suelta.</p>
+    <p class="nota">Con jumpers hembra en las patas se evitaría soldar el DHT22, la pantalla y el PIR, pero quedan flojos dentro de la tapa y pueden zafarse con una vibración. Soldado queda firme, que es lo que conviene para la Expo.</p>
+  </section>
+
+  <section id="medir">
+    <h2>Medir antes de armar</h2>
+    <p>Seis revisiones de cinco minutos con el multímetro y un calibrador. Cada una evita un fallo que después cuesta horas encontrar.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Qué revisar</th><th>Cómo</th><th>Si no sale como se espera</th></tr></thead>
+      <tbody>
+        <tr><td>Rieles de la protoboard de 830</td><td>Continuidad de un extremo al otro en cada uno de los 4 rieles</td><td>Si están partidos a la mitad, une con un puente las dos mitades de +5V y de GND. El riel de +3V3 <b>no</b> se une</td></tr>
+        <tr><td>Ancho de cada NodeMCU</td><td>Mide entre las dos filas de pines. La versión Amica mide 22.9 mm</td><td>Si mide 27.9 mm (LoLin v3) tapa todos los orificios libres de la protoboard: avísennos antes de armar, cambia la forma de montarla</td></tr>
+        <tr><td>Patas del transistor</td><td>Con el multímetro en prueba de diodo (o hFE), identifica emisor, base y colector</td><td>No te fíes de la forma: el orden cambia entre un 2N2222 de lata, un PN2222 y un P2N2222A. Al revés, el buzzer casi no suena</td></tr>
+        <tr><td>Módulo USB-C solo</td><td>Enchufa el adaptador y mide entre VCC y GND: unos 5 V</td><td>Si da 0 V con un cable C a C, usa un cable USB-A a USB-C</td></tr>
+        <tr><td>Salidas del GY-61</td><td>Aliméntalo con 3.3 V y mide X, Y y Z contra GND: cerca de 1.65 V</td><td>Si quedan lejos, el módulo trae regulador: avísennos, conviene alimentarlo con 5 V</td></tr>
+        <tr><td>LDR dentro de su capuchón</td><td>Mide su resistencia con la lámpara prendida y con la lámpara apagada (luz del cuarto prendida)</td><td>Con esos dos números se elige la resistencia del divisor y el umbral. Con 10 kΩ y umbral 300 la luz del cuarto puede leerse como «lámpara encendida»</td></tr>
+      </tbody>
+    </table></div>
+    <p class="nota"><b>Compra recomendada, no está en el presupuesto:</b> capacitores de 100 nF y de 10 µF (junto al PIR, y entre +3V3 y GND cerca de la pantalla y del acelerómetro) y un diodo 1N4148 para el buzzer. Estabilizan la alimentación y evitan disparos falsos del PIR por el WiFi. Aún no están en los diagramas.</p>
+  </section>
+
+  <!--__CAJAS__-->
+
+  <section id="energia">
+    <h2>Antes de dar energía</h2>
+    <ol>
+      <li><b>Sin nada conectado:</b> que no haya continuidad entre +5V y GND, ni entre +3V3 y GND.</li>
+      <li><b>En las estaciones:</b> que tampoco haya continuidad entre el pin 3V3 de una placa y el pin 3V3 de la otra.</li>
+      <li><b>El módulo USB-C solo:</b> enchufa el adaptador y mide entre sus dos cables. Deben salir unos 5 V, con el rojo como positivo.</li>
+      <li><b>Conecta el módulo a los rieles</b> y mide: riel de +5V ≈ 5 V; riel de +3V3 entre 3.14 y 3.47 V.</li>
+      <li><b>Ningún pin de señal por encima de 3.3 V.</b> Mide la salida del PIR y el dato del DHT22.</li>
+    </ol>
+    <div class="aviso">Si algo se calienta, huele o el voltaje no sale, desconecta de inmediato y revisa la polaridad del capacitor y de los cables del módulo USB-C.</div>
+    <h3>Prueba del buzzer antes de montarlo</h3>
+    <p>Toca la pata larga (+) con +5V y la corta con GND un segundo. Debe pitar solo, con tono continuo: eso es un buzzer <b>activo</b>. Si solo hace «clic», es pasivo y con este circuito no va a sonar: hay que cambiarlo.</p>
+    <h3>Primera prueba con el programa cargado</h3>
+    <p>El programa se prueba a sí mismo al arrancar. Abre el monitor serie del Arduino IDE a <b>115200</b> y observa:</p>
+    <ol>
+      <li><b>LED verde y luego LED rojo</b> se prenden un instante. Si uno no prende, revisa su soldadura, su resistencia de 330 Ω y que no esté al revés.</li>
+      <li><b>Caja dht:</b> un pitido corto. Si no suena, revisa el transistor (pestaña = emisor) y la polaridad del buzzer.</li>
+      <li><b>El monitor serie dice qué pasa:</b> <code>[wifi] conectado</code>, <code>[mqtt] conectado</code> y cada envío <code>[api] POST ... -> 201</code>. El LED verde queda fijo cuando hay WiFi y el servidor recibe los datos (por la API o por MQTT); si parpadea lento, no hay WiFi o el servidor no contesta, y los sensores se siguen leyendo.</li>
+      <li><b>Caja dht, pantalla:</b> debe encender al arrancar y mostrar temperatura y humedad a los 3 s. Si queda negra, revisa primero DC (pin D3) y RES (pin D0), y que CS esté en GND. Si la imagen sale de cabeza, se cambia <code>U8G2_R0</code> por <code>U8G2_R2</code> en el programa. Se apaga sola a los 30 s; un toque corto al botón la prende.</li>
+      <li><b>pir:</b> el primer minuto no publica nada (el sensor se estabiliza); el LED rojo sí reacciona.</li>
+      <li><b>acel:</b> imprime el voltaje de reposo de cada eje. Deja quieto el anaquel el primer segundo. Si dice que el ADS1115 no responde o que un eje está en 0 V o 3.3 V, es un cable. Cada 5 s imprime el golpe más fuerte que midió: golpea el anaquel como en la demostración y anota ese número para ajustar el umbral.</li>
+      <li><b>luz:</b> imprime una muestra cada 5 s; tapa la LDR con la mano y el número debe bajar. El LED rojo cambia a los 10 s.</li>
+      <li><b>puerta:</b> acerca y aleja el imán; imprime «abierta» o «cerrada» y el LED rojo sigue a la puerta.</li>
+    </ol>
+    <p class="nota"><b>Al programar por micro-USB,</b> desconecta antes la fuente USB-C de la caja. En las estaciones las dos placas comparten el riel de 5 V: si conectas una a la PC, la otra también se enciende, y es normal.</p>
+    <h3>Mejora recomendada: diodo en el buzzer</h3>
+    <p>Los buzzer activos de 12 mm suelen llevar una bobina. Al apagarse, la bobina da un pico de voltaje sobre el transistor. Un diodo <b>1N4148</b> en paralelo con el buzzer lo absorbe: la raya del diodo hacia +5V, el otro lado hacia el colector del transistor. Cuesta un par de pesos. No está en los diagramas porque no sabemos si ya tienen uno: avisen y lo agrego.</p>
+  </section>
+
+  <section id="impresion">
+    <h2>Impresión 3D en la Creality K2</h2>
+    <p>Una cama de 220 mm corresponde a la <b>K2 SE</b> (220 × 215 × 245 mm, de marco abierto). Las K2, K2 Pro y K2 Plus son cerradas y más grandes (260, 300 y 350 mm). Confirmen el modelo en la etiqueta: cambia qué consejos aplican.</p>
+    <h3>Ajustes de partida para PETG</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Ajuste</th><th>Valor</th><th>De dónde sale</th></tr></thead>
+      <tbody>
+        <tr><td>Boquilla</td><td>240 °C</td><td>Tabla oficial de Creality para la serie K2</td></tr>
+        <tr><td>Cama</td><td>70 °C</td><td>Tabla oficial de Creality</td></tr>
+        <tr><td>Ventilador de capa</td><td>40–80 %; 90–100 % en voladizos</td><td>Tabla oficial de Creality</td></tr>
+        <tr><td>Flujo máximo</td><td>9 mm³/s PETG genérico; 12 CR-PETG; 23 Hyper PETG</td><td>Tabla oficial. Elijan el perfil del rollo que compraron</td></tr>
+        <tr><td>Secado del filamento</td><td>60–65 °C, unas 8 h</td><td>Wiki de Creality</td></tr>
+        <tr><td>Pared exterior</td><td>60–100 mm/s, bajar si hay defectos</td><td>Punto de partida general, sin cifra oficial</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Para que quede liso</h3>
+    <ol>
+      <li><b>Sequen el PETG antes de las piezas finales.</b> El filamento húmedo es la causa número uno de hilos, gotas y superficie áspera.</li>
+      <li><b>Corran las tres calibraciones de Creality Print</b> con el rollo gris: flujo, pressure advance y velocidad volumétrica máxima.</li>
+      <li><b>Placa de PEI texturizado, lavada con agua y jabón.</b> El frente de cada tapa es la primera capa, así que copia la placa: la textura da un mate uniforme que disimula las líneas. En PEI liso el PETG se pega de más y puede dañarlo.</li>
+      <li><b>Despeguen siempre en frío.</b></li>
+      <li><b>Primera capa lenta</b> (30–50 mm/s) y altura de boquilla bien ajustada. Es la cara que va a ver el jurado.</li>
+      <li><b>Compensación de pata de elefante</b> de 0.10–0.15 mm, probada antes en una pieza chica: sin ella, los trazos del texto y los iconos se cierran.</li>
+      <li><b>Costura alineada en una esquina trasera</b>, o la opción de costura en bisel (scarf).</li>
+      <li><b>Capa de 0.16 mm en las tapas</b> si hay tiempo: mejora las persianas a 45° y las paredes.</li>
+      <li><b>Boquilla a 240–250 °C y poco ventilador en las bases:</b> mejora la unión entre capas, que es por donde flexionan los broches.</li>
+    </ol>
+    <p class="nota">Varios de estos puntos son práctica general y no los verifiqué en documentación de Creality: velocidad de primera capa, valor de pata de elefante, altura de capa y costura. Trátenlos como punto de partida y confírmenlos con una pieza de prueba.</p>
+    <h3>Mejoras al diseño que conviene hacer</h3>
+    <ul>
+      <li><b>Texto e iconos más gruesos.</b> Las guías piden trazos de al menos 0.8–1.0 mm para grabado en la primera capa. Los iconos actuales usan 0.9 mm y el ojo 0.8: están en el límite.</li>
+      <li><b>Evitar islas dentro de las letras</b> (el hueco de la «A», la «o» o la «R»): son puntitos de primera capa que se despegan.</li>
+      <li><b>Redondear la raíz de las lengüetas de la tapa</b> con un radio de 0.5–1 mm. Es donde se rompen, porque flexionan separando capas.</li>
+      <li><b>Revisar en la vista previa que las lengüetas de 1.4 mm queden macizas</b>, sin hueco al centro.</li>
+      <li><b>Un cupón de prueba</b> con una lengüeta, un icono, texto y una persiana, antes de gastar filamento en una caja completa.</li>
+      <li><b>Si tienen el sistema de varios colores (CFS):</b> texto e iconos a ras en otro color en las dos primeras capas. Es lo más legible y deja el frente totalmente liso.</li>
+    </ul>
+    <p class="fuente">Fuentes: tabla de parámetros de filamento de la serie K2 (store.creality.com), wiki de Creality sobre secado y calibración, base de conocimiento de Prusa sobre PETG y planchado, y guías de All3DP y Sovol. Los consejos sobre atascos con la puerta cerrada vienen de foros de usuarios y aplican a las K2 cerradas, no a la SE.</p>
+  </section>
+
+  <section id="expo">
+    <h2>Para la Expo</h2>
+    <p>Lo que se nota cuando un jurado abre una caja o hace una pregunta:</p>
+    <ul>
+      <li><b>Cableado ordenado.</b> Puentes planos y rectos, del largo justo, con el color que dice la tabla. Un cableado limpio se lee como un equipo que sabe lo que hizo.</li>
+      <li><b>Soldaduras brillantes y cubiertas</b> con termocontráctil. Ninguna con cinta.</li>
+      <li><b>Que funcione en vivo:</b> abrir la puerta y ver el LED y el dato en el tablero; mover el anaquel; tapar la luz. Ensayen la demostración varias veces.</li>
+      <li><b>Evidencia de pruebas.</b> La tabla de pruebas de banco llena, con voltajes y consumos medidos por ustedes.</li>
+      <li><b>Saber explicar cada decisión:</b> por qué el 3V3 de las dos placas no se une, por qué el sensor va en una cámara aparte con persianas, por qué los broches en lugar de tornillos.</li>
+      <li><b>Las cajas sobre su pie de mesa</b>, con una de ellas abierta para mostrar el interior.</li>
+    </ul>
+  </section>
+</div>

@@ -1,0 +1,503 @@
+<title>Montaje de Argos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Banco de trabajo: escenario 3D a la izquierda, tarjeta del paso a la derecha; abajo, qué soldar y la ficha de la pieza. */
+:root {
+  --bg: #eceff2; --panel: #ffffff; --ink: #1b232c; --muted: #5a6673; --line: #d3d9df;
+  --accent: #1f4f82; --accent-ink: #ffffff; --solder: #b86a00; --solder-bg: #fff3dc;
+  --warn: #a8281f; --warn-bg: #fdeceb; --stage: #dde2e7; --chip: #e4e8ec;
+  --f-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-body: Inter, "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151a; --panel: #1a2028; --ink: #e7ebef; --muted: #9aa5b1; --line: #2c353f;
+  --accent: #86b6ea; --accent-ink: #0d1722; --solder: #f2ab3c; --solder-bg: #33270f;
+  --warn: #ff9a90; --warn-bg: #3a1917; --stage: #0c0f13; --chip: #242c35; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151a; --panel: #1a2028; --ink: #e7ebef; --muted: #9aa5b1; --line: #2c353f;
+  --accent: #86b6ea; --accent-ink: #0d1722; --solder: #f2ab3c; --solder-bg: #33270f;
+  --warn: #ff9a90; --warn-bg: #3a1917; --stage: #0c0f13; --chip: #242c35; color-scheme: dark }
+
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5 }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 16px }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px }
+h1 { font-family: var(--f-display); font-weight: 600; font-size: 26px; margin: 0; letter-spacing: -0.01em }
+.sub { color: var(--muted); margin: 2px 0 0; max-width: 60ch }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px }
+.tabs button, .fases button { font: 500 14px var(--f-body); color: var(--ink); background: var(--chip);
+  border: 1px solid transparent; border-radius: 6px; padding: 7px 12px; cursor: pointer }
+.tabs button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink) }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+
+.banco { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 16px; align-items: start }
+.escena { position: relative; background: var(--stage); border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; height: clamp(320px, 62vh, 620px) }
+.escena canvas { display: block; width: 100%; height: 100%; touch-action: none }
+.ayuda { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); pointer-events: none }
+.barra { position: absolute; right: 10px; top: 10px; display: flex; gap: 6px }
+.barra button { font: 500 12px var(--f-body); background: var(--panel); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 6px; padding: 5px 9px; cursor: pointer }
+
+.lado { display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-width: 0 }
+.fases { display: flex; flex-wrap: wrap; gap: 6px }
+.fases button { font-size: 12.5px; padding: 5px 9px }
+.fases button[aria-current="true"] { border-color: var(--accent); color: var(--accent) }
+.cuenta { font: 500 12px var(--f-mono); color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase }
+.paso h2 { font-family: var(--f-display); font-weight: 600; font-size: 20px; margin: 4px 0 8px; text-wrap: balance }
+.paso p { margin: 0 0 8px }
+.ruta { font: 500 17px var(--f-mono); background: var(--chip); border-radius: 6px; padding: 8px 10px; margin: 8px 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px; overflow-wrap: anywhere }
+.punto { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--line); flex: none }
+.aviso, .soldar { border-radius: 6px; padding: 8px 10px; margin: 8px 0 0; font-size: 14px }
+.aviso { background: var(--warn-bg); color: var(--warn) }
+.soldar { background: var(--solder-bg); color: var(--solder) }
+.aviso b, .soldar b { font-weight: 600 }
+.nav { display: flex; gap: 8px; margin-top: 14px }
+.nav button { flex: 1; font: 600 15px var(--f-body); padding: 10px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink) }
+.nav button.sig { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+.nav button:disabled { opacity: 0.45; cursor: default }
+.avance { height: 4px; background: var(--chip); border-radius: 2px; margin-top: 12px; overflow: hidden }
+.avance i { display: block; height: 100%; background: var(--accent); width: 0 }
+.desliz { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted) }
+.desliz input { flex: 1; min-width: 0; accent-color: var(--accent) }
+
+.abajo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
+h3 { font-family: var(--f-display); font-weight: 600; font-size: 16px; margin: 0 0 10px }
+.lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px }
+.lista button { width: 100%; text-align: left; display: flex; justify-content: space-between; gap: 12px;
+  font: 400 14px var(--f-body); color: var(--ink); background: none; border: 1px solid var(--line);
+  border-radius: 6px; padding: 8px 10px; cursor: pointer }
+.lista button:hover { border-color: var(--solder) }
+.lista .n { font: 500 13px var(--f-mono); color: var(--solder); white-space: nowrap; font-variant-numeric: tabular-nums }
+.total { margin: 10px 0 0; color: var(--muted); font-size: 13px }
+.ficha dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; margin: 0 }
+.ficha dt { color: var(--muted); font-size: 13px }
+.ficha dd { margin: 0; overflow-wrap: anywhere }
+.ficha .vacio { color: var(--muted); margin: 0 }
+@media (max-width: 860px) { .banco, .abajo { grid-template-columns: minmax(0, 1fr) } .escena { height: clamp(280px, 48vh, 460px) } h1 { font-size: 22px } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Montaje de Argos</h1>
+      <p class="sub">Armado paso a paso de las tres cajas: qué va en cada orificio, qué se suelda y en qué orden.</p>
+    </div>
+    <div class="tabs" id="tabs" role="group" aria-label="Caja"></div>
+  </header>
+
+  <div class="banco">
+    <div class="escena" id="escena">
+      <canvas id="lienzo"></canvas>
+      <div class="barra"><button id="btnVista" type="button">Centrar vista</button></div>
+      <div class="ayuda">Arrastra para girar · rueda o pellizco para acercar · toca una pieza para ver su ficha</div>
+    </div>
+    <div class="lado">
+      <div class="panel paso">
+        <div class="fases" id="fases" role="group" aria-label="Fase"></div>
+        <div class="cuenta" id="cuenta" style="margin-top:12px"></div>
+        <h2 id="titulo"></h2>
+        <div id="texto"></div>
+        <div class="nav">
+          <button id="btnAnt" type="button">Anterior</button>
+          <button id="btnSig" type="button" class="sig">Siguiente</button>
+        </div>
+        <div class="avance"><i id="avance"></i></div>
+      </div>
+      <div class="panel desliz">
+        <label for="explo">Separar la tapa</label>
+        <input id="explo" type="range" min="0" max="110" value="70">
+      </div>
+    </div>
+  </div>
+
+  <div class="abajo">
+    <div class="panel">
+      <h3>Qué soldar en esta caja</h3>
+      <ul class="lista" id="soldar"></ul>
+      <p class="total" id="totalSoldar"></p>
+    </div>
+    <div class="panel ficha">
+      <h3 id="fichaTitulo">Ficha de la pieza</h3>
+      <div id="ficha"><p class="vacio">Toca una pieza en el modelo para ver qué es, su polaridad y a dónde va conectada.</p></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DATOS = /*__DATOS__*/null;
+const $ = id => document.getElementById(id);
+const COLOR_CABLE = { rojo: 0xd0342c, negro: 0x22262b, naranja: 0xe8801a, cafe: 0x7a4a22, morado: 0x7d4bb3,
+  blanco: 0xe9e9e4, gris: 0x8c949c, amarillo: 0xe6c21f, verde: 0x2f9e44, azul: 0x2b6fd6 };
+const NOMBRE_COLOR = { cafe: "café" };
+const ES_TAPA = /^(led_(verde|rojo)(_2)?(_patas)?|oled|oled_dupont|boton|boton_dupont|buzzer|buzzer_dupont_[+-]|pir_(domo|pcb|componentes|dupont))$/;
+const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// ── escena ────────────────────────────────────────────────────────────────
+const lienzo = $("lienzo"), cont = $("escena");
+const renderer = new THREE.WebGLRenderer({ canvas: lienzo, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+const scene = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(36, 1, 1, 4000);
+const ctrl = new THREE.OrbitControls(cam, lienzo);
+ctrl.enableDamping = true; ctrl.dampingFactor = 0.12;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x70767e, 0.6));
+const sol = new THREE.DirectionalLight(0xffffff, 0.6); sol.position.set(120, 260, 160); scene.add(sol);
+const raiz = new THREE.Group(); raiz.rotation.x = -Math.PI / 2; scene.add(raiz);   // z del CAD = arriba
+
+function tema() {
+  const c = getComputedStyle(document.documentElement).getPropertyValue("--stage").trim();
+  scene.background = new THREE.Color(c || "#dde2e7");
+}
+tema();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", tema);
+new MutationObserver(tema).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+function ajustar() {
+  const w = cont.clientWidth, h = cont.clientHeight;
+  renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+}
+new ResizeObserver(ajustar).observe(cont);
+
+// ── geometria ─────────────────────────────────────────────────────────────
+function b64(s, Tipo) {
+  const bin = atob(s), buf = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  return new Tipo(buf.buffer);
+}
+function malla(m, color, opts) {
+  const v = b64(m.v, Int16Array), pos = new Float32Array(v.length);
+  for (let i = 0; i < v.length; i++) pos[i] = v[i] / 50;
+  let g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setIndex(new THREE.BufferAttribute(b64(m.i, Uint32Array), 1));
+  g = g.toNonIndexed(); g.computeVertexNormals();
+  return new THREE.Mesh(g, new THREE.MeshStandardMaterial(Object.assign({ color, roughness: 0.75, metalness: 0.02 }, opts || {})));
+}
+function estilo(nom) {
+  const n = nom.replace(/^(pir|puerta|acel|luz)_/, "");
+  if (nom === "protoboard") return { c: 0xf2f1ec };
+  if (/^nodemcu/.test(nom)) return { c: 0x1d2330 };
+  if (/^C1$/.test(n)) return { c: 0x1e2a55, cil: 1 };
+  if (/^Q1$/.test(n)) return { c: 0xb9bec4, cil: 1, metal: 0.8 };
+  if (/^R\d/.test(n)) return { c: 0xd9b27c };
+  if (/^led_verde/.test(nom) && !/patas/.test(nom)) return { c: 0x35c45a, cil: 1, luz: 0x0c5a20 };
+  if (/^led_rojo/.test(nom) && !/patas/.test(nom)) return { c: 0xe03a32, cil: 1, luz: 0x6a0d09 };
+  if (/patas/.test(nom)) return { c: 0xaab0b6 };
+  if (/^boton$/.test(nom)) return { c: 0x2a2d31 };
+  if (/^buzzer$/.test(nom)) return { c: 0x17181a, cil: 1 };
+  if (/^oled$/.test(nom)) return { c: 0x10203a };
+  if (/^dht22$/.test(nom)) return { c: 0xf4f4f0 };
+  if (/^dht22_pcb$/.test(nom)) return { c: 0x6a3fa0 };
+  if (/^pir_domo$/.test(nom)) return { c: 0xf2f2ee, cil: 1 };
+  if (/^pir_pcb$/.test(nom)) return { c: 0x2c7a3d };
+  if (/^pir_componentes$/.test(nom)) return { c: 0x3a3f45 };
+  if (/ADS1115$/.test(n)) return { c: 0x2459b8 };
+  if (/GY61$/.test(n)) return { c: 0x6a3fa0 };
+  if (/^entrada_5v$/.test(nom)) return { c: 0x2f8f4a };
+  return { c: 0x1a1c1f };   // carcasas Dupont y tiras de pines
+}
+function bloque(nom, b) {
+  const e = estilo(nom), dx = b[3] - b[0], dy = b[4] - b[1], dz = b[5] - b[2];
+  let g;
+  if (e.cil) { g = new THREE.CylinderGeometry(Math.min(dx, dy) / 2, Math.min(dx, dy) / 2, dz, 28); g.rotateX(Math.PI / 2); }
+  else g = new THREE.BoxGeometry(dx, dy, dz);
+  const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: e.c, roughness: 0.6, metalness: e.metal || 0.05 }));
+  m.position.set((b[0] + b[3]) / 2, (b[1] + b[4]) / 2, (b[2] + b[5]) / 2);
+  return m;
+}
+function tubo(pts, color, r) {
+  const g = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 28, r || 0.55, 7);
+  return new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color, roughness: 0.5 }));
+}
+
+// ── estado de la caja activa ──────────────────────────────────────────────
+let caja = null, objs = {}, pasos = [], iPaso = 0, explo = 70, cables = [], gTapa = null, centro = null, tam = 100;
+const seleccion = { nombre: null };
+
+// Letras como vienen IMPRESAS en la protoboard (USB de los NodeMCU a la izquierda: J arriba, A abajo).
+// layouts.py usa la convencion interna al reves (a = J impresa).
+const IMPRESA = { a: "J", b: "I", c: "H", d: "G", e: "F", f: "E", g: "D", h: "C", i: "B", j: "A" };
+function fmtH(h) {
+  if (h.indexOf(":") < 0) return h.replace(/^([a-j])(\d+)$/, (m, f, c) => IMPRESA[f] + c);
+  const [r, c] = h.split(":");
+  const riel = { A_5V: "riel de arriba +5V (línea roja)", A_GND: "riel de arriba GND (línea azul)",
+                 J_3V3: "riel de abajo +3V3 (línea roja)", J_GND: "riel de abajo GND (línea azul)" }[r] || r;
+  return riel + ", col. " + c;
+}
+function notaImpresa(n) {
+  return (n || "").replace(/\*\*/g, "")
+    .replace(/\b([a-j])(\d{1,2})\b/g, (m, f, c) => IMPRESA[f] + c)
+    .replace(/\bfilas? ([a-j])\b/g, (m, f) => m.slice(0, -1) + IMPRESA[f])
+    .replace(/filas ([a-j])→([a-j])/g, (m, f, g) => "filas " + IMPRESA[f] + "→" + IMPRESA[g])
+    .replace(/riel GND lado A/g, "riel GND de arriba").replace(/riel GND lado J/g, "riel GND de abajo")
+    .replace(/riel A /g, "riel de arriba ").replace(/riel J /g, "riel de abajo ");
+}
+function quitarPrefijo(disp) {
+  for (let k = 0; k < caja.prefijos.length; k++) {
+    const p = caja.prefijos[k];
+    if (p && disp.indexOf(p + "_") === 0) return [disp.slice(p.length + 1), k, p];
+  }
+  return [disp, 0, ""];
+}
+function destino(e) {
+  const [d, k] = quitarPrefijo(e.disp), suf = k === 1 ? "_2" : "";
+  const mapa = { LED_V: "led_verde" + suf, LED_R: "led_rojo" + suf, Boton: "boton", DHT22: "dht22_dupont",
+                 Buzzer: "buzzer", OLED: "oled_dupont", PIR: "pir_dupont", Entrada5V: "entrada_5v" };
+  return mapa[d] || null;
+}
+function etiquetaDisp(disp) {
+  const [d, , p] = quitarPrefijo(disp);
+  const n = { LED_V: "LED verde", LED_R: "LED rojo", Boton: "botón", DHT22: "DHT22", Buzzer: "buzzer", OLED: "OLED",
+              PIR: "sensor PIR", Entrada5V: "módulo USB-C", Reed: "cable del MC-38", LDR: "cable de la LDR" }[d] || d;
+  return p ? n + " (" + p + ")" : n;
+}
+
+function construir(clave) {
+  caja = DATOS[clave];
+  while (raiz.children.length) raiz.remove(raiz.children[0]);
+  objs = {}; cables = [];
+  const gBase = new THREE.Group(); gTapa = new THREE.Group(); raiz.add(gBase, gTapa);
+  const petg = 0x9aa1a8;
+  const poner = (nom, m, grupo) => { m.userData.nombre = nom; grupo.add(m); objs[nom] = { m, desde: null, tapa: grupo === gTapa }; };
+  poner("base", malla(caja.piezas.base, petg), gBase);
+  poner("tapa", malla(caja.piezas.tapa, 0xa9b0b7, { transparent: true, opacity: 0.9 }), gTapa);
+  if (caja.piezas.grapa_oled) poner("grapa_oled", malla(caja.piezas.grapa_oled, 0x7f868d), gTapa);
+  if (caja.piezas.embolo_boton) poner("embolo_boton", malla(caja.piezas.embolo_boton, 0x7f868d), gTapa);
+  for (const nom in caja.partes) poner(nom, bloque(nom, caja.partes[nom].b), ES_TAPA.test(nom) ? gTapa : gBase);
+  const z = caja.z_pb;
+  caja.puentes.forEach((c, i) => {
+    const d = Math.hypot(c.q[0] - c.p[0], c.q[1] - c.p[1]), alto = 3 + Math.min(9, d * 0.22);
+    const m = tubo([new THREE.Vector3(c.p[0], c.p[1], z), new THREE.Vector3(c.p[0], c.p[1], z + alto * 0.8),
+      new THREE.Vector3((c.p[0] + c.q[0]) / 2, (c.p[1] + c.q[1]) / 2, z + alto),
+      new THREE.Vector3(c.q[0], c.q[1], z + alto * 0.8), new THREE.Vector3(c.q[0], c.q[1], z)], COLOR_CABLE[c.color] || 0x888888);
+    poner("puente_" + i, m, gBase);
+  });
+  caja.externos.forEach((e, i) => {
+    const m = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshStandardMaterial({ color: COLOR_CABLE[e.color] || 0x888888, roughness: 0.5 }));
+    poner("cable_" + i, m, gBase); cables.push({ e, m, dest: destino(e) });
+  });
+  const caj = new THREE.Box3().setFromObject(objs.base.m);
+  centro = caj.getCenter(new THREE.Vector3()); tam = caj.getSize(new THREE.Vector3()).length();
+  hacerPasos(); listaSoldar(); centrarVista(); irA(0); ficha(null);
+  document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === clave));
+}
+function trazarCables() {
+  const z = caja.z_pb;
+  objs.tapa.m.material.opacity = explo < 5 ? 1 : 0.42;   // separada: translucida para ver el interior
+  cables.forEach(({ e, m, dest }) => {
+    let fin;
+    if (dest && caja.partes[dest]) {
+      const b = caja.partes[dest].b, enTapa = ES_TAPA.test(dest);
+      fin = new THREE.Vector3((b[0] + b[3]) / 2, (b[1] + b[4]) / 2, b[2] + (enTapa ? explo : (b[5] - b[2]) / 2));
+    } else fin = new THREE.Vector3(e.p[0], -16, caja.Db / 2);   // sale por la pared hacia la pieza remota
+    const ini = new THREE.Vector3(e.p[0], e.p[1], z), sube = Math.max(10, (fin.z - z) * 0.45);
+    const medio = new THREE.Vector3((ini.x + fin.x) / 2, (ini.y + fin.y) / 2, z + sube);
+    m.geometry.dispose();
+    m.geometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3([ini, new THREE.Vector3(ini.x, ini.y, z + 7), medio, fin]), 30, 0.6, 7);
+  });
+}
+function centrarVista() {
+  const c = new THREE.Vector3(centro.x, centro.z + 22, -centro.y);
+  ctrl.target.copy(c);
+  cam.position.set(c.x + tam * 0.55, c.y + tam * 0.95, c.z + tam * 0.95);
+  ctrl.update();
+}
+
+// ── pasos ─────────────────────────────────────────────────────────────────
+function hacerPasos() {
+  pasos = [];
+  const nombres = Object.keys(objs), que = re => nombres.filter(n => re.test(n));
+  const paso = (fase, titulo, html, o) => pasos.push(Object.assign({ fase, titulo, html, objs: [], avisos: [], soldar: null, explo: null }, o || {}));
+  const estacion = caja.prefijos.length > 1;
+
+  paso("Preparar", "Corta las pestañas de la protoboard", "<p>Las pestañas que sobresalen para unir protoboards estorban a los clips de la caja. Córtalas al ras con pinzas de corte y pasa una lija.</p>", { objs: ["protoboard"] });
+  paso("Preparar", "Encaja la protoboard en la base", "<p>Apóyala contra las guías de las esquinas y bájala sobre los clips hasta que haga clic. Debe quedar firme al voltear la base.</p>" +
+    (estacion ? "<p>La columna 1 va del lado del módulo USB-C.</p>" : ""), { objs: ["protoboard"] });
+  paso("Preparar", estacion ? "Clava los dos NodeMCU" : "Clava el NodeMCU",
+    "<p>Con los números de columna creciendo hacia la derecha y el micro-USB a la izquierda: pines en las filas <b>I</b> y <b>B</b>, desde la columna 1" +
+    (estacion ? " (la segunda placa desde la 34)" : "") +
+    ". Empuja hasta que el plástico negro de los pines toque la protoboard.</p><p>Comprueba con la serigrafía que <b>VIN</b> quede en I1 y <b>3V3</b> en B1.</p>",
+    { objs: que(/^nodemcu/), avisos: estacion ? ["<b>Los 4 rieles son continuos.</b> Solo la placa de la izquierda se conecta al riel de +3V3; la de la derecha nunca. Si las dos lo usan, sus reguladores quedan unidos y se dañan."] : [] });
+
+  caja.comps.forEach(c => {
+    const pines = Object.keys(c.pines).map(k => k + " en " + fmtH(c.pines[k])).join(" · ");
+    const av = [];
+    if (c.tipo === "C") av.push("<b>Polaridad:</b> la pata larga (+) va al riel de 5V; la franja marca el negativo. Al revés puede reventar.");
+    if (c.tipo === "Q") av.push("<b>La lata metálica es el colector:</b> que no toque ninguna otra pata ni cable.");
+    paso("Componentes", "Coloca " + c.ref.replace(/_/g, " "), "<p>" + c.valor + "</p><div class=\"ruta\">" + pines + "</div>" +
+      (c.nota ? "<p>" + notaImpresa(c.nota) + "</p>" : ""), { objs: que(new RegExp("^" + c.ref + "(_tira)?$")), avisos: av });
+  });
+
+  caja.puentes.forEach((c, i) => {
+    const av = /3V3 NO/.test(c.nota) ? ["<b>El riel de 3V3 no se une.</b> Cada NodeMCU tiene su regulador; unirlos los daña. Comprueba con el multímetro que el riel esté partido."] : [];
+    paso("Puentes", "Puente " + (i + 1) + " de " + caja.puentes.length, rutaHtml(c.color, fmtH(c.de), fmtH(c.a)) + "<p>" + notaImpresa(c.nota) + "</p>", { objs: ["puente_" + i], avisos: av });
+  });
+
+  const leds = que(/^led_(verde|rojo)(_2)?$/);
+  paso("Soldar", "Suelda los cables del módulo USB-C", "<p>Dos cables o dos pines: uno en <b>VCC</b> (rojo) y otro en <b>GND</b> (negro). D− y D+ quedan libres.</p>",
+    { objs: ["entrada_5v"], soldar: { n: 2, que: "Módulo USB-C: VCC y GND" }, explo: 70,
+      avisos: ["Antes de conectarlo a la protoboard, enchufa el adaptador y mide entre VCC y GND: deben salir ≈ 5 V."] });
+  paso("Soldar", "Suelda dos cables a cada LED", "<p>Son " + leds.length + " LED. A cada pata un cable de unos 15 cm, con termocontráctil para que no se toquen. Usa el color del LED para el ánodo y negro para el cátodo.</p>",
+    { objs: que(/^led_/), soldar: { n: leds.length * 2, que: leds.length + " LED: ánodo y cátodo" }, explo: 70,
+      avisos: ["<b>Polaridad:</b> la pata larga es el ánodo (+). La corta, del lado plano, va a GND."] });
+  if (objs.boton) paso("Soldar", "Suelda dos cables al botón", "<p>Las patas del pulsador son muy cortas para un conector. Suelda un cable a dos patas en diagonal: así seguro tomas un par que se une al presionar.</p>",
+    { objs: que(/^boton/), soldar: { n: 2, que: "Botón: dos patas en diagonal" }, explo: 70 });
+  if (caja.nodos.indexOf("luz") >= 0) paso("Soldar", "Suelda el cable de la LDR", "<p>Un par de cable UTP a las dos patas de la fotorresistencia, con termocontráctil. No tiene polaridad. La LDR va lejos de la caja, en su capuchón junto a la lámpara.</p>",
+    { objs: [], soldar: { n: 2, que: "LDR: cable de 2 hilos" } });
+  if (caja.nodos.indexOf("puerta") >= 0) paso("Soldar", "Pon terminales al cable del MC-38", "<p>En las dos puntas del cable del sensor de puerta va un pin macho, soldado o crimpado, para clavarlo en la protoboard. No tiene polaridad.</p>",
+    { objs: [], soldar: { n: 2, que: "MC-38: un pin en cada hilo" } });
+
+  paso("Tapa", "Mete los LED en la tapa", "<p>Desde adentro, cada LED en su agujero hasta que la ceja tope con el collar. Verde y rojo van en el orden del rótulo.</p>", { objs: ["tapa"].concat(que(/^led_/)), explo: 70 });
+  if (objs.oled) paso("Tapa", "Coloca la OLED y su grapa", "<p>La pantalla entra en su marco con el conector hacia abajo. La grapa cruza por la espalda y muerde las dos muescas del marco.</p>",
+    { objs: que(/^oled/).concat(["grapa_oled"]), explo: 70, avisos: ["<b>La OLED va a 3V3, nunca a 5 V:</b> subiría las líneas SDA y SCL a 5 V."] });
+  if (objs.boton) paso("Tapa", "Coloca el botón y su émbolo", "<p>Primero el émbolo impreso en el agujero de la tapa, con la ceja hacia adentro; luego el pulsador en su cuna.</p>", { objs: que(/^boton/).concat(["embolo_boton"]), explo: 70 });
+  if (objs.buzzer) paso("Tapa", "Presiona el buzzer en su collar", "<p>Entra a presión entre los tres dedos; los dientes lo detienen por atrás. Sus dos patas reciben conectores hembra.</p>",
+    { objs: que(/^buzzer/), explo: 70, avisos: ["<b>Polaridad:</b> el «+» está marcado en la tapa del buzzer (pata larga)."] });
+  if (objs.pir_domo) paso("Tapa", "Coloca el sensor PIR", "<p>El domo blanco sale por el frente y la placa queda en su marco, con los tres pines hacia abajo.</p>",
+    { objs: que(/^pir_(domo|pcb|componentes|dupont)$/), explo: 70, avisos: ["Se alimenta con 5 V, pero su salida OUT es de 3.3 V. Confirma el orden VCC–OUT–GND en la serigrafía."] });
+  if (objs.dht22) paso("Tapa", "Acomoda el DHT22 en su cuna", "<p>Acostado en la cámara de abajo, con la rejilla hacia el frente y los pines hacia el paso de cable. Al cerrar, un poste de la tapa lo detiene.</p>", { objs: que(/^dht22/), explo: 70 });
+
+  caja.externos.forEach((e, i) => {
+    const [d] = quitarPrefijo(e.disp), av = [];
+    if (d === "Entrada5V" && e.pin === "+") av.push("Conéctalo solo después de medir ≈ 5 V en el módulo. Revisa la polaridad dos veces: invertida puede dañar las placas.");
+    if (/^LED/.test(d) && e.pin === "A") av.push("Este es el ánodo: la pata larga del LED.");
+    paso("Cables", etiquetaDisp(e.disp) + " · " + e.pin, rutaHtml(e.color, etiquetaDisp(e.disp) + " " + e.pin, fmtH(e.h)) +
+      (e.nota ? "<p>" + notaImpresa(e.nota) + "</p>" : ""),
+      { objs: ["cable_" + i, "dupont_" + e.disp + "_" + e.pin].concat(destino(e) ? [destino(e)] : []), avisos: av, explo: 70 });
+  });
+
+  paso("Cerrar", "Prueba antes de cerrar", "<p>Con la tapa todavía abierta, enchufa el adaptador y mide: riel de 5V ≈ 5 V, riel de 3V3 entre 3.14 y 3.47 V, y ningún pin que entre a un GPIO por encima de 3.3 V.</p>",
+    { objs: ["entrada_5v"], explo: 70 });
+  paso("Cerrar", "Cierra la tapa", "<p>Acomoda los cables para que no queden bajo el labio y presiona la tapa hasta que los broches hagan clic. Para abrirla, jálala: no lleva tornillos.</p>", { objs: ["tapa"], explo: 0 });
+
+  // desde que paso se ve cada objeto
+  for (const n in objs) objs[n].desde = null;
+  objs.base.desde = 0;
+  pasos.forEach((p, i) => p.objs.forEach(n => { if (objs[n] && objs[n].desde === null) objs[n].desde = i; }));
+  const iComp = pasos.findIndex(p => p.fase === "Componentes");
+  for (const n in objs) if (objs[n].desde === null) objs[n].desde = iComp;
+
+  const fases = []; pasos.forEach((p, i) => { if (!fases.length || fases[fases.length - 1].n !== p.fase) fases.push({ n: p.fase, i }); });
+  $("fases").innerHTML = "";
+  fases.forEach(f => { const b = document.createElement("button"); b.type = "button"; b.textContent = f.n; b.dataset.i = f.i;
+    b.onclick = () => irA(f.i); $("fases").appendChild(b); });
+}
+function rutaHtml(color, de, a) {
+  const hex = "#" + (COLOR_CABLE[color] || 0x888888).toString(16).padStart(6, "0");
+  return "<div class=\"ruta\"><span class=\"punto\" style=\"background:" + hex + "\"></span><span>" + de + " → " + a +
+    "</span></div><p>Cable " + (NOMBRE_COLOR[color] || color) + ".</p>";
+}
+
+function irA(i) {
+  iPaso = Math.max(0, Math.min(pasos.length - 1, i));
+  const p = pasos[iPaso];
+  if (p.explo !== null) { explo = p.explo; $("explo").value = explo; }
+  gTapa.position.z = explo; trazarCables();
+  for (const n in objs) {
+    const o = objs[n]; o.m.visible = o.desde <= iPaso;
+    o.activo = p.objs.indexOf(n) >= 0;
+    const mat = o.m.material; if (mat.emissive) mat.emissive.setHex(0x000000);
+  }
+  $("cuenta").textContent = p.fase + " · paso " + (iPaso + 1) + " de " + pasos.length;
+  $("titulo").textContent = p.titulo;
+  $("texto").innerHTML = p.html + (p.soldar ? "<div class=\"soldar\"><b>Se suelda:</b> " + p.soldar.n + " puntos. " + p.soldar.que + ".</div>" : "") +
+    p.avisos.map(a => "<div class=\"aviso\">" + a + "</div>").join("");
+  $("btnAnt").disabled = iPaso === 0; $("btnSig").disabled = iPaso === pasos.length - 1;
+  $("avance").style.width = ((iPaso + 1) / pasos.length * 100) + "%";
+  document.querySelectorAll("#fases button").forEach(b => b.setAttribute("aria-current", pasos[+b.dataset.i].fase === p.fase));
+}
+function listaSoldar() {
+  const ul = $("soldar"); ul.innerHTML = ""; let total = 0;
+  pasos.forEach((p, i) => { if (!p.soldar) return; total += p.soldar.n;
+    const li = document.createElement("li"), b = document.createElement("button"); b.type = "button";
+    b.innerHTML = "<span>" + p.soldar.que + "</span><span class=\"n\">" + p.soldar.n + " puntos</span>";
+    b.onclick = () => { irA(i); cont.scrollIntoView({ block: "nearest", behavior: reducido ? "auto" : "smooth" }); };
+    li.appendChild(b); ul.appendChild(li); });
+  $("totalSoldar").textContent = "Total en esta caja: " + total + " puntos de soldadura en estas piezas. Como no se usan jumpers, el buzzer, el DHT22, la pantalla y el PIR también llevan su cable soldado: la lista completa está en la guía de armado.";
+}
+
+// ── ficha de la pieza ─────────────────────────────────────────────────────
+function ficha(nom) {
+  seleccion.nombre = nom;
+  const el = $("ficha");
+  if (!nom) { $("fichaTitulo").textContent = "Ficha de la pieza"; el.innerHTML = "<p class=\"vacio\">Toca una pieza en el modelo para ver qué es, su polaridad y a dónde va conectada.</p>"; return; }
+  const filas = [], f = (k, v) => filas.push("<dt>" + k + "</dt><dd>" + v + "</dd>");
+  let titulo = nom;
+  const comp = caja.comps.find(c => c.ref === nom || c.ref + "_tira" === nom);
+  const mPuente = /^puente_(\d+)$/.exec(nom), mCable = /^cable_(\d+)$/.exec(nom);
+  const FIJAS = [
+    [/^base$/, "Base de la caja", "Impresa en PETG. Sujeta la protoboard con clips; no lleva tornillos."],
+    [/^tapa$/, "Tapa", "Impresa en PETG. Cierra a presión con broches y lleva los LED y las piezas del frente."],
+    [/^protoboard$/, "Protoboard", "Montaje final del circuito. Rieles de arriba: +5V (línea roja) y GND (línea azul). Rieles de abajo: GND (línea azul) y +3V3 (línea roja). Los cuatro son continuos."],
+    [/^nodemcu/, "NodeMCU ESP8266", "Microcontrolador con WiFi. Sus pines trabajan a 3.3 V: ninguna señal de 5 V debe entrar a un GPIO."],
+    [/^led_verde/, "LED verde", "Indicador de estado. Fijo = todo bien; parpadeo lento = sin WiFi o sin broker. Pata larga = ánodo."],
+    [/^led_rojo/, "LED rojo", "Alerta del sensor. Pata larga = ánodo; cada LED lleva su resistencia de 330 Ω en la protoboard."],
+    [/^boton/, "Botón de silencio", "Toque corto enciende la pantalla; toque largo silencia el buzzer 30 min. Va entre D6 y GND."],
+    [/^embolo/, "Émbolo del botón", "Pieza impresa que transmite el toque desde el frente de la tapa al pulsador."],
+    [/^buzzer/, "Buzzer activo", "Suena con solo darle voltaje. + al riel de 5V y − al colector del transistor."],
+    [/^oled/, "OLED 2.42\" SSD1309", "Pantalla I²C de 4 pines: VCC a 3V3, GND, SCL a D1 y SDA a D2. Nunca a 5 V."],
+    [/^grapa/, "Grapa de la OLED", "Pieza impresa que detiene la pantalla por la espalda."],
+    [/^dht22/, "DHT22 (AM2302)", "Sensor de temperatura y humedad. VCC a 3V3, DATA a D4 con resistencia de 10 kΩ a 3V3, y GND."],
+    [/^pir_/, "Sensor PIR HC-SR501", "Detecta movimiento. VCC a 5V, OUT (3.3 V) a D5 y GND. Tarda 30–60 s en estabilizarse."],
+    [/^entrada_5v$/, "Módulo USB-C", "Entrada de energía de la caja. VCC al riel de 5V y GND al riel de GND; D− y D+ no se usan."],
+    [/^dupont_/, "Conector Dupont", "Punta macho de un cable que viene de una pieza de la tapa."],
+  ];
+  if (comp) { titulo = comp.ref.replace(/_/g, " "); f("Valor", comp.valor);
+    f("Orificios", Object.keys(comp.pines).map(k => k + ": " + fmtH(comp.pines[k])).join("<br>"));
+    if (comp.nota) f("Nota", notaImpresa(comp.nota)); }
+  else if (mPuente) { const c = caja.puentes[+mPuente[1]]; titulo = "Puente " + (+mPuente[1] + 1);
+    f("De", fmtH(c.de)); f("A", fmtH(c.a)); f("Color", NOMBRE_COLOR[c.color] || c.color); f("Para qué", notaImpresa(c.nota)); }
+  else if (mCable) { const e = caja.externos[+mCable[1]]; titulo = "Cable de " + etiquetaDisp(e.disp);
+    f("Pin", e.pin); f("Orificio", fmtH(e.h)); f("Color", NOMBRE_COLOR[e.color] || e.color); if (e.nota) f("Nota", notaImpresa(e.nota)); }
+  else { const fx = FIJAS.find(x => x[0].test(nom)); if (fx) { titulo = fx[1]; f("Qué es", fx[2]); } }
+  const cab = caja.externos.filter(e => destino(e) === nom || destino(e) === nom.replace(/_patas$/, ""));
+  if (cab.length) f("Conexiones", cab.map(e => e.pin + " → " + fmtH(e.h)).join("<br>"));
+  const sold = pasos.find(p => p.soldar && p.objs.indexOf(nom) >= 0);
+  if (sold) f("Soldadura", sold.soldar.que);
+  $("fichaTitulo").textContent = titulo;
+  el.innerHTML = filas.length ? "<dl>" + filas.join("") + "</dl>" : "<p class=\"vacio\">Sin datos de esta pieza.</p>";
+}
+const rayo = new THREE.Raycaster(), raton = new THREE.Vector2(); let abajo = null;
+lienzo.addEventListener("pointerdown", e => { abajo = [e.clientX, e.clientY]; });
+lienzo.addEventListener("pointerup", e => {
+  if (!abajo || Math.hypot(e.clientX - abajo[0], e.clientY - abajo[1]) > 6) return;
+  const r = lienzo.getBoundingClientRect();
+  raton.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  rayo.setFromCamera(raton, cam);
+  const visibles = Object.keys(objs).map(n => objs[n].m).filter(m => m.visible);
+  const h = rayo.intersectObjects(visibles, false).filter(x => x.object.userData.nombre !== "tapa" || explo < 5);
+  ficha(h.length ? h[0].object.userData.nombre : null);
+});
+
+// ── controles y ciclo ─────────────────────────────────────────────────────
+$("btnAnt").onclick = () => irA(iPaso - 1);
+$("btnSig").onclick = () => irA(iPaso + 1);
+$("btnVista").onclick = centrarVista;
+$("explo").addEventListener("input", e => { explo = +e.target.value; gTapa.position.z = explo; trazarCables(); });
+addEventListener("keydown", e => { if (e.target.tagName === "INPUT") return;
+  if (e.key === "ArrowRight") irA(iPaso + 1); if (e.key === "ArrowLeft") irA(iPaso - 1); });
+Object.keys(DATOS).forEach(k => { const b = document.createElement("button"); b.type = "button"; b.dataset.k = k;
+  b.textContent = DATOS[k].titulo; b.onclick = () => construir(k); $("tabs").appendChild(b); });
+
+const AMBAR = new THREE.Color(0xd98a00), AZUL = new THREE.Color(0x2f7fd6), tmp = new THREE.Color();
+function ciclo(t) {
+  requestAnimationFrame(ciclo);
+  const pulso = reducido ? 0.6 : 0.35 + 0.35 * (0.5 + 0.5 * Math.sin(t / 260));
+  const sold = pasos[iPaso] && pasos[iPaso].soldar;
+  for (const n in objs) { const o = objs[n], mat = o.m.material; if (!mat.emissive) continue;
+    if (n === seleccion.nombre) mat.emissive.setHex(0x1f6a3a);
+    else if (o.activo) mat.emissive.copy(tmp.copy(sold ? AMBAR : AZUL).multiplyScalar(pulso));
+    else mat.emissive.setHex(0x000000); }
+  ctrl.update(); renderer.render(scene, cam);
+}
+ajustar(); construir("dht"); requestAnimationFrame(ciclo);
+</script>

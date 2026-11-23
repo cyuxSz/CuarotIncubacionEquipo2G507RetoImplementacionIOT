@@ -1,0 +1,29 @@
+<html><head><meta charset="utf-8"><style>
+body{margin:0;background:#fff;font-family:Segoe UI,Arial;width:1800px}
+.w{display:flex;gap:30px;padding:30px}
+img{width:1050px;border:1px solid #ccc}
+h1{font-size:30px;margin:0 0 10px}
+p,li,td{font-size:21px;line-height:1.35}
+table{border-collapse:collapse;margin:10px 0}td{border:1px solid #bbb;padding:6px 10px;vertical-align:top}
+.k{font-weight:bold;white-space:nowrap}
+</style></head><body><div class="w">
+<img src="salida/revision_dht22_d4_breadboard.svg">
+<div>
+<h1>Nodo dht · solo el DHT22</h1>
+<p>Letras <b>impresas</b> en la protoboard (A abajo, J arriba). Todo lo de la columna 24 está unido entre A y E.</p>
+<table>
+<tr><td class="k">3V3 del NodeMCU</td><td>A1 → riel de abajo <b>+3V3</b> (línea roja)</td></tr>
+<tr><td class="k">GND del NodeMCU</td><td>A2 → riel de abajo <b>GND</b> (línea azul)</td></tr>
+<tr><td class="k">D4 (datos)</td><td>Puente de <b>A11</b> (junto al pin D4) a <b>C24</b></td></tr>
+<tr><td class="k">R1 10 kΩ</td><td>De pie: <b>A24</b> → riel de abajo <b>+3V3</b>, col. 24<br>(café, negro, naranja)</td></tr>
+<tr><td class="k">DHT22 out</td><td><b>E24</b></td></tr>
+<tr><td class="k">DHT22 +</td><td>Riel de abajo <b>+3V3</b>, col. 26</td></tr>
+<tr><td class="k">DHT22 −</td><td>Riel de abajo <b>GND</b>, col. 27</td></tr>
+</table>
+<p><b>Qué medir</b></p>
+<ul>
+<li>Con USB: entre + y − del DHT22 ≈ <b>3.3 V</b>.</li>
+<li>Sin USB, continuidad: out del DHT22 ↔ pin D4 debe pitar.</li>
+<li>Sin USB: entre C24 y el riel +3V3 ≈ <b>3.2 kΩ</b> (R1 de 10 kΩ en paralelo con la de 4.7 kΩ del módulo; si sale ~10 kΩ, el DHT22 no está conectado a la columna 24; si sale ~4.7 kΩ, falta R1).</li>
+</ul>
+</div></div></body></html>

@@ -1,0 +1,21 @@
+# Copia este archivo como  .env  (en esta misma carpeta; no se sube a git) y llena los valores.
+# Despues:  npm install   y   npm start      -> panel en http://localhost:3000
+
+# El mismo MySQL y la misma base que usan las 5 API de los nodos
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=
+DB_PASSWORD=
+DB_NAME=argos
+
+# Clave para n8n (cabecera X-API-Key). Puede ser la misma de las API de los nodos.
+API_KEY=
+
+PUERTO=3000
+
+# Opcional. Sin MQTT_URL el panel y las alertas funcionan igual, pero no se publica cmd/alarma.
+# Broker del curso: MQTT_URL=mqtt://broker.hivemq.com:1883 (publico: usuario y contrasena se ignoran).
+# Con Mosquitto propio: usuario "api" de servidor/mosquitto/acl.
+MQTT_URL=
+MQTT_USER=api
+MQTT_PASSWORD=

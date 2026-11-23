@@ -1,0 +1,118 @@
+/* Argos: tokens de identidad. Colores muestreados del poster (Argos_Poster_B_ventanas.pdf). */
+:root {
+  color-scheme: light;
+
+  /* marca */
+  --negro: #121212;
+  --marino: #111728;
+  --azul: #2f4fd8;
+  --cian: #21c7e6;
+  --lila: #c49af5;
+
+  /* superficies */
+  --papel: #f4f4f0;
+  --sup: #ffffff;
+  --barra: #e9f0ff;
+  --borde: #9fb1f5;
+  --sombra: #a8b8ff;
+  --linea: #dcdcd4;
+
+  /* texto */
+  --tinta: #111728;
+  --tinta-2: #4a5165;
+  --tinta-3: #5f6776;
+  --acento-texto: #2f4fd8;
+  --foco: #2f4fd8;
+
+  /* estados: el color nunca va solo, siempre con forma o texto */
+  --ok: #10b981;
+  --ok-texto: #04724f;
+  --ok-fondo: #e3f7ef;
+  --alerta: #ef4444;
+  --alerta-texto: #b91c1c;
+  --alerta-fondo: #fdeaea;
+  --offline: #6a7280;
+  --offline-texto: #4a5165;
+  --offline-fondo: #ececea;
+  --banda: #2f4fd81f;
+
+  /* tipografia */
+  --f-titulo: "Space Grotesk Variable", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono Variable", ui-monospace, Consolas, monospace;
+
+  --t-xs: 0.75rem;
+  --t-sm: 0.875rem;
+  --t-md: 1rem;
+  --t-lg: 1.25rem;
+  --t-xl: 1.625rem;
+  --t-2xl: 2.25rem;
+  --t-dato: 4.5rem;
+
+  /* espacio */
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 24px;
+  --e-6: 32px;
+  --e-7: 48px;
+
+  --desfase: 6px;
+  --salida: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    color-scheme: dark;
+    --papel: #0c1020;
+    --sup: #151c33;
+    --barra: #1e2848;
+    --borde: #4460d6;
+    --sombra: #2f4fd8;
+    --linea: #29314d;
+    --tinta: #eef1fa;
+    --tinta-2: #b9c1d9;
+    --tinta-3: #8f98b3;
+    --acento-texto: #9db0ff;
+    --foco: #21c7e6;
+    --ok-texto: #4fdcae;
+    --ok-fondo: #0f3a30;
+    --alerta-texto: #ff8f8f;
+    --alerta-fondo: #46181c;
+    --offline: #8f98b3;
+    --offline-texto: #b9c1d9;
+    --offline-fondo: #232b45;
+    --banda: #6f8bff2e;
+  }
+}
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --papel: #0c1020;
+  --sup: #151c33;
+  --barra: #1e2848;
+  --borde: #4460d6;
+  --sombra: #2f4fd8;
+  --linea: #29314d;
+  --tinta: #eef1fa;
+  --tinta-2: #b9c1d9;
+  --tinta-3: #8f98b3;
+  --acento-texto: #9db0ff;
+  --foco: #21c7e6;
+  --ok-texto: #4fdcae;
+  --ok-fondo: #0f3a30;
+  --alerta-texto: #ff8f8f;
+  --alerta-fondo: #46181c;
+  --offline: #8f98b3;
+  --offline-texto: #b9c1d9;
+  --offline-fondo: #232b45;
+  --banda: #6f8bff2e;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --t-dato: 3.5rem;
+    --t-2xl: 1.75rem;
+    --desfase: 4px;
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "name": "Argos - avisos graves (WhatsApp de Meta)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Cada minuto",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1",
+              "name": "api_url",
+              "value": "http://localhost:3000",
+              "type": "string"
+            },
+            {
+              "id": "c2",
+              "name": "api_key",
+              "value": "PON_AQUI_LA_API_KEY_DEL_SERVICIO_CENTRAL",
+              "type": "string"
+            },
+            {
+              "id": "m1",
+              "name": "meta_token",
+              "value": "PON_AQUI_EL_TOKEN_DE_ACCESO_DE_META",
+              "type": "string"
+            },
+            {
+              "id": "m2",
+              "name": "meta_phone_number_id",
+              "value": "PON_AQUI_EL_PHONE_NUMBER_ID",
+              "type": "string"
+            },
+            {
+              "id": "m3",
+              "name": "meta_version",
+              "value": "PON_AQUI_LA_VERSION_DEL_EJEMPLO_CURL",
+              "type": "string"
+            },
+            {
+              "id": "m4",
+              "name": "meta_plantilla",
+              "value": "argos_alerta",
+              "type": "string"
+            },
+            {
+              "id": "m5",
+              "name": "meta_idioma",
+              "value": "es_MX",
+              "type": "string"
+            },
+            {
+              "id": "m6",
+              "name": "meta_telefonos",
+              "value": "PON_AQUI_LOS_TELEFONOS_SEPARADOS_POR_COMA",
+              "type": "string"
+            },
+            {
+              "id": "c7",
+              "name": "hora_inicio",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "c8",
+              "name": "hora_fin",
+              "value": 22,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Configuracion",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "notes": "Lo unico que se edita: api_key, callmebot_telefono y callmebot_apikey. n8n corre en el mismo servidor que el central (localhost:3000). No exportes este flujo a git con los valores llenos."
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.api_url }}/api/notificaciones/pendientes?canal=whatsapp",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $json.api_key }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Leer pendientes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Arma el aviso de WhatsApp (API oficial de Meta, mensaje de plantilla) con todos los avisos graves pendientes.\n// De noche (fuera de hora_inicio..hora_fin, hora de Monterrey) no manda nada: los avisos se quedan\n// pendientes y salen juntos, como resumen, en la primera vuelta despues de hora_inicio.\nconst CANAL = 'whatsapp';\nconst cfg = $('Configuracion').first().json;\nconst pendientes = ($input.first().json.pendientes ?? []).filter((p) => p.canal === CANAL);\nconst hora = Number(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Monterrey', hour: 'numeric', hourCycle: 'h23' }).format(new Date()));\nif (pendientes.length === 0 || hora < cfg.hora_inicio || hora >= cfg.hora_fin) return [];\n\nconst NOMBRE = { temperatura: 'Temperatura fuera de rango', humedad: 'Humedad fuera de rango', puerta_abierta: 'Puerta abierta de mas', nodo_sin_reporte: 'Nodo sin reportar', sensor_falla: 'Falla de sensor', golpe: 'Golpe en el anaquel', movimiento_fuera_de_horario: 'Movimiento fuera de horario', luz: 'Luz fuera de horario' };\nconst UNIDAD = { temperatura: ' C', humedad: ' % HR' };\nconst fmt = new Intl.DateTimeFormat('es-MX', { timeZone: 'America/Monterrey', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });\nconst lineas = pendientes.map((p) => {\n  const valor = UNIDAD[p.tipo] && p.valor !== null ? ' (' + p.valor + UNIDAD[p.tipo] + ')' : '';\n  const estado = p.ts_fin ? 'ya se resolvio' : 'SIGUE ACTIVA';\n  return '- ' + (NOMBRE[p.tipo] ?? p.tipo) + valor + ', nodo ' + p.id_nodo + ', desde ' + fmt.format(new Date(p.ts_inicio)) + ': ' + estado;\n});\nconst titulo = pendientes.length === 1 ? '1 alerta grave' : pendientes.length + ' alertas graves';\n// La plantilla de Meta recibe UN parametro de texto: sin saltos de linea ni tabuladores, sin 4 espacios seguidos.\nlet texto = (titulo + ': ' + lineas.map((l) => l.replace(/^- /, '')).join(' | ')).split(/[^!-~¡-ÿ]+/).filter(Boolean).join(' ');\nif (texto.length > 900) texto = texto.slice(0, 897) + '...';\nconst telefonos = String(cfg.meta_telefonos ?? '').split(',').map((t) => t.replace(/[^0-9]/g, '')).filter((t) => t.length >= 10);\nif (telefonos.length === 0) throw new Error('Configuracion.meta_telefonos esta vacio o mal escrito');\n// Una salida por destinatario: Meta manda a un numero por peticion.\nreturn telefonos.map((to) => ({ json: { canal: CANAL, ids: pendientes.map((p) => p.id_alerta), to, texto } }));"
+      },
+      "id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Aviso WhatsApp",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/{{ $('Configuracion').first().json.meta_version }}/{{ $('Configuracion').first().json.meta_phone_number_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Configuracion').first().json.meta_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: $json.to, type: 'template', template: { name: $('Configuracion').first().json.meta_plantilla, language: { code: $('Configuracion').first().json.meta_idioma }, components: [{ type: 'body', parameters: [{ type: 'text', text: $json.texto }] }] } }) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Mandar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput",
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Configuracion').first().json.api_url }}/api/notificaciones/enviadas",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $('Configuracion').first().json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ ids: $('Aviso WhatsApp').first().json.ids, canal: 'whatsapp' }) }}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Marcar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        0
+      ],
+      "executeOnce": true
+    }
+  ],
+  "connections": {
+    "Cada minuto": {
+      "main": [
+        [
+          {
+            "node": "Configuracion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuracion": {
+      "main": [
+        [
+          {
+            "node": "Leer pendientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer pendientes": {
+      "main": [
+        [
+          {
+            "node": "Aviso WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aviso WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Mandar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mandar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Marcar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Monterrey"
+  },
+  "pinData": {}
+}

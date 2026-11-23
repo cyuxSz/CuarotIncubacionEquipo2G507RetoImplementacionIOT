@@ -1,0 +1,59 @@
+<html><head><meta charset="utf-8"><style>body{font-family:'Times New Roman';font-size:12pt;line-height:1.4}</style></head><body>
+<h1>Argos · Prueba y revisión del programa del nodo dht (Luis)</h1>
+<p>Iván Acosta · 22 de noviembre de 2026. Programa revisado: <b>firmware/arduino_ide/argos_dht</b> del zip de José María del 22-nov (JoseMaria_Garcia_Argos_completo_2026-11-22_0038.zip). Es la versión que está cargada en el nodo: manda los datos a la API por un túnel de Cloudflare con HTTPS (puerto 443) y usa el broker público broker.hivemq.com con los temas <code>argos-eq2/invernadero/...</code>.</p>
+<p><b>Antes de cargar cualquier programa en el nodo, avisar a José María:</b> el nodo tiene guardada la configuración del túnel y se reemplaza al cargar otro programa o otro secrets.h.</p>
+
+<h2>1. Resultado de la revisión del código</h2>
+<ul>
+<li><b>Compila sin errores</b> para NodeMCU 1.0 (22-nov, arduino-cli, con la plantilla de secrets): 37 % de la flash y 40 % de la RAM. Frente a la versión del 21-nov solo cambian la conexión HTTPS por el túnel y los temas MQTT con el prefijo argos-eq2; las reglas de alarma, la pantalla, el botón y los LEDs son iguales.</li>
+<li><b>Lo que vio José María el 21-nov:</b> el DHT22 dio lecturas inválidas unos 3 minutos seguidos y luego se recuperó solo; mientras tanto la pantalla mostró guiones. Coincide con lo de abajo: es el sensor, no la pantalla.</li>
+<li><b>Con HTTPS cada envío puede tardar:</b> el tope de espera por petición es de 5 s (1 s en red local). Si el túnel o el internet van lentos, el programa se queda esperando ese tiempo y el botón y la pantalla responden tarde. No es falla del nodo.</li>
+<li><b>Los guiones "--" de la pantalla no son falla de la pantalla.</b> El programa dibuja los títulos siempre, y cambia los números por "--.-" y "--" cuando el DHT22 falla <b>3 lecturas seguidas</b> (con lectura cada 30 s, son 90 s) o cuando no ha dado ninguna lectura válida desde que encendió. Al mismo tiempo el LED rojo parpadea rápido y la barra de arriba dice "FALLA DEL SENSOR". Con una sola lectura buena los números regresan. El problema está en los cables del DHT22 (+ al riel de abajo +3V3 col. 26, out a E24, − al riel de abajo GND col. 27; en la columna 24 también van el puente de D4, de A11 a C24, y R1 de 10 kΩ de pie de A24 al riel de abajo +3V3; letras impresas en la protoboard).</li>
+<li><b>La pantalla se apaga sola a los 30 s</b> (ahorro). Una pulsación corta del botón la prende. Al probar, que no se confunda con una falla.</li>
+<li><b>Rangos reales:</b> sin el modo demo la alarma usa 22–28 °C y 40–60 % HR. En un salón con aire acondicionado puede sonar sola a los 90 s. Para probar en la mesa conviene activar <b>MODO_DEMO</b> (quitar las dos diagonales de <code>// #define MODO_DEMO</code> al inicio de argos_dht.ino): rangos de 15–30 °C y 20–80 % HR y una lectura cada 5 s, así la alarma reacciona en 15 s. <b>Hay que volver a comentarlo antes de instalar el nodo en el cuarto</b>, y la tabla Umbral de la base debe tener los mismos rangos.</li>
+<li><b>Pulsación larga sin alarma:</b> igual activa el silencio de 30 min y lo registra en la API; una segunda pulsación larga lo cancela. Funciona, pero puede confundir en una demostración.</li>
+<li><b>Comentario viejo:</b> la línea 5 de argos_dht.ino todavía dice "OLED ... I2C"; la pantalla va por SPI. No afecta al programa.</li>
+<li><b>Riesgo conocido:</b> el pin DC de la pantalla va en D3 (GPIO0), que debe estar en alto al arrancar. Si el NodeMCU no arranca o se reinicia con la pantalla conectada, esa es la primera sospecha.</li>
+<li><b>Sin secrets.h</b> el programa usa la plantilla vacía y corre sin red: LED verde parpadeando lento, barra "SIN RED" y en el monitor "[api] ... sin WiFi, no se envia". Es lo esperado.</li>
+</ul>
+
+<h2>2. Antes de cargar el programa de Luis: prueba del hardware</h2>
+<p>Cargar <b>prueba_nodo_dht.ino</b> (está en esta carpeta de Drive y en C:\dev\js\iot\pruebas\prueba_nodo_dht). Monitor serie a 115200. Prueba pines, LEDs, buzzer, pantalla y botón, y después vigila el DHT22 cada 2.5 s contando lecturas buenas y fallidas.</p>
+<p><b>Prueba de meneo:</b> con el programa corriendo, mover suavemente <b>un cable a la vez</b> del DHT22 y mirar si sube el contador de fallas. El cable que lo hace subir es el falso contacto. Con los cables de la pantalla, mirar el cuadrito que parpadea en la esquina.</p>
+<p>☐ Pines en reposo bien · ☐ LED verde · ☐ LED rojo · ☐ Buzzer · ☐ Pantalla completa · ☐ Botón · ☐ DHT22 sin fallas en 10 min · ☐ Meneo sin fallas</p>
+
+<h2>3. Pruebas del programa de Luis sin red (con MODO_DEMO)</h2>
+<p>Cargar argos_dht desde Arduino IDE (placa NodeMCU 1.0) y abrir el monitor serie a 115200. Marcar cada prueba.</p>
+<p><b>☐ B1. Arranque.</b> Un pitido corto, el LED verde y luego el rojo se prenden un momento, y en el monitor sale "[dht] Argos arrancando (motivo del reinicio)".</p>
+<p><b>☐ B2. Pantalla.</b> A los ~3 s muestra temperatura grande y humedad abajo; la barra dice "SIN RED". A los 30 s se apaga; una pulsación corta la vuelve a prender.</p>
+<p><b>☐ B3. Lecturas.</b> En el monitor sale "[dht] T = .. C  HR = .. %" cada 5 s (cada 30 s sin modo demo). Los valores son razonables para el salón.</p>
+<p><b>☐ B4. Alarma local.</b> Soplar con aliento sobre el sensor (humedad arriba de 80 %) o calentarlo con la mano (arriba de 30 °C). Tras 3 lecturas fuera (15 s): suena el buzzer, el LED rojo queda fijo, la barra se invierte con "ALARMA" y aparece la etiqueta ALTA. Al retirar, tras 3 lecturas dentro del rango (con su margen), se apaga.</p>
+<p><b>☐ B5. Silencio.</b> Con la alarma sonando, mantener el botón más de 1.5 s: el buzzer calla, la barra dice "ALARMA SILENCIADA" y el LED rojo sigue fijo; en el monitor, "[dht] buzzer silenciado 30 min". Otra pulsación larga: "[dht] silencio cancelado" y vuelve a sonar si sigue la alarma.</p>
+<p><b>☐ B6. Falla del sensor.</b> Desconectar el cable out del DHT22. Tras 3 lecturas: LED rojo en parpadeo rápido, barra "FALLA DEL SENSOR" y números "--". En el monitor, "[dht] lectura invalida" y el evento sensor_error. Reconectar: con una lectura buena regresan los números.</p>
+<p><b>☐ B7. Estabilidad.</b> Dejarlo 30 min sin tocar. No debe aparecer "FALLA DEL SENSOR" ni reiniciarse (si se reinicia, el monitor vuelve a mostrar "Argos arrancando").</p>
+
+<h2>4. Pruebas con red (después; necesitan secrets.h y el servidor)</h2>
+<p>Requisitos: avisar a José María antes; secrets.h lleno por quien flashea (en la carpeta del sketch, copia de secrets.example.h) y nunca compartido:</p>
+<ul>
+<li><b>WIFI_SSID y WIFI_PASSWORD:</b> la red de quien prueba o su hotspot, de 2.4 GHz y con contraseña normal (la red del Tec que pide usuario no sirve).</li>
+<li><b>API_HOST, API_PORT y API_KEY:</b> la dirección del túnel del dht (xxxx.trycloudflare.com, sin https://), puerto 443 y la clave; los pasa José María en privado. En la misma red que el servidor también sirve la IP de la PC con el puerto 3001.</li>
+<li><b>MQTT_HOST:</b> broker.hivemq.com (puerto 1883, sin contraseña).</li>
+</ul>
+<p>Además, la API del dht y el túnel tienen que estar prendidos en la PC del servidor.</p>
+<p><b>☐ C1. WiFi.</b> "[wifi] conectado, IP ..."; LED verde fijo y barra "EN LINEA" cuando la API o el broker responden.</p>
+<p><b>☐ C2. Mediciones.</b> Al primer envío sale "[api] HTTPS a xxxx.trycloudflare.com"; después "[api] POST /api/mediciones -> 201" y una fila nueva en la tabla Medicion. Si sale 301, el puerto no es 443; si sale 401, la clave está mal.</p>
+<p><b>☐ C3. Latido.</b> Cada 60 s, "[api] POST /api/latido -> 200".</p>
+<p><b>☐ C4. Eventos y acciones.</b> Al repetir B4 a B6: POST de sensor_error, led_rojo y buzzer con 201.</p>
+<p><b>☐ C5. MQTT.</b> En MQTT Explorer, conectado a broker.hivemq.com:1883: argos-eq2/invernadero/telemetria/dht con cada lectura y argos-eq2/invernadero/estado/dht retenido en "online". Al desconectar el nodo, a los ~45 s cambia a "offline". El broker es público: no publicar nada privado.</p>
+<p><b>☐ C6. Orden de la nube.</b> Publicar "on" en argos-eq2/invernadero/cmd/alarma: el buzzer suena aunque la temperatura esté normal, y deja de sonar a los 150 s si no se repite la orden; "off" lo apaga.</p>
+<p><b>☐ C7. Respaldo sin MQTT.</b> Con MQTT_HOST vacío o sin conexión al broker, el nodo consulta GET /api/comandos/dht en cada lectura.</p>
+
+<h2>5. Qué reportar a Luis</h2>
+<ul>
+<li>Qué pruebas pasaron y cuáles no, con la línea del monitor serie o una foto.</li>
+<li>Resultado de la prueba de meneo: qué cable causaba los guiones.</li>
+<li>Si el NodeMCU se reinicia o no arranca con la pantalla conectada (pin D3).</li>
+<li>Que José María sepa si el nodo quedó con otro secrets.h, para volver a cargar el del túnel.</li>
+<li>Recordatorio: volver a comentar MODO_DEMO antes de instalar en el cuarto, o dejarlo activo solo para la Expo.</li>
+</ul>
+</body></html>

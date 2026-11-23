@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" width="1.5in" height="0.75in" viewBox="0 0 1500 750">
+<g id="icon">
+<rect x="0" y="0" width="1500" height="750" rx="60" fill="#1f4f8f" stroke="#222" stroke-width="10"/>
+<rect x="120" y="150" width="1260" height="450" fill="#0b0b12" stroke="#555" stroke-width="10"/>
+<text x="750" y="315" fill="#7fb3ff" font-family="Droid Sans, sans-serif" font-size="80" text-anchor="middle">SSD1306 128×32</text>
+<text x="600" y="620" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">GND</text>
+<rect id="connector0pin" x="570" y="660" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="700" y="620" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">VCC</text>
+<rect id="connector1pin" x="670" y="660" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="800" y="620" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">SCL</text>
+<rect id="connector2pin" x="770" y="660" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+<text x="900" y="620" fill="#fff" font-family="Droid Sans, sans-serif" font-size="55" text-anchor="middle">SDA</text>
+<rect id="connector3pin" x="870" y="660" width="60" height="60" fill="#d4af37" stroke="#8a6d1f" stroke-width="8"/>
+</g>
+</svg>

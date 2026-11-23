@@ -1,0 +1,37 @@
+<html><head><meta charset="utf-8"><style>
+body{margin:0;background:#fff;font-family:Segoe UI,Arial;width:1900px}
+h1{font-size:30px;margin:18px 24px 6px}
+p{font-size:20px;margin:4px 24px 10px}
+.fila{display:flex;gap:24px;padding:0 24px 24px;align-items:flex-start}
+.zoom{position:relative;width:1010px;height:1060px;overflow:hidden;border:2px solid #888;flex:none}
+.zoom img{position:absolute;width:2040px;left:-1030px;top:0}
+table{border-collapse:collapse}td,th{border:1px solid #aaa;padding:6px 10px;font-size:20px;text-align:left}
+th{background:#eef}
+.todo img{width:840px;border:1px solid #ccc}
+.k{font-weight:700;white-space:nowrap}
+</style></head><body>
+<h1>Estación del anaquel · nodo luz (placa de la derecha)</h1>
+<p>Letras impresas en la protoboard (A abajo, J arriba). El nodo luz toma el 3.3 V de su propio pin; no usa el riel +3V3 de abajo.</p>
+<div class="fila">
+<div class="zoom">
+<img src="file:///C:/dev/js/iot/chema_privado_22nov/Argos_PRIVADO_22nov/hardware/fritzing/salida/estacion_anaquel_breadboard.svg">
+</div>
+<div>
+<table>
+<tr><th>Qué</th><th>De</th><th>A</th></tr>
+<tr><td class="k">VIN (5 V)</td><td>J34</td><td>Riel de arriba <b>+5V</b>, col. 34</td></tr>
+<tr><td class="k">GND</td><td>J35 y A35</td><td>Riel de arriba <b>GND</b> y riel de abajo <b>GND</b>, col. 35</td></tr>
+<tr><td class="k">3V3 para la LDR</td><td>A43 (pin 3V3)</td><td><b>C59</b></td></tr>
+<tr><td class="k">LDR</td><td>E59</td><td><b>H58</b> (sin polaridad)</td></tr>
+<tr><td class="k">A0</td><td>J48 (pin A0)</td><td><b>I58</b></td></tr>
+<tr><td class="k">R2 de 10 kΩ</td><td>J58</td><td>Riel de arriba <b>GND</b>, col. 58 (café, negro, naranja)</td></tr>
+<tr><td class="k">D7 → LED verde</td><td>A39</td><td>C53; resistencia de 330 Ω cruza el canal en la col. 53; ánodo en J53; cátodo al riel de arriba GND, col. 52</td></tr>
+<tr><td class="k">D8 → LED rojo</td><td>A38</td><td>C55; resistencia de 330 Ω cruza el canal en la col. 55; ánodo en J55; cátodo al riel de arriba GND, col. 56</td></tr>
+<tr><td class="k">Entrada USB-C</td><td>+ y −</td><td>Riel de arriba <b>+5V</b> y <b>GND</b>, col. 32 (cuidar la polaridad)</td></tr>
+</table>
+<p style="margin:14px 0 6px"><b>Cómo funciona el divisor:</b> 3V3 → LDR → A0 → 10 kΩ → GND. Más luz = número más alto (0 a 1024).</p>
+<p style="margin:14px 0 6px"><b>Estación completa (acel a la izquierda, luz a la derecha):</b></p>
+<div class="todo"><img src="file:///C:/dev/js/iot/chema_privado_22nov/Argos_PRIVADO_22nov/hardware/fritzing/salida/estacion_anaquel_breadboard.svg"></div>
+</div>
+</div>
+</body></html>

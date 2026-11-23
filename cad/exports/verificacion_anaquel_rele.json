@@ -1,0 +1,325 @@
+{
+  "nodo": "anaquel_rele",
+  "envolvente_mm": [
+    173.9,
+    80.0,
+    40.5
+  ],
+  "envolvente_con_orejas_mm": [
+    201.9,
+    80.0,
+    40.5
+  ],
+  "paso_pernos_mm": 0.0,
+  "orientacion": {
+    "base": "espalda en la cama",
+    "tapa": "frente en la cama",
+    "capuchon_ldr": "espalda (cola) en la cama; PETG negro",
+    "difusor_ldr": "plano; PETG blanco o natural, 100 % relleno (lineas concentricas)",
+    "soporte_ldr": "placa en la cama; PETG negro"
+  },
+  "notas": {
+    "z_usb": 16.1,
+    "collar_led": 3.6,
+    "ldr_ventana_mm": 4.5,
+    "ldr_difusor_mm": 0.9,
+    "ldr_semiangulo_visera_grados": 51.48,
+    "ldr_largo_capuchon_mm": 26.2
+  },
+  "interferencias": [],
+  "holguras": [
+    {
+      "parte": "protoboard",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "nodemcu_acel",
+      "montado": false,
+      "min_mm": 4.07,
+      "ok": true
+    },
+    {
+      "parte": "nodemcu_luz_rele",
+      "montado": false,
+      "min_mm": 7.78,
+      "ok": true
+    },
+    {
+      "parte": "acel_C1",
+      "montado": false,
+      "min_mm": 6.94,
+      "ok": true
+    },
+    {
+      "parte": "acel_R5",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "acel_R6",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "acel_ADS1115_tira",
+      "montado": true,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "acel_ADS1115",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "acel_GY61_tira",
+      "montado": true,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "acel_GY61",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "luz_rele_C1",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "luz_rele_R5",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "luz_rele_R6",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "luz_rele_R2",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_acel_LED_V_A",
+      "montado": false,
+      "min_mm": 4.34,
+      "ok": true
+    },
+    {
+      "parte": "dupont_acel_LED_V_K",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_acel_LED_R_A",
+      "montado": false,
+      "min_mm": 4.34,
+      "ok": true
+    },
+    {
+      "parte": "dupont_acel_LED_R_K",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_LED_V_A",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_LED_V_K",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_LED_R_A",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_LED_R_K",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_LDR_1",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_LDR_2",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_Rele_IN1",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_Rele_IN2",
+      "montado": false,
+      "min_mm": 7.1,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_Rele_IN3",
+      "montado": false,
+      "min_mm": 4.56,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_Rele_VCC",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_Rele_GND",
+      "montado": false,
+      "min_mm": 7.25,
+      "ok": true
+    },
+    {
+      "parte": "dupont_luz_rele_Rele_JD-VCC",
+      "montado": false,
+      "min_mm": 7.1,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Entrada5V_+",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "dupont_Entrada5V_-",
+      "montado": false,
+      "min_mm": 8.5,
+      "ok": true
+    },
+    {
+      "parte": "led_verde",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_verde_patas",
+      "montado": true,
+      "min_mm": 1.13,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo_patas",
+      "montado": true,
+      "min_mm": 1.13,
+      "ok": true
+    },
+    {
+      "parte": "led_verde_2",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_verde_2_patas",
+      "montado": true,
+      "min_mm": 1.13,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo_2",
+      "montado": true,
+      "min_mm": 0.0,
+      "ok": true
+    },
+    {
+      "parte": "led_rojo_2_patas",
+      "montado": true,
+      "min_mm": 1.13,
+      "ok": true
+    },
+    {
+      "parte": "entrada_5v",
+      "montado": true,
+      "min_mm": 0.3,
+      "ok": true
+    }
+  ],
+  "volumenes": {
+    "base": {
+      "volumen_cm3": 70.38,
+      "masa_g_petg": 89.4,
+      "caja_mm": [
+        201.9,
+        80.0,
+        38.0
+      ]
+    },
+    "tapa": {
+      "volumen_cm3": 37.5,
+      "masa_g_petg": 47.6,
+      "caja_mm": [
+        173.9,
+        80.0,
+        13.8
+      ]
+    },
+    "capuchon_ldr": {
+      "volumen_cm3": 4.11,
+      "masa_g_petg": 5.2,
+      "caja_mm": [
+        16.0,
+        27.0,
+        26.2
+      ]
+    },
+    "difusor_ldr": {
+      "volumen_cm3": 0.07,
+      "masa_g_petg": 0.1,
+      "caja_mm": [
+        10.0,
+        10.0,
+        0.9
+      ]
+    },
+    "soporte_ldr": {
+      "volumen_cm3": 2.27,
+      "masa_g_petg": 2.9,
+      "caja_mm": [
+        34.0,
+        18.0,
+        16.0
+      ]
+    }
+  }
+}

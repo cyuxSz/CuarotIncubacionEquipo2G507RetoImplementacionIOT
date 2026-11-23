@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argos · Cuarto de incubación</title>
+<!-- Panel de Argos. Lo sirve servidor/central (http://servidor:3000/). No usa nada de internet: funciona
+     en la red del invernadero o de la Expo sin salida a la web. Pide GET /panel/datos cada 5 s. -->
+<style>
+  :root {
+    --plano: #f9f9f7; --sup: #fcfcfb; --tinta: #0b0b0b; --tinta2: #52514e; --apagado: #898781;
+    --rejilla: #e1e0d9; --eje: #c3c2b7; --serie: #2a78d6; --banda: #2a78d61f;
+    --bien: #0ca30c; --aviso: #fab219; --serio: #ec835a; --critico: #d03b3b; --borde: #e1e0d9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --plano: #0d0d0d; --sup: #1a1a19; --tinta: #f0efec; --tinta2: #c3c2b7; --apagado: #898781;
+      --rejilla: #2c2c2a; --eje: #383835; --serie: #3987e5; --banda: #3987e52b; --borde: #2c2c2a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--plano); color: var(--tinta); font: 15px/1.45 system-ui, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 16px; }
+  header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  header svg { width: 44px; height: 30px; flex: none; }
+  h1 { font-size: 20px; margin: 0; font-weight: 650; }
+  h2 { font-size: 13px; margin: 0 0 10px; font-weight: 600; color: var(--tinta2); text-transform: uppercase; letter-spacing: .05em; }
+  .sub { color: var(--tinta2); font-size: 13px; }
+  .enlace { margin-left: auto; font-size: 13px; color: var(--tinta2); display: flex; align-items: center; gap: 6px; }
+  .punto { width: 9px; height: 9px; border-radius: 50%; background: var(--apagado); flex: none; }
+  .tarjeta { background: var(--sup); border: 1px solid var(--borde); border-radius: 10px; padding: 14px; }
+  .rejilla { display: grid; gap: 12px; }
+  .fichas { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 12px; }
+  .ficha .rotulo { font-size: 12px; color: var(--tinta2); text-transform: uppercase; letter-spacing: .05em; }
+  .ficha .valor { font-size: 32px; font-weight: 650; line-height: 1.15; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+  .ficha .valor small { font-size: 16px; font-weight: 500; color: var(--tinta2); }
+  .ficha .pie { font-size: 12.5px; color: var(--tinta2); }
+  .estado { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 600; }
+  .estado i { font-style: normal; width: 16px; height: 16px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 11px; color: #fff; }
+  .bien i { background: var(--bien); } .critico i { background: var(--critico); } .serio i { background: var(--serio); }
+  .aviso i { background: var(--aviso); color: #0b0b0b; } .neutro i { background: var(--apagado); }
+  #alertasActivas { margin-bottom: 12px; display: grid; gap: 8px; }
+  .alerta { display: flex; gap: 10px; align-items: center; border-left: 5px solid var(--critico); }
+  .alerta.calma { border-left-color: var(--bien); }
+  .alerta b { font-weight: 650; }
+  .nodos { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); margin-bottom: 12px; }
+  .nodo .nombre { font-weight: 650; display: flex; align-items: center; gap: 7px; }
+  .nodo .det { font-size: 12.5px; color: var(--tinta2); margin-top: 3px; }
+  .graficas { grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); margin-bottom: 12px; }
+  .filtros { display: flex; gap: 6px; margin: 4px 0 12px; align-items: center; flex-wrap: wrap; }
+  .filtros button { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--borde); background: var(--sup); color: var(--tinta); cursor: pointer; }
+  .filtros button[aria-pressed="true"] { background: var(--tinta); color: var(--plano); border-color: var(--tinta); }
+  .grafica { position: relative; }
+  .grafica svg { width: 100%; height: 220px; display: block; touch-action: none; }
+  .grafica text { font-size: 11px; fill: var(--apagado); }
+  .globo { position: absolute; pointer-events: none; background: var(--tinta); color: var(--plano); font-size: 12.5px; padding: 5px 8px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, -130%); display: none; }
+  .tablas { grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); }
+  .desliza { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th { text-align: left; font-weight: 600; color: var(--tinta2); font-size: 12px; padding: 4px 8px 6px 0; border-bottom: 1px solid var(--eje); }
+  td { padding: 6px 8px 6px 0; border-bottom: 1px solid var(--rejilla); vertical-align: top; }
+  td.n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .vacio { color: var(--tinta2); font-size: 13.5px; padding: 6px 0; }
+  details { margin-top: 8px; font-size: 13px; color: var(--tinta2); }
+  details .desliza { max-height: 220px; overflow-y: auto; }
+  footer { color: var(--apagado); font-size: 12px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg viewBox="0 0 44 30" aria-hidden="true"><path d="M2 15 Q22 -5 42 15 Q22 35 2 15Z" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="22" cy="15" r="7" fill="currentColor"/></svg>
+    <div><h1>Argos · Cuarto de incubación in vitro</h1><div class="sub">Invernadero Académico · monitoreo ambiental</div></div>
+    <div class="enlace"><span class="punto" id="puntoEnlace"></span><span id="textoEnlace">Conectando…</span></div>
+  </header>
+
+  <div id="alertasActivas"></div>
+  <div class="rejilla fichas" id="fichas"></div>
+
+  <h2>Nodos</h2>
+  <div class="rejilla nodos" id="nodos"></div>
+
+  <div class="filtros" role="group" aria-label="Periodo de las gráficas">
+    <span class="sub">Periodo:</span>
+    <button data-h="6" aria-pressed="false">6 h</button><button data-h="24" aria-pressed="true">24 h</button><button data-h="168" aria-pressed="false">7 días</button>
+  </div>
+  <div class="rejilla graficas">
+    <div class="tarjeta"><h2>Temperatura (°C)</h2><div class="grafica" id="gTemperatura"></div></div>
+    <div class="tarjeta"><h2>Humedad relativa (%)</h2><div class="grafica" id="gHumedad"></div></div>
+    <div class="tarjeta"><h2>Luz junto a las lámparas (ADC 0–1023)</h2><div class="grafica" id="gLuz"></div></div>
+  </div>
+
+  <div class="rejilla tablas">
+    <div class="tarjeta"><h2>Alertas del periodo</h2><div class="desliza" id="tAlertas"></div></div>
+    <div class="tarjeta"><h2>Últimos eventos</h2><div class="desliza" id="tEventos"></div></div>
+  </div>
+  <footer>Horas en tiempo de Monterrey. La zona sombreada de cada gráfica es el rango permitido. Se actualiza cada 5 s.</footer>
+</main>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ZONA = "America/Monterrey";
+const fHora = new Intl.DateTimeFormat("es-MX", { timeZone: ZONA, hour: "2-digit", minute: "2-digit", hour12: false });
+const fDia = new Intl.DateTimeFormat("es-MX", { timeZone: ZONA, day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false });
+const fFecha = new Intl.DateTimeFormat("es-MX", { timeZone: ZONA, day: "numeric", month: "short" });
+const fSeg = new Intl.DateTimeFormat("es-MX", { timeZone: ZONA, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+const NOMBRE_NODO = { dht: "Temperatura y humedad", luz: "Luz", pir: "Movimiento", puerta: "Puerta", acel: "Golpes" };
+const NOMBRE_ALERTA = {
+  temperatura: "Temperatura fuera de rango", humedad: "Humedad fuera de rango", puerta_abierta: "Puerta abierta de más",
+  nodo_sin_reporte: "Nodo sin reportar", sensor_falla: "Falla de sensor", golpe: "Golpe en el anaquel",
+  movimiento_fuera_de_horario: "Movimiento fuera de horario", luz: "Luz fuera de horario",
+};
+const NOMBRE_EVENTO = { movimiento: "Movimiento", golpe: "Golpe", puerta_abierta: "Puerta abierta", puerta_cerrada: "Puerta cerrada", sensor_error: "Error de sensor" };
+let horas = 24, ultimaBuena = 0;
+const tablaAbierta = {};
+
+function hace(s) {
+  if (s == null) return "sin datos";
+  if (s < 60) return `hace ${Math.max(0, Math.round(s))} s`;
+  if (s < 3600) return `hace ${Math.round(s / 60)} min`;
+  if (s < 86400) return `hace ${Math.round(s / 3600)} h`;
+  return `hace ${Math.round(s / 86400)} d`;
+}
+const segDesde = (iso, ahora) => iso ? (new Date(ahora) - new Date(iso)) / 1000 : null;
+const marca = (clase, signo, texto) => `<span class="estado ${clase}"><i>${signo}</i>${esc(texto)}</span>`;
+
+function ficha(rotulo, valor, unidad, estado, pie) {
+  return `<div class="tarjeta ficha"><div class="rotulo">${esc(rotulo)}</div><div class="valor">${valor}${unidad ? ` <small>${esc(unidad)}</small>` : ""}</div>${estado}<div class="pie">${pie}</div></div>`;
+}
+
+function pintarFichas(d) {
+  const ult = (p) => d.ultimos.find((u) => u.parametro === p);
+  const umb = (p) => d.umbrales.find((u) => u.parametro === p);
+  const viejo = (u) => !u || segDesde(u.fecha_hora, d.ahora) > d.sin_reporte_s;
+  const medida = (p, rotulo, unidad, dec) => {
+    const u = ult(p), r = umb(p);
+    if (viejo(u)) return ficha(rotulo, "—", unidad, marca("neutro", "?", "Sin dato reciente"), u ? hace(segDesde(u.fecha_hora, d.ahora)) : "aún no llega ninguna lectura");
+    const fuera = r && (u.valor < r.minimo || u.valor > r.maximo);
+    const est = !r ? "" : fuera ? marca("critico", "!", u.valor > r.maximo ? "Alta" : "Baja") : marca("bien", "✓", "En rango");
+    return ficha(rotulo, u.valor.toFixed(dec), unidad, est, r ? `permitido ${r.minimo}–${r.maximo} ${esc(unidad)} · ${hace(segDesde(u.fecha_hora, d.ahora))}` : hace(segDesde(u.fecha_hora, d.ahora)));
+  };
+  let h = medida("temperatura", "Temperatura", "°C", 1) + medida("humedad", "Humedad", "% HR", 0);
+
+  const p = d.puerta;
+  h += !p ? ficha("Puerta", "—", "", marca("neutro", "?", "Sin dato"), "aún no llega ningún evento")
+    : ficha("Puerta", p.tipo === "puerta_abierta" ? "Abierta" : "Cerrada", "", p.tipo === "puerta_abierta" ? marca("aviso", "!", "Abierta") : marca("bien", "✓", "Cerrada"), `desde ${fHora.format(new Date(p.fecha_hora))} · ${hace(segDesde(p.fecha_hora, d.ahora))}`);
+
+  const l = ult("luz"), limite = Number(d.config.umbral_luz_adc);
+  h += viejo(l) ? ficha("Lámparas", "—", "", marca("neutro", "?", "Sin dato reciente"), l ? hace(segDesde(l.fecha_hora, d.ahora)) : "aún no llega ninguna lectura")
+    : ficha("Lámparas", l.valor >= limite ? "Encendidas" : "Apagadas", "", marca("neutro", l.valor >= limite ? "☀" : "☾", `lectura ${Math.round(l.valor)}`), `umbral ${limite} · ${hace(segDesde(l.fecha_hora, d.ahora))}`);
+
+  const ultimoEv = (tipo) => (d.ultimo_evento && d.ultimo_evento[tipo]) || d.eventos.find((e) => e.tipo === tipo);
+  const mov = ultimoEv("movimiento"), gol = ultimoEv("golpe");
+  h += ficha("Último movimiento", mov ? fHora.format(new Date(mov.fecha_hora)) : "—", "", mov && mov.fuera_de_horario ? marca("serio", "!", "Fuera de horario") : marca("neutro", "·", mov ? "En horario de acceso" : "Sin registro"), mov ? hace(segDesde(mov.fecha_hora, d.ahora)) : "");
+  h += ficha("Último golpe", gol ? (gol.magnitud != null ? gol.magnitud.toFixed(2) : "sí") : "—", gol && gol.magnitud != null ? "g" : "", marca("neutro", "·", gol ? fDia.format(new Date(gol.fecha_hora)) : "Sin registro"), gol ? hace(segDesde(gol.fecha_hora, d.ahora)) : "");
+  $("fichas").innerHTML = h;
+}
+
+function pintarAlertas(d) {
+  const activas = d.alertas.filter((a) => !a.ts_fin);
+  $("alertasActivas").innerHTML = activas.length === 0
+    ? `<div class="tarjeta alerta calma">${marca("bien", "✓", "Sin alertas activas")}</div>`
+    : activas.map((a) => `<div class="tarjeta alerta">${marca("critico", "!", a.grave ? "Alerta grave" : "Alerta")}<div><b>${esc(NOMBRE_ALERTA[a.tipo] ?? a.tipo)}</b> · ${esc(NOMBRE_NODO[a.id_nodo] ?? a.id_nodo)} · desde ${fDia.format(new Date(a.ts_inicio))} (${hace(segDesde(a.ts_inicio, d.ahora))})</div></div>`).join("");
+  $("tAlertas").innerHTML = d.alertas.length === 0 ? `<div class="vacio">No hubo alertas en el periodo.</div>` :
+    `<table><thead><tr><th>Inicio</th><th>Alerta</th><th>Nodo</th><th>Estado</th></tr></thead><tbody>${d.alertas.slice(0, 20).map((a) =>
+      `<tr><td class="n">${fDia.format(new Date(a.ts_inicio))}</td><td>${esc(NOMBRE_ALERTA[a.tipo] ?? a.tipo)}${a.grave ? " (grave)" : ""}</td><td>${esc(a.id_nodo)}</td><td>${a.ts_fin ? `cerrada ${fHora.format(new Date(a.ts_fin))}` : marca("critico", "!", "Activa")}</td></tr>`).join("")}</tbody></table>`;
+  $("tEventos").innerHTML = d.eventos.length === 0 ? `<div class="vacio">Aún no hay eventos.</div>` :
+    `<table><thead><tr><th>Hora</th><th>Evento</th><th>Nodo</th><th>Detalle</th></tr></thead><tbody>${d.eventos.slice(0, 20).map((e) =>
+      `<tr><td class="n">${fDia.format(new Date(e.fecha_hora))}</td><td>${esc(NOMBRE_EVENTO[e.tipo] ?? e.tipo)}</td><td>${esc(e.id_nodo)}</td><td>${e.magnitud != null ? e.magnitud.toFixed(2) + " g" : e.fuera_de_horario ? "fuera de horario" : ""}</td></tr>`).join("")}</tbody></table>`;
+}
+
+function pintarNodos(d) {
+  $("nodos").innerHTML = d.nodos.map((n) => {
+    const vivo = n.hace_s != null && n.hace_s <= d.sin_reporte_s && n.estado === "online";
+    const est = n.hace_s == null ? marca("neutro", "?", "Nunca ha reportado") : vivo ? marca("bien", "✓", "En línea") : marca("critico", "!", "Sin conexión");
+    return `<div class="tarjeta nodo"><div class="nombre">${esc(NOMBRE_NODO[n.id_nodo] ?? n.id_nodo)} <span class="sub">(${esc(n.id_nodo)})</span></div>${est}
+      <div class="det">${esc(n.sensor)} · ${esc(n.responsable)}</div><div class="det">último reporte ${hace(n.hace_s)}${n.rssi != null ? ` · WiFi ${n.rssi} dBm` : ""}</div></div>`;
+  }).join("");
+}
+
+// Grafica de linea de una sola serie (un solo eje), con la banda del rango permitido y cursor al pasar el raton.
+function grafica(id, puntos, o) {
+  const caja = $(id), W = 600, H = 220, m = { i: 38, d: 10, a: 8, b: 22 };
+  if (puntos.length < 2) { caja.innerHTML = `<div class="vacio">Aún no hay lecturas suficientes en este periodo.</div>`; return; }
+  const ys = puntos.map((p) => p.v);
+  let y0 = Math.min(...ys, o.minimo ?? Infinity), y1 = Math.max(...ys, o.maximo ?? -Infinity);
+  const holgura = Math.max((y1 - y0) * 0.12, o.holgura ?? 1);
+  y0 = Math.max(o.piso ?? -Infinity, y0 - holgura); y1 = Math.min(o.techo ?? Infinity, y1 + holgura);
+  const x0 = o.desde, x1 = o.hasta;
+  const X = (t) => m.i + (t - x0) / (x1 - x0) * (W - m.i - m.d), Y = (v) => H - m.b - (v - y0) / (y1 - y0) * (H - m.a - m.b);
+  const paso = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 250, 500].find((p) => (y1 - y0) / p <= 5) ?? 500;
+  let s = "";
+  if (o.minimo != null) {
+    const arriba = Y(Math.min(o.maximo, y1)), abajo = Y(Math.max(o.minimo, y0));
+    s += `<rect x="${m.i}" y="${arriba}" width="${W - m.i - m.d}" height="${Math.max(0, abajo - arriba)}" fill="var(--banda)"/>`;
+  }
+  for (let v = Math.ceil(y0 / paso) * paso; v <= y1; v += paso)
+    s += `<line x1="${m.i}" x2="${W - m.d}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rejilla)"/><text x="${m.i - 6}" y="${Y(v) + 4}" text-anchor="end">${+v.toFixed(1)}</text>`;
+  const marcas = 5, largo = x1 - x0, f = largo > 36 * 3600e3 ? fFecha : fHora;
+  for (let i = 0; i <= marcas; i++) {
+    const t = x0 + largo * i / marcas;
+    s += `<text x="${X(t)}" y="${H - 5}" text-anchor="${i === 0 ? "start" : i === marcas ? "end" : "middle"}">${f.format(new Date(t))}</text>`;
+  }
+  // Un hueco largo sin datos corta la linea (el nodo estuvo apagado): no se inventa un tramo.
+  let ruta = "", previo = null;
+  for (const p of puntos) { ruta += (previo == null || p.t - previo > o.hueco ? "M" : "L") + X(p.t).toFixed(1) + " " + Y(p.v).toFixed(1); previo = p.t; }
+  const fin = puntos[puntos.length - 1];
+  s += `<line x1="${m.i}" x2="${W - m.d}" y1="${H - m.b}" y2="${H - m.b}" stroke="var(--eje)"/><path d="${ruta}" fill="none" stroke="var(--serie)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+  s += `<line class="cur" y1="${m.a}" y2="${H - m.b}" stroke="var(--eje)" style="display:none"/>`;
+  caja.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.titulo)}: ${puntos.length} puntos, último valor ${fin.v} ${esc(o.unidad)}">${s}<circle class="pt" r="4.5" fill="var(--serie)" stroke="var(--sup)" stroke-width="2" cx="${X(fin.t)}" cy="${Y(fin.v)}"/></svg><div class="globo"></div>
+    <details${tablaAbierta[id] ? " open" : ""}><summary>Ver los datos en tabla</summary><div class="desliza"><table><thead><tr><th>Hora</th><th>${esc(o.titulo)} (${esc(o.unidad)})</th></tr></thead><tbody>${puntos.slice(-120).reverse().map((p) => `<tr><td class="n">${fDia.format(new Date(p.t))}</td><td class="n">${p.v}</td></tr>`).join("")}</tbody></table></div></details>`;
+  const svg = caja.querySelector("svg"), globo = caja.querySelector(".globo"), cur = caja.querySelector(".cur"), pt = caja.querySelector(".pt");
+  caja.querySelector("details").addEventListener("toggle", (e) => { tablaAbierta[id] = e.target.open; });
+  const mover = (ev) => {
+    const r = svg.getBoundingClientRect(), t = x0 + ((ev.clientX - r.left) / r.width * W - m.i) / (W - m.i - m.d) * (x1 - x0);
+    const p = puntos.reduce((a, b) => Math.abs(b.t - t) < Math.abs(a.t - t) ? b : a);
+    cur.setAttribute("x1", X(p.t)); cur.setAttribute("x2", X(p.t)); cur.style.display = "";
+    pt.setAttribute("cx", X(p.t)); pt.setAttribute("cy", Y(p.v));
+    globo.style.display = "block";
+    globo.style.left = Math.min(Math.max(X(p.t) / W * r.width, 70), r.width - 70) + "px";
+    globo.style.top = (Y(p.v) / H * r.height) + "px";
+    globo.textContent = `${fDia.format(new Date(p.t))} · ${p.v} ${o.unidad}`;
+  };
+  svg.addEventListener("pointermove", mover); svg.addEventListener("pointerdown", mover);
+  svg.addEventListener("pointerleave", () => { cur.style.display = "none"; globo.style.display = "none"; pt.setAttribute("cx", X(fin.t)); pt.setAttribute("cy", Y(fin.v)); });
+}
+
+function pintarGraficas(d) {
+  const hasta = new Date(d.ahora).getTime(), desde = hasta - d.horas * 3600e3, hueco = d.cubeta_s * 1000 * 3.5;
+  const serie = (p) => d.series.filter((s) => s.parametro === p).map((s) => ({ t: new Date(s.t).getTime(), v: s.valor }));
+  const umb = (p) => d.umbrales.find((u) => u.parametro === p) ?? {};
+  // Mientras el puntero esta sobre una grafica no se redibuja: el cursor no parpadea.
+  const libre = (id) => !$(id).matches(":hover");
+  if (libre("gTemperatura")) grafica("gTemperatura", serie("temperatura"), { titulo: "Temperatura", unidad: "°C", desde, hasta, hueco, minimo: umb("temperatura").minimo, maximo: umb("temperatura").maximo, holgura: 1 });
+  if (libre("gHumedad")) grafica("gHumedad", serie("humedad"), { titulo: "Humedad", unidad: "% HR", desde, hasta, hueco, minimo: umb("humedad").minimo, maximo: umb("humedad").maximo, holgura: 3, piso: 0, techo: 100 });
+  if (libre("gLuz")) grafica("gLuz", serie("luz"), { titulo: "Luz", unidad: "ADC", desde, hasta, hueco, holgura: 40, piso: 0, techo: 1023 });
+}
+
+let pidiendo = false, pedido = 0;
+async function actualizar(forzar) {
+  if (pidiendo && !forzar) return; // la peticion anterior sigue en curso (servidor lento): no se enciman
+  pidiendo = true;
+  const mio = ++pedido;
+  try {
+    const r = await fetch(`panel/datos?horas=${horas}`, { cache: "no-store", signal: AbortSignal.timeout(15000) });
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    if (mio !== pedido) return; // llego tarde: ya se pidio otro rango
+    pintarAlertas(d); pintarFichas(d); pintarNodos(d); pintarGraficas(d);
+    ultimaBuena = Date.now();
+    $("puntoEnlace").style.background = "var(--bien)";
+    $("textoEnlace").textContent = `Actualizado ${fSeg.format(new Date(d.ahora))}`;
+  } catch (e) {
+    if (mio !== pedido) return;
+    $("puntoEnlace").style.background = "var(--critico)";
+    $("textoEnlace").textContent = ultimaBuena ? `Sin respuesta del servidor (datos de ${hace((Date.now() - ultimaBuena) / 1000)})` : "Sin respuesta del servidor";
+  } finally {
+    if (mio === pedido) pidiendo = false;
+  }
+}
+document.querySelectorAll(".filtros button").forEach((b) => b.addEventListener("click", () => {
+  horas = Number(b.dataset.h);
+  document.querySelectorAll(".filtros button").forEach((o) => o.setAttribute("aria-pressed", o === b));
+  actualizar(true);
+}));
+actualizar();
+setInterval(() => actualizar(), 5000);
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="argos-dashboard" content="1">
+<meta name="theme-color" content="#121212">
+<title>Argos · Cuarto de incubación</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<script>
+  // El tema guardado se aplica antes de pintar, para que no parpadee.
+  try { const t = localStorage.getItem("argos-tema"); if (t === "claro" || t === "oscuro") document.documentElement.dataset.tema = t; } catch {}
+</script>
+  <script type="module" crossorigin src="./assets/index-fpzUdyJ7.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-sKIAereT.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Ir al contenido</a>
+
+<header class="cab">
+  <div class="cab__dentro">
+    <svg class="logo" aria-hidden="true"><use href="#i-ojo"/></svg>
+    <div class="cab__marca">
+      <h1>ARGOS</h1>
+      <p>Cuarto de incubación in vitro</p>
+    </div>
+    <nav class="cab__nav" aria-label="Secciones">
+      <a href="#ahora" data-pestana="ahora" aria-current="page">Ahora</a>
+      <a href="#historial" data-pestana="historial">Historial</a>
+    </nav>
+    <div class="cab__lado">
+      <div class="enlace" id="enlace" role="status"><i aria-hidden="true"></i><span id="enlaceTexto">Conectando…</span></div>
+      <button class="tema" id="tema" type="button" aria-label="Cambiar entre tema claro y oscuro">
+        <svg class="icono" aria-hidden="true"><use href="#i-tema"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="principal" class="cuerpo" tabindex="-1">
+  <p class="sr" id="anuncio" role="status"></p>
+  <section id="avisos" class="avisos" aria-label="Alertas activas"></section>
+
+  <div class="vista" data-vista="ahora">
+  <h2 class="etiqueta">Argos / estado de los 5 nodos</h2>
+  <div class="nodos" id="nodos">
+    <section class="ventana nodo nodo--dht" data-nodo="dht" aria-label="Nodo dht: temperatura y humedad">
+      <div class="ventana__barra"><h3 class="ventana__nombre">temperatura y humedad</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="lecturas">
+          <div class="lectura" data-lectura="temperatura">
+            <div class="fila-titulo"><svg class="icono" aria-hidden="true"><use href="#i-termometro"/></svg><h4 class="nombre">Temperatura</h4><span class="estado" data-r="rango"></span></div>
+            <div class="dato"><span data-r="valor">—</span><small>°C</small></div>
+            <div class="regla" aria-hidden="true"><div class="regla__pista"><div class="regla__banda" data-r="banda"></div></div><div class="regla__pupila" data-r="pupila" hidden></div><span class="regla__marca" data-r="min"></span><span class="regla__marca" data-r="max"></span></div>
+            <p class="pie" data-r="pie"></p>
+          </div>
+          <div class="lectura" data-lectura="humedad">
+            <div class="fila-titulo"><svg class="icono" aria-hidden="true"><use href="#i-gota"/></svg><h4 class="nombre">Humedad</h4><span class="estado" data-r="rango"></span></div>
+            <div class="dato"><span data-r="valor">—</span><small>% HR</small></div>
+            <div class="regla" aria-hidden="true"><div class="regla__pista"><div class="regla__banda" data-r="banda"></div></div><div class="regla__pupila" data-r="pupila" hidden></div><span class="regla__marca" data-r="min"></span><span class="regla__marca" data-r="max"></span></div>
+            <p class="pie" data-r="pie"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ventana nodo" data-nodo="luz" aria-label="Nodo luz: lámparas">
+      <div class="ventana__barra"><h3 class="ventana__nombre">luz</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="fila-valor"><svg class="icono" aria-hidden="true"><use href="#i-sol"/></svg><div class="valor" data-r="valor">—</div></div><p class="pie" data-r="pie"></p>
+      </div>
+    </section>
+
+    <section class="ventana nodo" data-nodo="pir" aria-label="Nodo pir: presencia">
+      <div class="ventana__barra"><h3 class="ventana__nombre">presencia</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="fila-valor"><svg class="icono" aria-hidden="true"><use href="#i-ondas"/></svg><div class="valor" data-r="valor">—</div></div><p class="pie" data-r="pie"></p>
+      </div>
+    </section>
+
+    <section class="ventana nodo" data-nodo="puerta" aria-label="Nodo puerta">
+      <div class="ventana__barra"><h3 class="ventana__nombre">puerta</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="fila-valor"><svg class="icono" aria-hidden="true"><use href="#i-puerta"/></svg><div class="valor" data-r="valor">—</div></div><p class="pie" data-r="pie"></p>
+      </div>
+    </section>
+
+    <section class="ventana nodo" data-nodo="acel" aria-label="Nodo acel: golpes">
+      <div class="ventana__barra"><h3 class="ventana__nombre">golpes</h3><span class="estado" data-r="chip"></span></div>
+      <div class="ventana__cuerpo">
+        <div class="fila-valor"><svg class="icono" aria-hidden="true"><use href="#i-golpe"/></svg><div class="valor" data-r="valor">—</div></div><p class="pie" data-r="pie"></p>
+      </div>
+    </section>
+  </div>
+
+  <h2 class="etiqueta">Argos / eventos recientes</h2>
+  <div class="eventos">
+    <section class="ventana" aria-label="Eventos recientes">
+      <div class="ventana__barra"><span>eventos / lista</span><span>lo más nuevo arriba</span></div>
+      <div class="ventana__cuerpo" data-r="lista"></div>
+    </section>
+  </div>
+  </div>
+
+  <div class="vista historial" data-vista="historial" hidden></div>
+</main>
+
+<footer class="pie-pagina">
+  <p>Horas en tiempo de Monterrey. Se actualiza cada 5 s.</p>
+  <p class="pie-pagina__equipo">Equipo 2 · G507 · TC1004B · Tecnológico de Monterrey</p>
+</footer>
+
+</body>
+</html>

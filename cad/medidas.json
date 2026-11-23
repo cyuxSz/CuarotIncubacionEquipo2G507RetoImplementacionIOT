@@ -1,0 +1,628 @@
+{
+  "_info": {
+    "version": "2026-10-21 borrador 2 (literales de nodos.py movidos aqui) · medido 18-nov-2026 (Ivan)",
+    "unidades": "mm salvo indicacion",
+    "fuentes": {
+      "usuario": "confirmado por el equipo (sin calibrador)",
+      "nominal": "hoja de datos o medida tipica de mercado; MEDIR con calibrador antes de imprimir",
+      "design": "tomado del diseno de Claude Design (https://claude.ai/artifact/UoYgUnGxKuJ2HGDwXeBDj1); solo estetica",
+      "decision": "valor de diseno elegido por Claude; ajustable",
+      "por_confirmar": "sin dato; no modelar hasta tenerlo"
+    },
+    "regla": "Ningun valor 'nominal' es definitivo. Al medir, cambiar fuente a 'medido' y regenerar con cad/nodos.py"
+  },
+  "impresion": {
+    "material_final": {
+      "valor": "PETG",
+      "fuente": "usuario"
+    },
+    "material_prototipo": {
+      "valor": "PLA o PETG",
+      "fuente": "decision",
+      "nota": "no hay filamento; se compra PETG (impresora disponible)"
+    },
+    "pared": {
+      "valor": 2,
+      "fuente": "usuario"
+    },
+    "holgura": {
+      "valor": 0.3,
+      "fuente": "usuario",
+      "nota": "ajustar tras la pieza de prueba"
+    },
+    "chaflan": {
+      "valor": 2.5,
+      "fuente": "design"
+    },
+    "texto_hundido": {
+      "valor": 0.4,
+      "fuente": "design"
+    },
+    "ranura_ventilacion": {
+      "valor": 1.6,
+      "fuente": "design"
+    },
+    "holgura_minima_modulos": {
+      "valor": 2,
+      "fuente": "usuario"
+    }
+  },
+  "nodemcu": {
+    "variante": {
+      "valor": "Amica (ESP-12E v1.0)",
+      "fuente": "usuario"
+    },
+    "pcb": {
+      "valor": [
+        48.13,
+        25.53,
+        1.6
+      ],
+      "fuente": "medido",
+      "nota": "largo, ancho medidos; espesor de la placa sola ~1.6 (Ivan, 18-nov)"
+    },
+    "paso_entre_filas_pines": {
+      "valor": 22.86,
+      "fuente": "nominal",
+      "nota": "0.9 in. La foto del 19-nov muestra una placa angosta tipo Amica (ESP8266MOD, regulador 1117, 4 agujeros): cuadra con 22.86. La medida de ~20.65 de Ivan fue aproximada"
+    },
+    "pines_por_lado": {
+      "valor": 15,
+      "fuente": "nominal"
+    },
+    "alto_sobre_protoboard": {
+      "valor": 7.5,
+      "fuente": "medido",
+      "nota": "medido 7-7.5: separador 2.46 + placa + blindaje (4.92)"
+    },
+    "usb": {
+      "tipo": "micro-USB",
+      "borde": "corto",
+      "fuente": "nominal",
+      "nota": "micro-USB al final de la placa, en el borde corto (Ivan, 19-nov-2026). Falta altura y centro respecto a la PCB"
+    },
+    "conector_usb_cuerpo": {
+      "valor": [
+        7.51,
+        5.8,
+        3
+      ],
+      "fuente": "medido",
+      "nota": "ancho, fondo, alto (el CAD usa el tercero como alto)"
+    },
+    "cable_usb_capuchon": {
+      "valor": [
+        10.25,
+        23.85,
+        6.25
+      ],
+      "fuente": "medido",
+      "nota": "ancho, largo, alto. Es el capuchon del cable USB-C del adaptador que entra al modulo USB-C a terminales (Ivan, 19-nov-2026)"
+    },
+    "separacion_pcb_protoboard": {
+      "valor": 2.46,
+      "fuente": "medido",
+      "nota": "de la protoboard a la cara inferior de la PCB (base de los pines)"
+    },
+    "vuelo_usb": {
+      "valor": 1,
+      "fuente": "medido",
+      "nota": "medido 0.7-1.0; se usa el mayor"
+    }
+  },
+  "protoboard_kit": {
+    "modelo": {
+      "valor": "MB-102, 830 puntos",
+      "fuente": "usuario"
+    },
+    "zona_central": {
+      "valor": "63 columnas x 10 filas (a-e, f-j)",
+      "fuente": "usuario"
+    },
+    "rieles": {
+      "valor": "4 x 50 puntos",
+      "fuente": "usuario"
+    },
+    "dimensiones": {
+      "valor": [
+        165.25,
+        56.1,
+        9.29
+      ],
+      "fuente": "medido",
+      "nota": "cuerpo sin pestanas (con pestanas 56.27 de ancho). Alto 8.29 + 1.0 del adhesivo (medido por Ivan)"
+    },
+    "paso": {
+      "valor": 2.54,
+      "fuente": "nominal"
+    },
+    "canal_central": {
+      "valor": 7.62,
+      "fuente": "nominal",
+      "nota": "0.3 in entre filas e y f"
+    },
+    "adhesivo": {
+      "valor": 1,
+      "fuente": "medido",
+      "nota": "espesor del adhesivo; alto total = cuerpo + 1.0 (Ivan, 19-nov-2026)"
+    }
+  },
+  "protoboard_nodo_propuesta": {
+    "modelo": {
+      "valor": "400 puntos (media MB-102)",
+      "fuente": "usuario",
+      "nota": "aprobada el 19-oct"
+    },
+    "dimensiones": {
+      "valor": [
+        82.44,
+        54.27,
+        9.32
+      ],
+      "fuente": "medido",
+      "nota": "cuerpo sin pestanas (con pestanas 84.35 x 56.0): las pestanas se cortan al ras"
+    },
+    "columnas": {
+      "valor": 30,
+      "fuente": "nominal"
+    }
+  },
+  "dht22": {
+    "cuerpo": {
+      "valor": [
+        15.32,
+        26,
+        7.7
+      ],
+      "fuente": "medido",
+      "nota": "ancho y alto medidos (25.95); grueso del cuerpo blanco solo = nominal"
+    },
+    "formato": {
+      "valor": "modulo con placa morada y 3 pines rectos por el borde inferior (AM2302)",
+      "fuente": "medido",
+      "nota": "Foto del 19-nov: ASAIR AM2302, placa morada con pines + / out / - (de izquierda a derecha viendo la rejilla de frente) y resistencia pull-up R1 ya puesta en la placa"
+    },
+    "modulo_pcb": {
+      "valor": [
+        15.32,
+        36.26,
+        9.32
+      ],
+      "fuente": "medido",
+      "nota": "ancho = el del cuerpo (la placa mide 13.0, ver placa), largo total cuerpo + placa (sin pines), grueso total con placa"
+    },
+    "placa": {
+      "valor": [
+        13,
+        28.15,
+        1.67
+      ],
+      "fuente": "medido",
+      "nota": "placa morada sola: ancho 12.95-13, largo, espesor (Ivan, 19-nov-2026). Es mas angosta que el cuerpo blanco (15.32)"
+    }
+  },
+  "oled": {
+    "propuesta": {
+      "valor": "2.42 in SSD1309 128x64, modulo ZJY_M242 de 7 pines (CS, DC, RES, SDA, SCL, VCC=5V, GND)",
+      "fuente": "medido",
+      "nota": "Fotos de Ivan, 19-nov-2026. Viene configurada en SPI (R4 puesta; para I2C hay que pasar R4 a R3 y puentear R5). Trae convertidor de nivel (U3) y regulador (U8). La tira de 7 pines va en un lado CORTO de la placa, no abajo: cambia la orientacion supuesta en el CAD. 4 agujeros en las esquinas [MEDIR entre centros]"
+    },
+    "modulo_2p42": {
+      "valor": [
+        72.16,
+        42.69,
+        6.65
+      ],
+      "fuente": "medido",
+      "nota": "placa: largo 72.16, ancho 42.69 (Ivan, 19-nov-2026, calibrador). Grueso 6.65 = envolvente total con los componentes de la espalda (medida anterior); placa sola 1.17 y placa + pantalla 4.11"
+    },
+    "area_activa_2p42": {
+      "valor": [
+        55,
+        27.5
+      ],
+      "fuente": "nominal",
+      "nota": "nominal del panel de 2.42 in; no se pudo medir encendida"
+    },
+    "centro_activo_desde_conector": {
+      "valor": 20,
+      "fuente": "por_confirmar",
+      "nota": "distancia del borde del conector al centro del area activa"
+    },
+    "modulo_1p3": {
+      "valor": [
+        35.4,
+        33.5,
+        4
+      ],
+      "fuente": "nominal",
+      "nota": "descartada el 19-oct (digitos de 11.5 mm)"
+    },
+    "area_activa_1p3": {
+      "valor": [
+        29.4,
+        14.7
+      ],
+      "fuente": "nominal"
+    },
+    "vidrio_2p42": {
+      "valor": [
+        62.37,
+        38.92,
+        2.94
+      ],
+      "fuente": "medido",
+      "nota": "largo y ancho \"interiores\" que dio Ivan: se toman como el vidrio con su marco negro. Grueso = 4.11 - 1.17"
+    },
+    "ventana_2p42": {
+      "valor": [
+        60.4,
+        36.9
+      ],
+      "fuente": "medido",
+      "nota": "abertura de la tapa = medida \"interior\" que dio Ivan por escrito el 19-nov (62.37 x 38.92, lo que el considera la pantalla) menos 1 mm de ceja por lado. Deja ver todo el vidrio: imposible tapar pixeles"
+    },
+    "ventana_centro_desde_borde_cinta": {
+      "valor": 21.6,
+      "fuente": "estimado",
+      "nota": "[posicion ESTIMADA DE FOTO] centro del vidrio medido desde el borde de la placa por donde dobla la cinta: 42.69 - 1.6 (margen de arriba, de foto) - 38.92 / 2. La ceja de 1 mm absorbe hasta 1 mm de error"
+    }
+  },
+  "hc_sr501": {
+    "pcb": {
+      "valor": [
+        32.53,
+        24.58
+      ],
+      "fuente": "medido"
+    },
+    "domo_diametro": {
+      "valor": 23.01,
+      "fuente": "medido"
+    },
+    "domo_alto": {
+      "valor": 13.8,
+      "fuente": "medido",
+      "nota": "desde la placa verde"
+    },
+    "agujeros_entre_centros": {
+      "valor": 29.13,
+      "fuente": "medido",
+      "nota": "aproximado"
+    },
+    "alto_total_sin_domo": {
+      "valor": 12,
+      "fuente": "por_confirmar",
+      "nota": "potenciometros y pines por detras"
+    }
+  },
+  "gy61": {
+    "pcb": {
+      "valor": [
+        20.6,
+        15
+      ],
+      "fuente": "medido_aprox",
+      "nota": "largo x ancho, aproximados; la tira de 5 pines va en un extremo (Ivan, 19-nov-2026). Aproximada: no se modela costilla en la tapa (necesita la medida exacta)"
+    },
+    "agujeros": {
+      "valor": null,
+      "fuente": "por_confirmar"
+    }
+  },
+  "ads1115": {
+    "pcb": {
+      "valor": [
+        28,
+        15.05
+      ],
+      "fuente": "medido_aprox",
+      "nota": "largo x ancho; alto ~2.50 (Ivan, 19-nov-2026). Aproximada: no se modela costilla en la tapa"
+    },
+    "agujeros": {
+      "valor": null,
+      "fuente": "por_confirmar"
+    }
+  },
+  "ldr": {
+    "cabeza_diametro": {
+      "valor": 5.12,
+      "fuente": "medido",
+      "nota": "cabeza rectangular redondeada de 4.1 x 5.12; se usa el lado mayor"
+    },
+    "cabeza_alto": {
+      "valor": 1.93,
+      "fuente": "medido",
+      "nota": "[POR CONFIRMAR] espesor de la cabeza sin patas"
+    },
+    "cable_diametro": {
+      "valor": 4,
+      "fuente": "medido",
+      "nota": "par de UTP ~2-3 mm + termocontractil; se deja 4 por margen"
+    },
+    "lampara": {
+      "valor": "tiras de luz LED (no lampara)",
+      "fuente": "usuario",
+      "nota": "dicho por Ivan. Falta temperatura de superficie y distancia de montaje"
+    },
+    "capuchon": {
+      "valor": {
+        "diametro_exterior": 16,
+        "ventana": 4.5,
+        "alojamiento_ldr": 12,
+        "espesor_ventana": 1.2,
+        "visera": 4,
+        "difusor_diametro": 10,
+        "difusor_espesor": 0.9,
+        "cola": 8
+      },
+      "fuente": "design",
+      "nota": "cuerpo negro opaco + disco difusor aparte (fase 1, 20-oct)"
+    }
+  },
+  "clema_trt02": {
+    "alto": 10.24,
+    "largo": 10.5,
+    "ancho": 7.61,
+    "paso_pines": 5.55,
+    "fuente": "medido",
+    "nota": "Steren TRT-02, clema de 2 tornillos para circuito impreso (Ivan, 20-nov-2026). El paso medido (5.55) no es multiplo de 2.54: probar en la protoboard que entre dejando una fila libre (5.08). Aun no esta en layouts.py ni en el gemelo."
+  },
+  "mc38": {
+    "cuerpo_sensor": {
+      "valor": [
+        28,
+        14,
+        8
+      ],
+      "fuente": "medido",
+      "nota": "medido 27.2-28 x 13.5-14 x 7.5-8 (bloque); trae ceja con 2 agujeros propios. Envolvente al maximo"
+    },
+    "cuerpo_iman": {
+      "valor": [
+        28,
+        14,
+        9
+      ],
+      "fuente": "medido",
+      "nota": "medido 27.2-28 x 13.5-14 x 7.5-9. Envolvente al maximo"
+    },
+    "separacion_trabajo": {
+      "valor": [
+        11.5,
+        12
+      ],
+      "fuente": "medido",
+      "nota": "medido con multimetro: cierra a 11.5 y abre a 12. Instalar con <= 8 mm entre cuerpos"
+    },
+    "porta": {
+      "valor": {
+        "pared_frente": 1.2,
+        "piso": 2,
+        "retencion": 0.4,
+        "chaflan_entrada": 0.6,
+        "oreja_largo": 9,
+        "oreja_alto": 3,
+        "ranura_largo": 10,
+        "ranura_ancho": 3.8
+      },
+      "fuente": "design",
+      "nota": "fase 2 (20-oct); retencion a ajustar con la pieza de prueba"
+    }
+  },
+  "buzzer_ky012": {
+    "pcb": {
+      "valor": [
+        18.5,
+        15,
+        1.6
+      ],
+      "fuente": "nominal",
+      "nota": "largo x ancho x espesor; MEDIR (antes estaba fijo en nodos.py)"
+    },
+    "pinout": {
+      "valor": null,
+      "fuente": "por_confirmar",
+      "nota": "medir con multimetro (S, +, -)"
+    },
+    "diametro_buzzer": {
+      "valor": 12,
+      "fuente": "medido",
+      "nota": "buzzer SUELTO, sin placa KY-012"
+    },
+    "alto": {
+      "valor": 9.3,
+      "fuente": "medido",
+      "nota": "cilindro sin patas (9.10-9.30)"
+    },
+    "paso_pines": {
+      "valor": 6.75,
+      "fuente": "medido",
+      "nota": "buzzer SUELTO (sin placa): 6.5 a 7 entre patas (Ivan, 19-nov-2026). Pata larga 5.50 = positivo, pata corta 4.75"
+    }
+  },
+  "boton_kit": {
+    "tipo": {
+      "valor": "pulsador de 2 patas",
+      "fuente": "usuario",
+      "nota": "antes se suponia tactil de 4 patas (Ivan, 19-nov-2026). Revisar que el cuerpo medido siga valiendo"
+    },
+    "cuerpo": {
+      "valor": [
+        6.05,
+        6.05
+      ],
+      "fuente": "medido",
+      "nota": "lados iguales (Ivan, 19-nov-2026, calibrador)"
+    },
+    "alto_total": {
+      "valor": 4.77,
+      "fuente": "medido",
+      "nota": "con el vastago (Ivan, 19-nov-2026, calibrador)"
+    },
+    "alto_cuerpo": {
+      "valor": 3.37,
+      "fuente": "medido",
+      "nota": "base sin vastago (Ivan, 19-nov-2026, calibrador)"
+    }
+  },
+  "led": {
+    "diametro": {
+      "valor": 5.25,
+      "fuente": "medido",
+      "nota": "medido 5.25; probablemente LED de 5.0 con error del calibrador"
+    },
+    "agujero": {
+      "valor": 5.5,
+      "fuente": "decision",
+      "nota": "5.3 no deja holgura para 5.25 en PETG; confirmar con el peine de holguras"
+    },
+    "paso_verde_rojo": {
+      "valor": 12,
+      "fuente": "design"
+    }
+  },
+  "c1": {
+    "valor": "220 uF 16 V radial",
+    "cuerpo": {
+      "valor": [
+        6.25,
+        7.85
+      ],
+      "fuente": "medido",
+      "nota": "diametro x alto"
+    }
+  },
+  "fijacion": {
+    "inserto_termico": {
+      "valor": "M3 x 5, D ext 4.6",
+      "agujero": 4,
+      "fuente": "design",
+      "nota": "se compran; confirmar medida del lote"
+    },
+    "tornillo_tapa": {
+      "valor": "M3 cabeza cilindrica, largo segun profundidad final",
+      "fuente": "decision"
+    },
+    "ojo_cerradura": {
+      "cabeza": 8,
+      "ranura": 3.8,
+      "fuente": "design"
+    }
+  },
+  "q1_to92": {
+    "cuerpo": {
+      "valor": [
+        4.7,
+        4.7,
+        5.6
+      ],
+      "fuente": "medido",
+      "nota": "2N2222 METALICO TO-18 (no TO-92): lata 4.7 de diametro x 4.5 de alto, a 5.5 de la protoboard; 5.8 = ceja nominal. La lata es el colector"
+    }
+  },
+  "resistencia": {
+    "cuerpo": {
+      "valor": [
+        3,
+        3,
+        9
+      ],
+      "fuente": "medido",
+      "nota": "diametro 2.9-3, acostada 3, de pie 8.85-9"
+    }
+  },
+  "caja_potencia": {
+    "modulo_rele_pcb": {
+      "valor": [
+        75,
+        55,
+        1.6
+      ],
+      "fuente": "nominal",
+      "nota": "módulo de 4 relés SRD-05VDC típico: largo, ancho, espesor; MEDIR al comprarlo"
+    },
+    "modulo_rele_agujeros": {
+      "valor": [
+        69.5,
+        49.5,
+        3.1
+      ],
+      "fuente": "nominal",
+      "nota": "entre ejes en x, en y, y diámetro (M3)"
+    },
+    "modulo_rele_alto": {
+      "valor": 19,
+      "fuente": "nominal",
+      "nota": "alto de los relés sobre la PCB"
+    },
+    "modulo_rele_bornes": {
+      "valor": [
+        8,
+        10
+      ],
+      "fuente": "nominal",
+      "nota": "fondo de las clemas de los contactos desde el borde y alto sobre la PCB"
+    },
+    "modulo_rele_tira": {
+      "valor": [
+        6,
+        11
+      ],
+      "fuente": "nominal",
+      "nota": "franja de la tira de pines (IN, VCC, GND, JD-VCC) desde el borde opuesto y alto con Dupont"
+    },
+    "cable_extension": {
+      "valor": 7.6,
+      "fuente": "nominal",
+      "nota": "diámetro del cable 3 x 16 AWG con tierra (SJT); si la extensión es plana, ajustar la entrada"
+    },
+    "portafusible_linea": {
+      "valor": [
+        55,
+        14
+      ],
+      "fuente": "nominal",
+      "nota": "portafusible en línea 5x20: largo y diámetro"
+    },
+    "regleta_clemas": {
+      "valor": [
+        64,
+        15,
+        16
+      ],
+      "fuente": "nominal",
+      "nota": "regleta de 8 clemas (4 neutro + 4 tierra): largo, fondo, alto"
+    },
+    "cable_senal": {
+      "valor": 5,
+      "fuente": "nominal",
+      "nota": "6 hilos Dupont en funda o cinta; agujero de 6.4"
+    }
+  },
+  "usb_c_terminales": {
+    "pcb": {
+      "valor": [
+        11.6,
+        14,
+        1.25
+      ],
+      "fuente": "medido",
+      "nota": "ancho, largo, espesor de la placa (Ivan, 19-nov-2026)"
+    },
+    "alto_total": {
+      "valor": 4.45,
+      "fuente": "medido",
+      "nota": "placa + conector USB-C"
+    },
+    "conector": {
+      "valor": [
+        9,
+        7.35,
+        3.45
+      ],
+      "fuente": "medido",
+      "nota": "ancho, fondo, alto del receptaculo USB-C. Ivan dio 7.35 y 9 sin decir cual es cual: se asigna 9 al ancho (un USB-C mide 8.9) [POR CONFIRMAR con foto]"
+    }
+  }
+}

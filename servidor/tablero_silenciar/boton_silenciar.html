@@ -1,0 +1,71 @@
+<!-- Argos: boton "Silenciar alarma" del tablero (22-nov, Ivan). Sustituye al boton fisico del nodo dht.
+     Publica por MQTT (WebSocket seguro al mismo broker publico) en argos-eq2/invernadero/cmd/silenciar.
+     El nodo dht (firmware v3) silencia el buzzer 30 min y registra la accion; el tablero la muestra solo. -->
+<style>
+  .argos-silenciar { margin-left: 12px; padding: 8px 14px; font: inherit; font-weight: 600; cursor: pointer;
+    color: #fff; background: #b3261e; border: 1px solid #fff; border-radius: 2px; }
+  .argos-silenciar:disabled { opacity: .7; cursor: default; }
+  .argos-silenciar:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+</style>
+<script>
+(function () {
+  const BROKER = "wss://broker.hivemq.com:8884/mqtt";
+  const TOPIC = "argos-eq2/invernadero/cmd/silenciar";
+  const LIB = "https://unpkg.com/mqtt@5/dist/mqtt.min.js";
+  let cliente = null, estado = "", hasta = 0;
+
+  function cargarMqtt() {
+    return new Promise((ok, mal) => {
+      if (window.mqtt) return ok();
+      const s = document.createElement("script");
+      s.src = LIB; s.onload = ok; s.onerror = () => mal(new Error("no se pudo cargar MQTT.js"));
+      document.head.appendChild(s);
+    });
+  }
+  function conectar() {
+    return new Promise((ok, mal) => {
+      if (cliente && cliente.connected) return ok();
+      const t = setTimeout(() => mal(new Error("el broker no respondio")), 10000);
+      cliente = window.mqtt.connect(BROKER, { clientId: "argos-tablero-" + Math.random().toString(16).slice(2, 10), reconnectPeriod: 0 });
+      cliente.on("connect", () => { clearTimeout(t); ok(); });
+      cliente.on("error", (e) => { clearTimeout(t); mal(e); });
+    });
+  }
+  async function silenciar(boton) {
+    if (!confirm("¿Silenciar el buzzer del cuarto durante 30 minutos?\nLa alerta sigue abierta y el LED rojo sigue encendido.")) return;
+    estado = "Enviando…"; pintar();
+    try {
+      await cargarMqtt();
+      await conectar();
+      await new Promise((ok, mal) => cliente.publish(TOPIC, JSON.stringify({ minutos: 30, origen: "tablero" }), { qos: 1 }, (e) => e ? mal(e) : ok()));
+      estado = "Orden enviada, esperando al nodo…";
+      hasta = Date.now() + 30000;   // si el nodo no confirma en 30 s, el boton vuelve a estar disponible
+    } catch (e) {
+      estado = ""; pintar();
+      alert("No se pudo mandar la orden: " + e.message);
+      return;
+    }
+    pintar();
+  }
+  function pintar() {
+    const marca = document.querySelector(".aviso__alarma");
+    let boton = document.querySelector(".argos-silenciar");
+    const activa = marca && /activa/i.test(marca.textContent);
+    if (!activa) { if (boton) boton.remove(); estado = ""; return; }
+    if (estado && hasta && Date.now() > hasta) { estado = ""; hasta = 0; }
+    if (!boton || boton.previousElementSibling !== marca) {
+      if (boton) boton.remove();
+      boton = document.createElement("button");
+      boton.type = "button"; boton.className = "argos-silenciar";
+      boton.addEventListener("click", () => silenciar(boton));
+      marca.insertAdjacentElement("afterend", boton);
+    }
+    const texto = estado || "Silenciar alarma 30 min";
+    if (boton.textContent !== texto) boton.textContent = texto;
+    boton.disabled = !!estado;
+  }
+  new MutationObserver(pintar).observe(document.body, { childList: true, subtree: true, characterData: true });
+  setInterval(pintar, 2000);
+  pintar();
+})();
+</script>
