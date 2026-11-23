@@ -1,0 +1,20 @@
+# Secretos: nunca se versionan (usar los *.example)
+.env
+**/.env
+secrets.h
+**/secrets.h
+servidor/mosquitto/passwd
+servidor/ESTADO_SERVIDOR.md
+
+# Dependencias y compilados
+node_modules/
+__pycache__/
+.venv/
+firmware/.pio/
+firmware/.cache/
+firmware/compile_commands.json
+firmware/herramientas/_build/
+
+# Respaldos locales
+*.antes_*
+*.bak
