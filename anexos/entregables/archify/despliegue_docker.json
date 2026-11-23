@@ -1,0 +1,239 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Despliegue del servidor de Argos (Docker Compose)",
+  "locale": "es",
+  "output": "arch/despliegue_docker.html",
+  "quality_profile": "showcase",
+  "legend": {
+   "entries": {
+    "backend": {
+     "label": "NodeMCU o servicio"
+    },
+    "frontend": {
+     "label": "Navegador o servidor web"
+    },
+    "messagebus": {
+     "label": "Broker MQTT"
+    },
+    "database": {
+     "label": "Base de datos"
+    },
+    "external": {
+     "label": "Avisos"
+    }
+   }
+  }
+ },
+ "components": [
+  {
+   "id": "nodos",
+   "type": "backend",
+   "label": "5 NodeMCU (ESP8266)",
+   "sublabel": "dht, luz, pir, puerta, acel",
+   "pos": [
+    40,
+    222
+   ],
+   "size": [
+    190,
+    72
+   ]
+  },
+  {
+   "id": "navegador",
+   "type": "frontend",
+   "label": "Navegador",
+   "sublabel": "dashboard Chart.js + MQTT.js",
+   "pos": [
+    40,
+    470
+   ],
+   "size": [
+    190,
+    72
+   ]
+  },
+  {
+   "id": "mosquitto",
+   "type": "messagebus",
+   "label": "mosquitto",
+   "sublabel": "eclipse-mosquitto:2.0.22",
+   "pos": [
+    400,
+    210
+   ],
+   "size": [
+    200,
+    96
+   ]
+  },
+  {
+   "id": "nginx",
+   "type": "frontend",
+   "label": "nginx",
+   "sublabel": "dashboard estático + proxy /api/",
+   "pos": [
+    400,
+    458
+   ],
+   "size": [
+    200,
+    96
+   ]
+  },
+  {
+   "id": "n8n",
+   "type": "backend",
+   "label": "n8n",
+   "sublabel": "reglas, avisos y Web API",
+   "pos": [
+    720,
+    334
+   ],
+   "size": [
+    190,
+    96
+   ]
+  },
+  {
+   "id": "mysql",
+   "type": "database",
+   "label": "mysql",
+   "sublabel": "MySQL 8 · UTC · 13 tablas",
+   "pos": [
+    1030,
+    334
+   ],
+   "size": [
+    190,
+    96
+   ]
+  },
+  {
+   "id": "avisos",
+   "type": "external",
+   "label": "WhatsApp y Telegram",
+   "sublabel": "CallMeBot / bot",
+   "pos": [
+    1030,
+    90
+   ],
+   "size": [
+    190,
+    72
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Docker Compose: laptop primero, luego Oracle Cloud Always Free (ARM64)",
+   "wraps": [
+    "mosquitto",
+    "nginx",
+    "n8n",
+    "mysql"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "nodos",
+   "to": "mosquitto",
+   "label": "MQTT 3.1.1 · TCP 1883",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "navegador",
+   "to": "nginx",
+   "label": "HTTP :80 (HTTPS :443 al final)",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c3",
+   "from": "nginx",
+   "to": "n8n",
+   "label": "/api/ → :5678/webhook/api/"
+  },
+  {
+   "id": "c4",
+   "from": "navegador",
+   "to": "mosquitto",
+   "label": "MQTT sobre WebSocket [puerto POR CONFIRMAR]",
+   "variant": "dashed"
+  },
+  {
+   "id": "c5",
+   "from": "mosquitto",
+   "to": "n8n",
+   "label": "suscribe invernadero/#",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c6",
+   "from": "n8n",
+   "to": "mosquitto",
+   "label": "cmd/alarma on/off",
+   "variant": "dashed",
+   "fromSide": "top",
+   "toSide": "right"
+  },
+  {
+   "id": "c7",
+   "from": "n8n",
+   "to": "mysql",
+   "label": "SQL :3306 (red interna)",
+   "labelDy": 18
+  },
+  {
+   "id": "c8",
+   "from": "n8n",
+   "to": "avisos",
+   "label": "HTTPS",
+   "variant": "security"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "slate",
+   "title": "Contenedores",
+   "items": [
+    "mosquitto: eclipse-mosquitto:2.0.22, usuario y ACL por nodo",
+    "n8n: n8nio/n8n [versión POR CONFIRMAR]",
+    "mysql: mysql:8, zona horaria UTC",
+    "nginx: [versión POR CONFIRMAR], sirve el dashboard y reenvía /api/"
+   ]
+  },
+  {
+   "dot": "violet",
+   "title": "Volúmenes persistentes",
+   "items": [
+    "mosquitto: configuración, contraseñas, ACL y mensajes retenidos",
+    "n8n: flujos y credenciales",
+    "mysql: datos de la base",
+    "nginx: archivos del dashboard (solo lectura)"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Puertos",
+   "items": [
+    "Expuestos: 1883 (nodos) y 80/443 (navegador)",
+    "WebSocket de MQTT para el dashboard: [POR CONFIRMAR]",
+    "Solo red interna: 5678 (n8n) y 3306 (MySQL)"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Secretos",
+   "items": [
+    ".env no versionado: contraseñas MQTT, MySQL, X-API-Key y tokens de avisos",
+    ".env.example solo con los nombres de las variables"
+   ]
+  }
+ ]
+}

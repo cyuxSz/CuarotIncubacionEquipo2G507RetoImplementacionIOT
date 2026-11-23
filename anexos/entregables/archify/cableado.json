@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Conexiones del nodo dht (pines del NodeMCU)",
+    "locale": "es",
+    "output": "arch/prototipo_cableado_dht.html",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "cloud": {
+          "label": "Alimentación"
+        },
+        "backend": {
+          "label": "NodeMCU ESP8266"
+        },
+        "frontend": {
+          "label": "Entrada: sensor o botón"
+        },
+        "messagebus": {
+          "label": "Etapa de potencia"
+        },
+        "external": {
+          "label": "Salida"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "dht22",
+      "type": "frontend",
+      "label": "DHT22",
+      "sublabel": "pull-up 10 kΩ a 3V3",
+      "pos": [
+        40,
+        120
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "fuente",
+      "type": "cloud",
+      "label": "Fuente 5 V",
+      "sublabel": "C1 220 µF / 16 V",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "oled",
+      "type": "external",
+      "label": "OLED 2.42\"",
+      "sublabel": "SSD1309 a 3V3",
+      "pos": [
+        415,
+        40
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "mcu",
+      "type": "backend",
+      "label": "NodeMCU",
+      "sublabel": "ESP-12E v1.0",
+      "pos": [
+        400,
+        200
+      ],
+      "size": [
+        180,
+        140
+      ]
+    },
+    {
+      "id": "q1",
+      "type": "messagebus",
+      "label": "2N2222",
+      "sublabel": "R4 10 kΩ base-GND",
+      "pos": [
+        720,
+        238
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "buzzer",
+      "type": "external",
+      "label": "Buzzer KY-012",
+      "sublabel": "+ a VIN",
+      "pos": [
+        990,
+        238
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "boton",
+      "type": "frontend",
+      "label": "Botón",
+      "sublabel": "a GND",
+      "pos": [
+        230,
+        470
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "ledv",
+      "type": "external",
+      "label": "LED verde",
+      "sublabel": "conectado",
+      "pos": [
+        420,
+        470
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "ledr",
+      "type": "external",
+      "label": "LED rojo",
+      "sublabel": "alerta T/HR",
+      "pos": [
+        610,
+        470
+      ],
+      "size": [
+        140,
+        60
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "w1",
+      "from": "dht22",
+      "to": "mcu",
+      "label": "D4 (1 hilo)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "w2",
+      "from": "fuente",
+      "to": "mcu",
+      "label": "VIN y GND",
+      "variant": "security"
+    },
+    {
+      "id": "w3",
+      "from": "mcu",
+      "to": "oled",
+      "label": "D1 SCL / D2 SDA (I²C)"
+    },
+    {
+      "id": "w4",
+      "from": "mcu",
+      "to": "q1",
+      "label": "D5 · R3 1 kΩ"
+    },
+    {
+      "id": "w5",
+      "from": "q1",
+      "to": "buzzer",
+      "label": "colector"
+    },
+    {
+      "id": "w6",
+      "from": "boton",
+      "to": "mcu",
+      "label": "D6 pull-up"
+    },
+    {
+      "id": "w7",
+      "from": "mcu",
+      "to": "ledv",
+      "label": "D7 · 330 Ω"
+    },
+    {
+      "id": "w8",
+      "from": "mcu",
+      "to": "ledr",
+      "label": "D8 · 330 Ω"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Corrientes estimadas",
+      "items": [
+        "LED con 330 Ω: ≈ 3.3–4.5 mA",
+        "Base del 2N2222 ≈ 2.5 mA; colector ≈ 30 mA",
+        "Nodo dht ≈ 42 mA promedio (a medir, P-05)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Pines de arranque",
+      "items": [
+        "D8 debe estar en bajo al encender: el LED a GND lo cumple",
+        "D4 queda en alto por el pull-up del DHT22"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Los otros nodos",
+      "items": [
+        "pir y puerta: sensor en D5",
+        "luz: divisor LDR + 10 kΩ en A0",
+        "acel: ADS1115 en D1/D2 (I²C 0x48)",
+        "Todos: LED verde D7 y rojo D8 con 330 Ω"
+      ]
+    }
+  ]
+}

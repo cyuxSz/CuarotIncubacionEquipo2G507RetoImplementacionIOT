@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "Un aviso de calor, paso a paso", "locale": "es", "output": "arch/como_funciona_aviso_calor.html", "quality_profile": "showcase" },
+  "participants": [
+    { "id": "persona", "type": "external", "label": "Encargado", "sublabel": "en el cuarto o fuera", "icon": "person" },
+    { "id": "dht", "type": "backend", "label": "Nodo dht", "sublabel": "DHT22, LED, buzzer" },
+    { "id": "mqtt", "type": "messagebus", "label": "Mosquitto", "sublabel": "broker" },
+    { "id": "n8n", "type": "backend", "label": "n8n", "sublabel": "reglas" },
+    { "id": "db", "type": "database", "label": "MySQL", "sublabel": "historial" },
+    { "id": "avisos", "type": "external", "label": "WhatsApp / Telegram", "sublabel": "mensajería" }
+  ],
+  "segments": [
+    { "from": 150, "to": 330, "label": "Tres lecturas fuera de rango" },
+    { "from": 340, "to": 520, "label": "Alerta y aviso" },
+    { "from": 530, "to": 740, "label": "Silencio y cierre" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "dht", "to": "mqtt", "y": 170, "label": "telemetria 28.6 °C", "variant": "emphasis", "note": "Una lectura cada 30 s; esta es la tercera seguida arriba de 28 °C" },
+    { "id": "m2", "from": "mqtt", "to": "n8n", "y": 236, "label": "entrega", "variant": "default" },
+    { "id": "m3", "from": "n8n", "to": "db", "y": 264, "label": "INSERT Medicion", "variant": "default" },
+    { "id": "m4", "from": "dht", "to": "persona", "y": 292, "label": "LED rojo y buzzer", "variant": "security", "note": "Regla local: suena aunque no haya red" },
+    { "id": "m5", "from": "n8n", "to": "db", "y": 360, "label": "abre Alerta", "variant": "emphasis" },
+    { "id": "m6", "from": "n8n", "to": "avisos", "y": 388, "label": "aviso de temperatura", "variant": "security" },
+    { "id": "m7", "from": "avisos", "to": "persona", "y": 416, "label": "mensaje al celular", "variant": "default" },
+    { "id": "m8", "from": "n8n", "to": "mqtt", "y": 444, "label": "cmd/alarma on", "variant": "dashed", "note": "Se repite cada 60 s; el nodo la da por vencida tras 150 s sin repetición" },
+    { "id": "m8b", "from": "mqtt", "to": "dht", "y": 500, "label": "cmd/alarma on", "variant": "dashed" },
+    { "id": "m9", "from": "persona", "to": "dht", "y": 550, "label": "botón: silenciar", "variant": "default" },
+    { "id": "m10", "from": "dht", "to": "mqtt", "y": 578, "label": "cmd/silenciar 30 min", "variant": "dashed" },
+    { "id": "m11", "from": "mqtt", "to": "n8n", "y": 606, "label": "entrega", "variant": "dashed" },
+    { "id": "m12", "from": "n8n", "to": "db", "y": 634, "label": "cierra Alerta (ts_fin)", "variant": "return", "note": "Tras 3 lecturas dentro de 22.5–27.5 °C" },
+    { "id": "m13", "from": "n8n", "to": "mqtt", "y": 700, "label": "cmd/alarma off", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "dht", "from": 165, "to": 300, "type": "backend" },
+    { "participant": "n8n", "from": 230, "to": 706, "type": "backend" }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Dos caminos para la alarma", "items": ["El nodo decide solo con 3 lecturas fuera de rango", "n8n ordena cmd/alarma on mientras dure la alerta"] },
+    { "dot": "amber", "title": "Silencio", "items": ["El botón calla el buzzer 30 min", "El LED rojo sigue encendido y los avisos siguen"] }
+  ]
+}

@@ -1,0 +1,432 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Enlaces y protocolos de Argos",
+  "locale": "es",
+  "output": "arch/avance2_topologia.html",
+  "quality_profile": "showcase",
+  "legend": {
+   "entries": {
+    "frontend": {
+     "label": "Sensor local o dashboard"
+    },
+    "backend": {
+     "label": "NodeMCU o servicio"
+    },
+    "cloud": {
+     "label": "Red WiFi"
+    },
+    "messagebus": {
+     "label": "Broker MQTT"
+    },
+    "database": {
+     "label": "Base de datos"
+    },
+    "external": {
+     "label": "Usuarios y avisos"
+    }
+   }
+  }
+ },
+ "components": [
+  {
+   "id": "s_dht",
+   "type": "frontend",
+   "label": "DHT22 + OLED + botón",
+   "sublabel": "buzzer vía 2N2222",
+   "pos": [
+    40,
+    40
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "s_luz",
+   "type": "frontend",
+   "label": "Fotorresistencia",
+   "sublabel": "divisor con 10 kΩ",
+   "pos": [
+    40,
+    140
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "s_pir",
+   "type": "frontend",
+   "label": "HC-SR501",
+   "sublabel": "salida 3.3 V",
+   "pos": [
+    40,
+    240
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "s_puerta",
+   "type": "frontend",
+   "label": "Reed MC-38",
+   "sublabel": "a GND",
+   "pos": [
+    40,
+    340
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "s_acel",
+   "type": "frontend",
+   "label": "GY-61 + ADS1115",
+   "sublabel": "dirección 0x48",
+   "pos": [
+    40,
+    440
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "n_dht",
+   "type": "backend",
+   "label": "Nodo dht",
+   "sublabel": "NodeMCU ESP8266",
+   "pos": [
+    330,
+    40
+   ],
+   "size": [
+    160,
+    64
+   ]
+  },
+  {
+   "id": "n_luz",
+   "type": "backend",
+   "label": "Nodo luz",
+   "sublabel": "NodeMCU ESP8266",
+   "pos": [
+    330,
+    140
+   ],
+   "size": [
+    160,
+    64
+   ]
+  },
+  {
+   "id": "n_pir",
+   "type": "backend",
+   "label": "Nodo pir",
+   "sublabel": "NodeMCU ESP8266",
+   "pos": [
+    330,
+    240
+   ],
+   "size": [
+    160,
+    64
+   ]
+  },
+  {
+   "id": "n_puerta",
+   "type": "backend",
+   "label": "Nodo puerta",
+   "sublabel": "NodeMCU ESP8266",
+   "pos": [
+    330,
+    340
+   ],
+   "size": [
+    160,
+    64
+   ]
+  },
+  {
+   "id": "n_acel",
+   "type": "backend",
+   "label": "Nodo acel",
+   "sublabel": "NodeMCU ESP8266",
+   "pos": [
+    330,
+    440
+   ],
+   "size": [
+    160,
+    64
+   ]
+  },
+  {
+   "id": "ap",
+   "type": "cloud",
+   "label": "Punto de acceso",
+   "sublabel": "WiFi del invernadero",
+   "pos": [
+    620,
+    222
+   ],
+   "size": [
+    160,
+    100
+   ]
+  },
+  {
+   "id": "mqtt",
+   "type": "messagebus",
+   "label": "Mosquitto 2.0",
+   "sublabel": "broker MQTT",
+   "pos": [
+    870,
+    222
+   ],
+   "size": [
+    160,
+    100
+   ]
+  },
+  {
+   "id": "n8n",
+   "type": "backend",
+   "label": "n8n",
+   "sublabel": "reglas y flujos",
+   "pos": [
+    1120,
+    222
+   ],
+   "size": [
+    150,
+    100
+   ]
+  },
+  {
+   "id": "db",
+   "type": "database",
+   "label": "MySQL 8",
+   "sublabel": "historial en UTC",
+   "pos": [
+    1120,
+    440
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "avisos",
+   "type": "external",
+   "label": "WhatsApp y Telegram",
+   "sublabel": "CallMeBot / bot",
+   "pos": [
+    1120,
+    40
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "dash",
+   "type": "frontend",
+   "label": "Dashboard",
+   "sublabel": "nginx + Chart.js + MQTT.js",
+   "pos": [
+    870,
+    440
+   ],
+   "size": [
+    160,
+    64
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Cuarto de incubación: enlaces cableados (< 1 m)",
+   "wraps": [
+    "s_dht",
+    "s_luz",
+    "s_pir",
+    "s_puerta",
+    "s_acel",
+    "n_dht",
+    "n_luz",
+    "n_pir",
+    "n_puerta",
+    "n_acel"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Servidor Docker Compose",
+   "wraps": [
+    "mqtt",
+    "n8n",
+    "db",
+    "dash"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "l_dht",
+   "from": "s_dht",
+   "to": "n_dht",
+   "label": "1-Wire D4 · I²C D1/D2 · GPIO"
+  },
+  {
+   "id": "l_luz",
+   "from": "s_luz",
+   "to": "n_luz",
+   "label": "ADC A0"
+  },
+  {
+   "id": "l_pir",
+   "from": "s_pir",
+   "to": "n_pir",
+   "label": "GPIO D5"
+  },
+  {
+   "id": "l_puerta",
+   "from": "s_puerta",
+   "to": "n_puerta",
+   "label": "GPIO D5 pull-up"
+  },
+  {
+   "id": "l_acel",
+   "from": "s_acel",
+   "to": "n_acel",
+   "label": "I²C D1/D2"
+  },
+  {
+   "id": "w_dht",
+   "from": "n_dht",
+   "to": "ap"
+  },
+  {
+   "id": "w_luz",
+   "from": "n_luz",
+   "to": "ap"
+  },
+  {
+   "id": "w_pir",
+   "from": "n_pir",
+   "to": "ap",
+   "label": "802.11 b/g/n 2.4 GHz"
+  },
+  {
+   "id": "w_puerta",
+   "from": "n_puerta",
+   "to": "ap"
+  },
+  {
+   "id": "w_acel",
+   "from": "n_acel",
+   "to": "ap"
+  },
+  {
+   "id": "c1",
+   "from": "ap",
+   "to": "mqtt",
+   "label": "MQTT 3.1.1 · TCP 1883",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "mqtt",
+   "to": "n8n",
+   "label": "suscribe invernadero/#",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c3",
+   "from": "n8n",
+   "to": "mqtt",
+   "label": "cmd/alarma on/off",
+   "variant": "dashed",
+   "fromSide": "bottom",
+   "toSide": "bottom"
+  },
+  {
+   "id": "c4",
+   "from": "n8n",
+   "to": "db",
+   "label": "SQL · TCP 3306"
+  },
+  {
+   "id": "c5",
+   "from": "n8n",
+   "to": "avisos",
+   "label": "HTTPS",
+   "variant": "security"
+  },
+  {
+   "id": "c6",
+   "from": "mqtt",
+   "to": "dash",
+   "label": "MQTT sobre WebSocket"
+  },
+  {
+   "id": "c7",
+   "from": "dash",
+   "to": "n8n",
+   "label": "HTTP · GET /api/… (Web API)",
+   "variant": "emphasis"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Enlaces locales (cable)",
+   "items": [
+    "1-Wire: DHT22, una lectura cada 30 s",
+    "I²C a 3.3 V: OLED SSD1309 y ADS1115",
+    "ADC de 10 bits: fotorresistencia",
+    "GPIO: PIR, reed, botón, LED y transistor"
+   ]
+  },
+  {
+   "dot": "emerald",
+   "title": "Enlaces de red",
+   "items": [
+    "Topología en estrella: cada nodo habla solo con el broker",
+    "Publicar/suscribir: los nodos no se hablan entre sí",
+    "QoS 0 en datos; QoS 1 retenido en estado"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Fallas y recuperación",
+   "items": [
+    "Reintento al broker cada 5 s",
+    "Keep-alive 45 s y LWT offline retenido",
+    "Latido cada 60 s; alarma local del dht sin red"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Web API (webhooks de n8n)",
+   "items": [
+    "Tres consultas GET: estado, mediciones y alertas",
+    "nginx reenvía /api/ a n8n; el editor de n8n no se expone",
+    "Autenticación con cabecera X-API-Key; usuario MySQL de solo lectura"
+   ]
+  }
+ ]
+}

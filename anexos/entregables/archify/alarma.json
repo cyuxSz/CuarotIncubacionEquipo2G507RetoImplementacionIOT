@@ -1,0 +1,157 @@
+{
+  "schema_version": 3,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Estados de la alarma del nodo dht",
+    "locale": "es",
+    "output": "arch/como_funciona_alarma.html",
+    "quality_profile": "showcase"
+  },
+  "mainPath": [
+    "normal",
+    "contando",
+    "alerta",
+    "recuperando"
+  ],
+  "states": [
+    {
+      "id": "normal",
+      "type": "start",
+      "label": "Normal",
+      "sublabel": "22–28 °C y 40–60 % HR",
+      "tag": "LED verde",
+      "step": "01"
+    },
+    {
+      "id": "contando",
+      "type": "decision",
+      "label": "Fuera de rango",
+      "sublabel": "1 o 2 lecturas",
+      "tag": "sin aviso",
+      "step": "02"
+    },
+    {
+      "id": "alerta",
+      "type": "failure",
+      "label": "Alerta",
+      "sublabel": "3 lecturas seguidas",
+      "tag": "LED rojo + buzzer",
+      "step": "03"
+    },
+    {
+      "id": "recuperando",
+      "type": "active",
+      "label": "Recuperando",
+      "sublabel": "dentro con histéresis",
+      "tag": "buzzer sigue",
+      "step": "04"
+    },
+    {
+      "id": "silencio",
+      "type": "waiting",
+      "label": "Silenciada",
+      "sublabel": "botón D6, 30 min",
+      "tag": "LED rojo fijo"
+    },
+    {
+      "id": "falla",
+      "type": "neutral",
+      "label": "Falla del sensor",
+      "sublabel": "3 lecturas inválidas",
+      "tag": "rojo parpadea"
+    }
+  ],
+  "transitions": [
+    {
+      "id": "t1",
+      "from": "normal",
+      "to": "contando",
+      "label": "lectura fuera"
+    },
+    {
+      "id": "t2",
+      "from": "contando",
+      "to": "alerta",
+      "label": "3.ª seguida",
+      "variant": "security"
+    },
+    {
+      "id": "t3",
+      "from": "alerta",
+      "to": "recuperando",
+      "label": "vuelve al rango"
+    },
+    {
+      "id": "t4",
+      "from": "recuperando",
+      "to": "normal",
+      "label": "3 lecturas dentro",
+      "variant": "emphasis",
+      "note": "Se cierra la alerta y n8n manda cmd/alarma off"
+    },
+    {
+      "id": "t5",
+      "from": "contando",
+      "to": "normal",
+      "label": "lectura en rango"
+    },
+    {
+      "id": "t6",
+      "from": "recuperando",
+      "to": "alerta",
+      "label": "sale otra vez"
+    },
+    {
+      "id": "t7",
+      "from": "alerta",
+      "to": "silencio",
+      "label": "botón"
+    },
+    {
+      "id": "t8",
+      "from": "silencio",
+      "to": "alerta",
+      "label": "pasan 30 min",
+      "variant": "dashed"
+    },
+    {
+      "id": "t9",
+      "from": "normal",
+      "to": "falla",
+      "label": "sin lectura",
+      "variant": "security"
+    },
+    {
+      "id": "t10",
+      "from": "falla",
+      "to": "normal",
+      "label": "lectura válida"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Persistencia e histéresis",
+      "items": [
+        "Se abre con 3 lecturas seguidas (90 s)",
+        "Se cierra dentro de 22.5–27.5 °C o 42–58 % HR"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Sin red",
+      "items": [
+        "LED verde parpadea lento",
+        "La regla local sigue y el buzzer suena igual"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Falla del sensor",
+      "items": [
+        "3 lecturas inválidas seguidas",
+        "Publica sensor_error una vez y n8n abre sensor_falla"
+      ]
+    }
+  ]
+}

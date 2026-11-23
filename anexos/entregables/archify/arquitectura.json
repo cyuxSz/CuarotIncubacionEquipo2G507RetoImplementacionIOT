@@ -1,0 +1,310 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Argos: del sensor al aviso",
+  "locale": "es",
+  "output": "arch/como_funciona_arquitectura.html",
+  "quality_profile": "showcase",
+  "legend": {
+   "entries": {
+    "backend": {
+     "label": "NodeMCU o servicio"
+    },
+    "messagebus": {
+     "label": "Broker MQTT"
+    },
+    "database": {
+     "label": "Base de datos"
+    },
+    "frontend": {
+     "label": "Dashboard web"
+    },
+    "external": {
+     "label": "Avisos"
+    }
+   }
+  }
+ },
+ "components": [
+  {
+   "id": "dht",
+   "type": "backend",
+   "label": "Nodo dht",
+   "sublabel": "DHT22 + buzzer",
+   "pos": [
+    40,
+    40
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "luz",
+   "type": "backend",
+   "label": "Nodo luz",
+   "sublabel": "fotorresistencia",
+   "pos": [
+    40,
+    140
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "pir",
+   "type": "backend",
+   "label": "Nodo pir",
+   "sublabel": "HC-SR501",
+   "pos": [
+    40,
+    240
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "puerta",
+   "type": "backend",
+   "label": "Nodo puerta",
+   "sublabel": "reed MC-38",
+   "pos": [
+    40,
+    340
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "acel",
+   "type": "backend",
+   "label": "Nodo acel",
+   "sublabel": "GY-61 + ADS1115",
+   "pos": [
+    40,
+    440
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "mqtt",
+   "type": "messagebus",
+   "label": "Mosquitto",
+   "sublabel": "broker MQTT 2.0",
+   "pos": [
+    400,
+    222
+   ],
+   "size": [
+    160,
+    100
+   ]
+  },
+  {
+   "id": "n8n",
+   "type": "backend",
+   "label": "n8n",
+   "sublabel": "reglas y flujos",
+   "pos": [
+    700,
+    222
+   ],
+   "size": [
+    150,
+    100
+   ]
+  },
+  {
+   "id": "db",
+   "type": "database",
+   "label": "MySQL 8",
+   "sublabel": "13 tablas, UTC",
+   "pos": [
+    990,
+    222
+   ],
+   "size": [
+    150,
+    100
+   ]
+  },
+  {
+   "id": "avisos",
+   "type": "external",
+   "label": "WhatsApp y Telegram",
+   "sublabel": "CallMeBot / bot",
+   "pos": [
+    700,
+    40
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "dash",
+   "type": "frontend",
+   "label": "Dashboard",
+   "sublabel": "nginx + Chart.js + MQTT.js",
+   "pos": [
+    990,
+    440
+   ],
+   "size": [
+    150,
+    64
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Cuarto de incubación (WiFi del invernadero)",
+   "wraps": [
+    "dht",
+    "luz",
+    "pir",
+    "puerta",
+    "acel"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Servidor Docker Compose: laptop, luego Oracle Cloud",
+   "wraps": [
+    "mqtt",
+    "n8n",
+    "db",
+    "dash"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c-dht",
+   "from": "dht",
+   "to": "mqtt",
+   "label": "MQTT",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c-luz",
+   "from": "luz",
+   "to": "mqtt",
+   "label": "MQTT"
+  },
+  {
+   "id": "c-pir",
+   "from": "pir",
+   "to": "mqtt",
+   "label": "MQTT"
+  },
+  {
+   "id": "c-puerta",
+   "from": "puerta",
+   "to": "mqtt",
+   "label": "MQTT"
+  },
+  {
+   "id": "c-acel",
+   "from": "acel",
+   "to": "mqtt",
+   "label": "MQTT"
+  },
+  {
+   "id": "c-sub",
+   "from": "mqtt",
+   "to": "n8n",
+   "label": "invernadero/#",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c-sql",
+   "from": "n8n",
+   "to": "db",
+   "label": "INSERT",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c-aviso",
+   "from": "n8n",
+   "to": "avisos",
+   "label": "un aviso por episodio",
+   "variant": "security"
+  },
+  {
+   "id": "c-cmd",
+   "from": "n8n",
+   "to": "mqtt",
+   "label": "cmd/alarma on",
+   "variant": "dashed",
+   "fromSide": "bottom",
+   "toSide": "bottom"
+  },
+  {
+   "id": "c-api",
+   "from": "dash",
+   "to": "n8n",
+   "label": "Web API: GET /api/…",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c-rt",
+   "from": "mqtt",
+   "to": "dash",
+   "label": "tiempo real (WebSocket)",
+   "variant": "dashed"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Qué viaja por MQTT",
+   "items": [
+    "telemetria: T y HR cada 30 s; luz cada 60 s",
+    "evento: movimiento, golpe, puerta, sensor_error",
+    "estado: online/offline con LWT a los 45 s",
+    "cmd/alarma: n8n repite on cada 60 s al nodo dht"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Cuándo se avisa",
+   "items": [
+    "3 lecturas seguidas fuera de 22–28 °C o 40–60 % HR",
+    "Cierra con histéresis de 0.5 °C o 2 % HR",
+    "El dht suena por su cuenta aunque se caiga la red"
+   ]
+  },
+  {
+   "dot": "cyan",
+   "title": "Web API (webhooks de n8n)",
+   "items": [
+    "GET /api/estado: último valor y estado de cada nodo",
+    "GET /api/mediciones: historial por nodo y parámetro",
+    "GET /api/alertas: alertas activas o todas",
+    "Clave en la cabecera X-API-Key; solo lectura sobre MySQL"
+   ]
+  },
+  {
+   "dot": "slate",
+   "title": "Qué no hace",
+   "items": [
+    "No controla el minisplit ni las lámparas",
+    "Los nodos no tienen reloj: MySQL pone la hora"
+   ]
+  }
+ ]
+}

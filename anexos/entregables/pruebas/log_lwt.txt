@@ -1,0 +1,159 @@
+14:30:49 invernadero/estado/dht {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -72}
+14:30:49 invernadero/estado/luz {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -67}
+14:30:49 invernadero/estado/pir {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -60}
+14:30:49 invernadero/estado/puerta {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -64}
+14:30:49 invernadero/estado/acel {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -74}
+14:30:49 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 24.9, "unidad": "C"}, {"parametro": "humedad", "valor": 49.7, "unidad": "%"}]}
+14:30:49 invernadero/telemetria/luz {"lecturas": [{"parametro": "luz", "valor": 736.8, "unidad": "adc"}]}
+14:30:49 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:30:49 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:30:49 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:30:52 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.1, "unidad": "C"}, {"parametro": "humedad", "valor": 49.7, "unidad": "%"}]}
+14:30:55 invernadero/telemetria/luz {"lecturas": [{"parametro": "luz", "valor": 723.2, "unidad": "adc"}]}
+14:30:55 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.2, "unidad": "C"}, {"parametro": "humedad", "valor": 50.4, "unidad": "%"}]}
+14:30:55 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:30:55 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:30:55 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:30:58 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.1, "unidad": "C"}, {"parametro": "humedad", "valor": 49.7, "unidad": "%"}]}
+14:31:01 invernadero/telemetria/luz {"lecturas": [{"parametro": "luz", "valor": 711.5, "unidad": "adc"}]}
+14:31:01 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.1, "unidad": "C"}, {"parametro": "humedad", "valor": 50.4, "unidad": "%"}]}
+14:31:01 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:01 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:01 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:03 invernadero/evento/acel {"tipo": "golpe", "magnitud": 0.65}
+14:31:04 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.0, "unidad": "C"}, {"parametro": "humedad", "valor": 49.4, "unidad": "%"}]}
+14:31:07 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.1, "unidad": "C"}, {"parametro": "humedad", "valor": 50.7, "unidad": "%"}]}
+14:31:07 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:07 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:07 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:07 invernadero/estado/luz {"estado": "offline"}
+14:31:09 invernadero/cmd/alarma on
+14:31:10 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.1, "unidad": "C"}, {"parametro": "humedad", "valor": 50.1, "unidad": "%"}]}
+14:31:13 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.2, "unidad": "C"}, {"parametro": "humedad", "valor": 51.1, "unidad": "%"}]}
+14:31:13 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:13 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:13 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:16 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.2, "unidad": "C"}, {"parametro": "humedad", "valor": 50.2, "unidad": "%"}]}
+14:31:17 invernadero/evento/puerta {"tipo": "puerta_abierta"}
+14:31:19 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.1, "unidad": "C"}, {"parametro": "humedad", "valor": 51.1, "unidad": "%"}]}
+14:31:19 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:19 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:19 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:22 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.3, "unidad": "C"}, {"parametro": "humedad", "valor": 50.7, "unidad": "%"}]}
+14:31:25 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.1, "unidad": "C"}, {"parametro": "humedad", "valor": 50.6, "unidad": "%"}]}
+14:31:25 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:25 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:25 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:28 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.2, "unidad": "C"}, {"parametro": "humedad", "valor": 50.3, "unidad": "%"}]}
+14:31:30 invernadero/evento/acel {"tipo": "golpe", "magnitud": 1.92}
+14:31:31 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.3, "unidad": "C"}, {"parametro": "humedad", "valor": 50.8, "unidad": "%"}]}
+14:31:31 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:31 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:31 invernadero/evento/pir {"tipo": "movimiento"}
+14:31:31 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:34 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.2, "unidad": "C"}, {"parametro": "humedad", "valor": 50.7, "unidad": "%"}]}
+14:31:37 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.3, "unidad": "C"}, {"parametro": "humedad", "valor": 50.4, "unidad": "%"}]}
+14:31:37 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:37 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:37 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:40 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.5, "unidad": "C"}, {"parametro": "humedad", "valor": 51.5, "unidad": "%"}]}
+14:31:43 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.3, "unidad": "C"}, {"parametro": "humedad", "valor": 51.0, "unidad": "%"}]}
+14:31:43 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:43 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:43 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:44 invernadero/evento/puerta {"tipo": "puerta_cerrada"}
+14:31:44 invernadero/evento/pir {"tipo": "movimiento"}
+14:31:45 invernadero/evento/acel {"tipo": "golpe", "magnitud": 1.9}
+14:31:46 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.4, "unidad": "C"}, {"parametro": "humedad", "valor": 50.5, "unidad": "%"}]}
+14:31:49 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.3, "unidad": "C"}, {"parametro": "humedad", "valor": 51.1, "unidad": "%"}]}
+14:31:49 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:49 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:49 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:50 invernadero/evento/puerta {"tipo": "puerta_abierta"}
+14:31:52 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.4, "unidad": "C"}, {"parametro": "humedad", "valor": 51.1, "unidad": "%"}]}
+14:31:55 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.7, "unidad": "C"}, {"parametro": "humedad", "valor": 50.8, "unidad": "%"}]}
+14:31:55 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:55 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:55 invernadero/evento/puerta {"tipo": "puerta_cerrada"}
+14:31:55 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:31:56 invernadero/evento/pir {"tipo": "movimiento"}
+14:31:58 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.4, "unidad": "C"}, {"parametro": "humedad", "valor": 50.7, "unidad": "%"}]}
+14:32:01 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.4, "unidad": "C"}, {"parametro": "humedad", "valor": 51.7, "unidad": "%"}]}
+14:32:01 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:01 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:01 invernadero/evento/puerta {"tipo": "puerta_abierta"}
+14:32:01 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:04 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.6, "unidad": "C"}, {"parametro": "humedad", "valor": 51.6, "unidad": "%"}]}
+14:32:07 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.6, "unidad": "C"}, {"parametro": "humedad", "valor": 51.3, "unidad": "%"}]}
+14:32:07 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:07 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:07 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:10 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.8, "unidad": "C"}, {"parametro": "humedad", "valor": 51.3, "unidad": "%"}]}
+14:32:12 invernadero/evento/puerta {"tipo": "puerta_cerrada"}
+14:32:13 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.7, "unidad": "C"}, {"parametro": "humedad", "valor": 51.1, "unidad": "%"}]}
+14:32:13 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:13 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:13 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:16 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.6, "unidad": "C"}, {"parametro": "humedad", "valor": 52.3, "unidad": "%"}]}
+14:32:16 invernadero/evento/pir {"tipo": "movimiento"}
+14:32:19 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.6, "unidad": "C"}, {"parametro": "humedad", "valor": 51.7, "unidad": "%"}]}
+14:32:19 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:19 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:19 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:22 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.7, "unidad": "C"}, {"parametro": "humedad", "valor": 52.9, "unidad": "%"}]}
+14:32:25 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.7, "unidad": "C"}, {"parametro": "humedad", "valor": 51.0, "unidad": "%"}]}
+14:32:25 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:25 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:25 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:28 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.8, "unidad": "C"}, {"parametro": "humedad", "valor": 51.5, "unidad": "%"}]}
+14:32:31 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.7, "unidad": "C"}, {"parametro": "humedad", "valor": 51.9, "unidad": "%"}]}
+14:32:31 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:31 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:31 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:31 invernadero/evento/acel {"tipo": "golpe", "magnitud": 0.88}
+14:32:34 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.4, "unidad": "C"}, {"parametro": "humedad", "valor": 51.4, "unidad": "%"}]}
+14:32:37 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.7, "unidad": "C"}, {"parametro": "humedad", "valor": 51.4, "unidad": "%"}]}
+14:32:37 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:37 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:37 invernadero/evento/puerta {"tipo": "puerta_abierta"}
+14:32:37 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:40 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.6, "unidad": "C"}, {"parametro": "humedad", "valor": 51.9, "unidad": "%"}]}
+14:32:43 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.7, "unidad": "C"}, {"parametro": "humedad", "valor": 52.2, "unidad": "%"}]}
+14:32:43 invernadero/telemetria/pir {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:43 invernadero/telemetria/puerta {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:43 invernadero/telemetria/acel {"lecturas": [{"parametro": "latido", "valor": 1, "unidad": ""}]}
+14:32:46 invernadero/telemetria/dht {"lecturas": [{"parametro": "temperatura", "valor": 25.8, "unidad": "C"}, {"parametro": "humedad", "valor": 52.0, "unidad": "%"}]}
+---- salida del simulador ----
+[dht] conectado (rc=Success)
+[luz] conectado (rc=Success)
+[luz] invernadero/estado/dht = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -72}  (el buzzer real sonaria si es 'on')
+[pir] conectado (rc=Success)
+[pir] invernadero/estado/dht = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -72}  (el buzzer real sonaria si es 'on')
+[pir] invernadero/estado/luz = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -67}  (el buzzer real sonaria si es 'on')
+[puerta] conectado (rc=Success)
+[puerta] invernadero/estado/dht = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -72}  (el buzzer real sonaria si es 'on')
+[puerta] invernadero/estado/luz = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -67}  (el buzzer real sonaria si es 'on')
+[puerta] invernadero/estado/pir = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -60}  (el buzzer real sonaria si es 'on')
+[acel] conectado (rc=Success)
+[acel] invernadero/estado/dht = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -72}  (el buzzer real sonaria si es 'on')
+[acel] invernadero/estado/luz = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -67}  (el buzzer real sonaria si es 'on')
+[acel] invernadero/estado/pir = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -60}  (el buzzer real sonaria si es 'on')
+simulando 5 nodos, escenario sin_red; Ctrl+C para salir
+[acel] invernadero/estado/puerta = {"estado": "online", "reset_reason": "Power on", "uptime_s": 0, "rssi": -64}  (el buzzer real sonaria si es 'on')
+[acel] evento {'tipo': 'golpe', 'magnitud': 0.65}
+[luz] se desconecta sin avisar (debe disparar el LWT offline)
+[dht] invernadero/cmd/alarma = on  (el buzzer real sonaria si es 'on')
+[puerta] evento {'tipo': 'puerta_abierta'}
+[acel] evento {'tipo': 'golpe', 'magnitud': 1.92}
+[pir] evento {'tipo': 'movimiento'}
+[puerta] evento {'tipo': 'puerta_cerrada'}
+[pir] evento {'tipo': 'movimiento'}
+[acel] evento {'tipo': 'golpe', 'magnitud': 1.9}
+[puerta] evento {'tipo': 'puerta_abierta'}
+[puerta] evento {'tipo': 'puerta_cerrada'}
+[pir] evento {'tipo': 'movimiento'}
+[puerta] evento {'tipo': 'puerta_abierta'}
+[puerta] evento {'tipo': 'puerta_cerrada'}
+[pir] evento {'tipo': 'movimiento'}
+[acel] evento {'tipo': 'golpe', 'magnitud': 0.88}
+[puerta] evento {'tipo': 'puerta_abierta'}

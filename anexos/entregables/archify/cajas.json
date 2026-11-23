@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Cinco nodos en tres cajas: alimentación y sensores",
+    "locale": "es",
+    "output": "arch/prototipo_cajas.html",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "cloud": {
+          "label": "Fuente de 5 V en el contacto"
+        },
+        "messagebus": {
+          "label": "Reparto de 5 V dentro de la estación"
+        },
+        "backend": {
+          "label": "NodeMCU independiente (uno por integrante)"
+        },
+        "external": {
+          "label": "Sensor fuera de la caja, por cable"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "f_dht",
+      "type": "cloud",
+      "label": "Fuente 5 V",
+      "sublabel": "≥ 1 A, micro-USB",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "dht",
+      "type": "backend",
+      "label": "Nodo dht",
+      "sublabel": "DHT22, OLED, buzzer",
+      "tag": "cámara aislada",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        150,
+        80
+      ]
+    },
+    {
+      "id": "f_ent",
+      "type": "cloud",
+      "label": "Fuente 5 V",
+      "sublabel": "≥ 2 A",
+      "pos": [
+        380,
+        40
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "u_ent",
+      "type": "messagebus",
+      "label": "Módulo USB-C",
+      "sublabel": "a VIN y rieles 5 V/GND",
+      "pos": [
+        370,
+        170
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "pir",
+      "type": "backend",
+      "label": "Nodo pir",
+      "sublabel": "HC-SR501 en la tapa",
+      "tag": "LED rojo 5 s",
+      "pos": [
+        290,
+        300
+      ],
+      "size": [
+        150,
+        80
+      ]
+    },
+    {
+      "id": "puerta",
+      "type": "backend",
+      "label": "Nodo puerta",
+      "sublabel": "entrada D5",
+      "tag": "LED rojo si abre",
+      "pos": [
+        470,
+        300
+      ],
+      "size": [
+        150,
+        80
+      ]
+    },
+    {
+      "id": "mc38",
+      "type": "external",
+      "label": "Reed MC-38",
+      "sublabel": "marco + imán en la hoja",
+      "pos": [
+        470,
+        460
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "f_ana",
+      "type": "cloud",
+      "label": "Fuente 5 V",
+      "sublabel": "≥ 2 A",
+      "pos": [
+        780,
+        40
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "u_ana",
+      "type": "messagebus",
+      "label": "Módulo USB-C",
+      "sublabel": "a VIN y rieles 5 V/GND",
+      "pos": [
+        770,
+        170
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "acel",
+      "type": "backend",
+      "label": "Nodo acel",
+      "sublabel": "GY-61 + ADS1115",
+      "tag": "LED rojo 5 s",
+      "pos": [
+        690,
+        300
+      ],
+      "size": [
+        150,
+        80
+      ]
+    },
+    {
+      "id": "luz",
+      "type": "backend",
+      "label": "Nodo luz",
+      "sublabel": "entrada A0",
+      "tag": "LED rojo sin luz",
+      "pos": [
+        870,
+        300
+      ],
+      "size": [
+        150,
+        80
+      ]
+    },
+    {
+      "id": "ldr",
+      "type": "external",
+      "label": "Fotorresistencia",
+      "sublabel": "capuchón junto a la lámpara",
+      "pos": [
+        870,
+        460
+      ],
+      "size": [
+        150,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Caja dht 80×138 mm",
+      "wraps": [
+        "dht"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Estación de entrada 174×80 mm",
+      "wraps": [
+        "u_ent",
+        "pir",
+        "puerta"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Estación del anaquel 174×80 mm",
+      "wraps": [
+        "u_ana",
+        "acel",
+        "luz"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "p1",
+      "from": "f_dht",
+      "to": "dht",
+      "label": "5 V a VIN",
+      "variant": "emphasis"
+    },
+    {
+      "id": "p2",
+      "from": "f_ent",
+      "to": "u_ent",
+      "label": "USB-C",
+      "variant": "emphasis"
+    },
+    {
+      "id": "p3",
+      "from": "u_ent",
+      "to": "pir",
+      "label": "5 V"
+    },
+    {
+      "id": "p4",
+      "from": "u_ent",
+      "to": "puerta",
+      "label": "5 V"
+    },
+    {
+      "id": "s1",
+      "from": "mc38",
+      "to": "puerta",
+      "label": "cable",
+      "variant": "dashed"
+    },
+    {
+      "id": "p5",
+      "from": "f_ana",
+      "to": "u_ana",
+      "label": "USB-C",
+      "variant": "emphasis"
+    },
+    {
+      "id": "p6",
+      "from": "u_ana",
+      "to": "acel",
+      "label": "5 V"
+    },
+    {
+      "id": "p7",
+      "from": "u_ana",
+      "to": "luz",
+      "label": "5 V"
+    },
+    {
+      "id": "s2",
+      "from": "ldr",
+      "to": "luz",
+      "label": "cable",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Regla eléctrica",
+      "items": [
+        "Las dos placas de una estación comparten 5 V y GND",
+        "La salida de 3.3 V de cada placa nunca se une",
+        "C1 de 220 µF en cada entrada de 5 V"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Por qué tres cajas",
+      "items": [
+        "3 fuentes en vez de 5 y 2 protoboards MB-102 del kit",
+        "El dht va solo para que el calor no altere la lectura",
+        "Siguen siendo 5 microcontroladores con su usuario MQTT"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Medidas",
+      "items": [
+        "Nominales: falta medir las piezas reales",
+        "PETG impreso sin soportes, ≈ 458 g en total"
+      ]
+    }
+  ]
+}
